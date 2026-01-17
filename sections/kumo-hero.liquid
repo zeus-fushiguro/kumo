@@ -5,7 +5,8 @@
 
 {%- liquid
   assign fade_opacity = section.settings.fade_opacity | default: 75
-  assign fade_decimal = fade_opacity | divided_by: 100.0
+  assign fade_start = fade_opacity | times: 0.01
+  assign fade_mid = fade_opacity | times: 0.007
 -%}
 
 <section class="kumo-hero kumo-hero--align-{{ section.settings.content_alignment }}">
@@ -22,10 +23,8 @@
     {%- else -%}
       <div class="kumo-hero__placeholder"></div>
     {%- endif -%}
-    {%- comment -%} Customizable fade overlay {%- endcomment -%}
-    <div class="kumo-hero__fade" style="background: hsla(35, 45%, 97%, {{ fade_decimal }});"></div>
-    {%- comment -%} Gradient for text readability {%- endcomment -%}
-    <div class="kumo-hero__gradient"></div>
+    {%- comment -%} Gradient fade overlay - fades from left (text side) to right (image visible) {%- endcomment -%}
+    <div class="kumo-hero__fade" style="background: linear-gradient(to right, hsla(35, 45%, 97%, {{ fade_start }}) 0%, hsla(35, 45%, 97%, {{ fade_mid }}) 40%, hsla(35, 45%, 97%, 0) 70%);"></div>
   </div>
 
   {%- comment -%} Content {%- endcomment -%}
@@ -81,22 +80,11 @@
     background: linear-gradient(135deg, hsl(35, 45%, 96%) 0%, hsl(30, 40%, 93%) 100%);
   }
 
-  /* Fade overlay - opacity controlled via inline style */
+  /* Fade overlay - gradient controlled via inline style */
   .kumo-hero__fade {
     position: absolute;
     inset: 0;
-  }
-
-  /* Gradient for text side */
-  .kumo-hero__gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to right,
-      hsla(35, 45%, 97%, 0.9) 0%,
-      hsla(35, 45%, 97%, 0.5) 35%,
-      transparent 60%
-    );
+    pointer-events: none;
   }
 
   .kumo-hero__content {
