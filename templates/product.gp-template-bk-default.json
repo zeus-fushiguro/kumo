@@ -14,16 +14,40 @@
       "settings": {
         "show_bar": true,
         "icon": "☁️",
-        "text": "Offre d'Hiver : Livraison Offerte + E-book Cocon inclus pour tout pack Duo !"
+        "text": "Offre d'Hiver : Livraison Offerte + E-book Cocon inclus pour tout pack Duo !",
+        "show_link": false,
+        "link_text": "En savoir plus",
+        "link_url": "",
+        "position": "top",
+        "bar_style": "pill",
+        "background_color": "latte",
+        "font_size": "medium"
       }
     },
     "main": {
       "type": "kumo-product-main",
       "settings": {
+        "padding_top": 80,
+        "padding_bottom": 40,
+        "layout_gap": "medium",
+        "gallery_position": "left",
+        "gallery_style": "pill",
+        "thumb_style": "circle",
+        "title_size": "large",
         "show_rating": true,
         "reviews_count": "482",
         "show_packs": true,
-        "button_text": "Adopter ce Nuage - Expédition 24h"
+        "button_text": "Adopter ce Nuage - Expédition 24h",
+        "button_style": "primary",
+        "sherpa-beige": "#d4c4b0",
+        "sherpa-marron": "#8b6f4e",
+        "rose-poudre": "#e8c4c4",
+        "beige": "#d4c4b0",
+        "marron": "#8b6f4e",
+        "rose": "#e8c4c4",
+        "gris": "#a8a8a8",
+        "blanc": "#f5f5f5",
+        "noir": "#333333"
       }
     },
     "accordion": {
@@ -59,7 +83,34 @@
         "composition",
         "shipping"
       ],
-      "settings": {}
+      "settings": {
+        "padding_top": 20,
+        "padding_bottom": 30,
+        "section_title": "",
+        "heading_size": "medium",
+        "max_width": "medium",
+        "accordion_style": "minimal"
+      }
+    },
+    "17686923061df67bb2": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_DYhgf8": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_DYhgf8"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     },
     "reviews": {
       "type": "kumo-customer-reviews",
@@ -94,10 +145,18 @@
         "review2",
         "review3"
       ],
+      "disabled": true,
       "settings": {
+        "padding_top": 48,
+        "padding_bottom": 48,
         "title": "Ils marchent déjà sur des nuages...",
         "rating": "4.9/5",
-        "reviews_count": "482"
+        "reviews_count": "482",
+        "max_width": "large",
+        "columns_desktop": 3,
+        "text_alignment": "center",
+        "heading_size": "medium",
+        "card_style": "card"
       }
     },
     "related": {
@@ -106,7 +165,9 @@
         "title": "Vous aimerez aussi...",
         "source": "collection",
         "products_count": 3,
-        "show_view_more": false
+        "show_view_more": false,
+        "view_more_text": "Voir plus",
+        "view_more_link": ""
       }
     }
   },
@@ -114,6 +175,7 @@
     "promo-bar",
     "main",
     "accordion",
+    "17686923061df67bb2",
     "reviews",
     "related"
   ]
