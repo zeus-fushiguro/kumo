@@ -1,0 +1,347 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "order": [
+    "kumo-header",
+    "kumo-hero",
+    "kumo-social-proof",
+    "kumo-trust-bar",
+    "kumo-featured-collection",
+    "kumo-benefits",
+    "kumo-testimonials",
+    "kumo-instagram",
+    "kumo-newsletter",
+    "kumo-footer"
+  ],
+  "sections": {
+    "kumo-benefits": {
+      "block_order": [
+        "benefit-1",
+        "benefit-2",
+        "benefit-3"
+      ],
+      "blocks": {
+        "benefit-1": {
+          "settings": {
+            "badge": "3cm d'épaisseur",
+            "description": "Comme marcher sur un nuage, littéralement.",
+            "icon": "cloud",
+            "title": "Semelle Cloud-Foam™"
+          },
+          "type": "benefit"
+        },
+        "benefit-2": {
+          "settings": {
+            "badge": "100% Vegan",
+            "description": "Une caresse à chaque instant sur votre peau.",
+            "icon": "heart",
+            "title": "Sherpa Ultra-Doux"
+          },
+          "type": "benefit"
+        },
+        "benefit-3": {
+          "settings": {
+            "badge": "Isolation thermique",
+            "description": "Dites adieu aux pieds froids pour toujours.",
+            "icon": "flame",
+            "title": "Chaleur Instantanée"
+          },
+          "type": "benefit"
+        }
+      },
+      "settings": {
+        "subtitle": "Chaque détail est pensé pour votre confort absolu.",
+        "title": "Pourquoi KUMO ?"
+      },
+      "type": "kumo-benefits"
+    },
+    "kumo-featured-collection": {
+      "settings": {
+        "badge": "Les Favoris de l'Hiver",
+        "collection": "slippers",
+        "products_count": 5,
+        "show_view_all": true,
+        "title": "Nos Best-sellers Nuage",
+        "view_all_text": "Voir toute la collection"
+      },
+      "type": "kumo-featured-collection"
+    },
+    "kumo-footer": {
+      "block_order": [
+        "link-1",
+        "link-2",
+        "link-3",
+        "link-4"
+      ],
+      "blocks": {
+        "link-1": {
+          "settings": {
+            "text": "Collection",
+            "url": "shopify://collections/all"
+          },
+          "type": "link"
+        },
+        "link-2": {
+          "settings": {
+            "text": "Notre Histoire",
+            "url": ""
+          },
+          "type": "link"
+        },
+        "link-3": {
+          "settings": {
+            "text": "FAQ",
+            "url": ""
+          },
+          "type": "link"
+        },
+        "link-4": {
+          "settings": {
+            "text": "Contact",
+            "url": ""
+          },
+          "type": "link"
+        }
+      },
+      "settings": {
+        "show_payment": true,
+        "tagline": "Fait avec ☁️ en France."
+      },
+      "type": "kumo-footer"
+    },
+    "kumo-header": {
+      "block_order": [
+        "nav-1",
+        "nav-2"
+      ],
+      "blocks": {
+        "nav-1": {
+          "settings": {
+            "link": "shopify://collections/all",
+            "text": "Collection"
+          },
+          "type": "nav_link"
+        },
+        "nav-2": {
+          "settings": {
+            "link": "",
+            "text": "Notre Histoire"
+          },
+          "type": "nav_link"
+        }
+      },
+      "settings": {
+        "logo": "shopify://shop_images/store-logo-1768439294888_d2a85ca0-339c-4814-b625-efd35076dec9.png",
+        "logo_height": 48
+      },
+      "type": "kumo-header"
+    },
+    "kumo-hero": {
+      "settings": {
+        "button_link": "shopify://collections/all",
+        "button_text": "Explorer le Nuage",
+        "content_alignment": "left",
+        "description": "Transformez votre intérieur en un refuge. Découvrez le confort ultime de la collection KUMO.",
+        "fade_opacity": 95,
+        "image": "shopify://shop_images/hero-slippers.jpg",
+        "title_line1": "Cocooning",
+        "title_line2": "à chaque pas."
+      },
+      "type": "kumo-hero"
+    },
+    "kumo-instagram": {
+      "block_order": [
+        "img-1",
+        "img-2",
+        "img-3",
+        "img-4",
+        "img-5",
+        "img-6"
+      ],
+      "blocks": {
+        "img-1": {
+          "settings": {
+            "alt": "",
+            "link": ""
+          },
+          "type": "image"
+        },
+        "img-2": {
+          "settings": {
+            "alt": "",
+            "link": ""
+          },
+          "type": "image"
+        },
+        "img-3": {
+          "settings": {
+            "alt": "",
+            "link": ""
+          },
+          "type": "image"
+        },
+        "img-4": {
+          "settings": {
+            "alt": "",
+            "link": ""
+          },
+          "type": "image"
+        },
+        "img-5": {
+          "settings": {
+            "alt": "",
+            "link": ""
+          },
+          "type": "image"
+        },
+        "img-6": {
+          "settings": {
+            "alt": "",
+            "link": ""
+          },
+          "type": "image"
+        }
+      },
+      "settings": {
+        "handle": "kumo.official",
+        "show_cta": true,
+        "title": "#KUMOFamily"
+      },
+      "type": "kumo-instagram"
+    },
+    "kumo-newsletter": {
+      "settings": {
+        "button_text": "S'inscrire",
+        "description": "Recevez nos offres exclusives et les nouveautés en avant-première.",
+        "placeholder": "votre@email.com",
+        "success_message": "Merci ! Vous êtes maintenant inscrit(e).",
+        "title": "Rejoignez le Cocon"
+      },
+      "type": "kumo-newsletter"
+    },
+    "kumo-social-proof": {
+      "block_order": [
+        "badge-1",
+        "stat-1",
+        "stat-2"
+      ],
+      "blocks": {
+        "badge-1": {
+          "settings": {
+            "icon": "tiktok",
+            "text": "Viral sur TikTok"
+          },
+          "type": "badge"
+        },
+        "stat-1": {
+          "settings": {
+            "icon": "heart",
+            "label": "clients heureux",
+            "number": "50K+"
+          },
+          "type": "stat"
+        },
+        "stat-2": {
+          "settings": {
+            "icon": "star",
+            "label": "note moyenne",
+            "number": "4.9/5"
+          },
+          "type": "stat"
+        }
+      },
+      "settings": {
+        "show_title": true,
+        "title": "Ils adorent"
+      },
+      "type": "kumo-social-proof"
+    },
+    "kumo-testimonials": {
+      "block_order": [
+        "testimonial-1",
+        "testimonial-2",
+        "testimonial-3"
+      ],
+      "blocks": {
+        "testimonial-1": {
+          "settings": {
+            "content": "Les chaussons les plus confortables que j'ai jamais portés ! On dirait qu'on marche sur des nuages. Je ne peux plus m'en passer.",
+            "name": "Marie L.",
+            "product": "KUMO Cloud",
+            "rating": 5,
+            "verified": true
+          },
+          "type": "testimonial"
+        },
+        "testimonial-2": {
+          "settings": {
+            "content": "Parfaits pour le télétravail ! Mes pieds restent au chaud toute la journée. La qualité est vraiment au rendez-vous.",
+            "name": "Thomas B.",
+            "product": "KUMO Cozy",
+            "rating": 5,
+            "verified": true
+          },
+          "type": "testimonial"
+        },
+        "testimonial-3": {
+          "settings": {
+            "content": "J'ai offert une paire à ma mère, elle les adore ! Commande déjà la 3ème paire pour toute la famille.",
+            "name": "Sophie M.",
+            "product": "KUMO Original",
+            "rating": 5,
+            "verified": true
+          },
+          "type": "testimonial"
+        }
+      },
+      "settings": {
+        "badge": "Avis clients",
+        "show_trust_indicator": true,
+        "subtitle": "Rejoignez des milliers de clients satisfaits",
+        "title": "Ce qu'ils en pensent",
+        "trust_count": "2,847",
+        "trust_rating": "4.9/5"
+      },
+      "type": "kumo-testimonials"
+    },
+    "kumo-trust-bar": {
+      "block_order": [
+        "trust-1",
+        "trust-2",
+        "trust-3"
+      ],
+      "blocks": {
+        "trust-1": {
+          "settings": {
+            "icon": "truck",
+            "text": "Livraison Offerte dès 50€"
+          },
+          "type": "trust_item"
+        },
+        "trust-2": {
+          "settings": {
+            "icon": "return",
+            "text": "Retours Gratuits 30j"
+          },
+          "type": "trust_item"
+        },
+        "trust-3": {
+          "settings": {
+            "icon": "cloud",
+            "text": "Confort Garanti"
+          },
+          "type": "trust_item"
+        }
+      },
+      "settings": {},
+      "type": "kumo-trust-bar"
+    }
+  }
+}
