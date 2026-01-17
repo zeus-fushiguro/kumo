@@ -33,13 +33,14 @@
       ],
       "settings": {
         "logo": "shopify://shop_images/store-logo-1768439294888_d2a85ca0-339c-4814-b625-efd35076dec9.png",
-        "logo_height": 60
+        "logo_height": 48
       }
     },
     "kumo-hero": {
       "type": "kumo-hero",
       "settings": {
         "image": "shopify://shop_images/hero-slippers.jpg",
+        "fade_opacity": 5,
         "content_alignment": "left",
         "title_line1": "Cocooning",
         "title_line2": "à chaque pas.",
