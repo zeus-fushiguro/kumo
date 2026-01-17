@@ -1,0 +1,84 @@
+{% comment %}
+  KUMO Trust Bar Section
+  3 trust elements with icons in a pill-shaped container
+{% endcomment %}
+
+<section class="kumo-section-sm">
+  <div class="kumo-container">
+    <div class="kumo-trust-bar kumo-reveal">
+      {%- for block in section.blocks -%}
+        <div class="kumo-trust-bar__item" {{ block.shopify_attributes }}>
+          <span class="kumo-trust-bar__icon">
+            {% render 'kumo-icon', icon: block.settings.icon %}
+          </span>
+          <span class="kumo-trust-bar__text">{{ block.settings.text }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "KUMO - Barre de confiance",
+  "class": "kumo-trust-bar-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Élément",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "video", "label": "Vidéo/TikTok" },
+            { "value": "truck", "label": "Livraison" },
+            { "value": "return", "label": "Retours" },
+            { "value": "heart", "label": "Coeur" },
+            { "value": "cloud", "label": "Nuage" },
+            { "value": "flame", "label": "Flamme" },
+            { "value": "check", "label": "Validé" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Livraison Offerte dès 50€"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Barre de confiance",
+      "blocks": [
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "video",
+            "text": "Vu sur TikTok"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "truck",
+            "text": "Livraison Offerte dès 50€"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "return",
+            "text": "Retours Simplifiés 30 Jours"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

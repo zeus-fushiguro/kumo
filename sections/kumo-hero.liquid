@@ -1,0 +1,191 @@
+{% comment %}
+  KUMO Hero Section
+  Full-screen hero with background image, gradient overlay, title, description, and CTA
+{% endcomment %}
+
+<section class="kumo-hero">
+  {%- comment -%} Background Image {%- endcomment -%}
+  <div class="kumo-hero__background">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1920 }}"
+        alt="{{ section.settings.image.alt | default: section.settings.title_line1 | escape }}"
+        class="kumo-hero__image"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- else -%}
+      <div class="kumo-hero__placeholder">
+        {{ 'lifestyle-1' | placeholder_svg_tag }}
+      </div>
+    {%- endif -%}
+    <div class="kumo-hero__overlay kumo-gradient-cozy"></div>
+    <div class="kumo-hero__overlay kumo-overlay--gradient"></div>
+  </div>
+
+  {%- comment -%} Content {%- endcomment -%}
+  <div class="kumo-hero__content">
+    <div class="kumo-container">
+      <div class="kumo-hero__inner">
+        <h1 class="kumo-hero__title kumo-h1 kumo-text-fluffy kumo-animate-fade-up">
+          {{ section.settings.title_line1 }}
+          <br>
+          <span class="kumo-text-primary">{{ section.settings.title_line2 }}</span>
+        </h1>
+
+        <p class="kumo-hero__description kumo-text-lg kumo-text-muted kumo-animate-fade-up" style="animation-delay: 0.2s;">
+          {{ section.settings.description }}
+        </p>
+
+        {%- if section.settings.button_text != blank -%}
+          <div class="kumo-hero__cta kumo-animate-fade-up" style="animation-delay: 0.4s;">
+            <a href="{{ section.settings.button_link }}" class="kumo-btn-cozy">
+              <span>{{ section.settings.button_text }}</span>
+              {% render 'kumo-icon', icon: 'arrow-right' %}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Floating Decorations {%- endcomment -%}
+  <div class="kumo-cloud kumo-cloud--1"></div>
+  <div class="kumo-cloud kumo-cloud--2"></div>
+</section>
+
+<style>
+  .kumo-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: 6rem;
+  }
+
+  .kumo-hero__background {
+    position: absolute;
+    inset: 0;
+  }
+
+  .kumo-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .kumo-hero__placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: var(--kumo-cream-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kumo-hero__placeholder svg {
+    width: 50%;
+    height: 50%;
+    fill: var(--kumo-muted-foreground);
+    opacity: 0.5;
+  }
+
+  .kumo-hero__overlay {
+    position: absolute;
+    inset: 0;
+  }
+
+  .kumo-hero__content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 0;
+  }
+
+  .kumo-hero__inner {
+    max-width: 42rem;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .kumo-hero__inner {
+      text-align: left;
+      margin-left: 0;
+      margin-right: auto;
+    }
+  }
+
+  .kumo-hero__title {
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-hero__description {
+    max-width: 28rem;
+    margin: 0 auto 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .kumo-hero__description {
+      margin-left: 0;
+    }
+  }
+
+  .kumo-hero__cta {
+    display: inline-block;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Hero",
+  "class": "kumo-hero-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image de fond"
+    },
+    {
+      "type": "text",
+      "id": "title_line1",
+      "label": "Titre - Ligne 1",
+      "default": "Cocooning"
+    },
+    {
+      "type": "text",
+      "id": "title_line2",
+      "label": "Titre - Ligne 2 (colorée)",
+      "default": "à chaque pas."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Transformez votre intérieur en un refuge. Découvrez le confort ultime de la collection KUMO."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Explorer le Nuage"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien du bouton"
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Hero",
+      "settings": {
+        "title_line1": "Cocooning",
+        "title_line2": "à chaque pas.",
+        "description": "Transformez votre intérieur en un refuge. Découvrez le confort ultime de la collection KUMO.",
+        "button_text": "Explorer le Nuage"
+      }
+    }
+  ]
+}
+{% endschema %}

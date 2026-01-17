@@ -1,0 +1,229 @@
+{% comment %}
+  KUMO Collection Section
+  Product grid with KUMO styling
+{% endcomment %}
+
+<section class="kumo-section kumo-collection">
+  <div class="kumo-container">
+    {%- comment -%} Collection Header {%- endcomment -%}
+    <div class="kumo-collection__header kumo-text-center kumo-reveal">
+      {%- if collection.image -%}
+        <div class="kumo-collection__image-wrapper">
+          <img
+            src="{{ collection.image | image_url: width: 1200 }}"
+            alt="{{ collection.image.alt | default: collection.title | escape }}"
+            class="kumo-collection__image"
+            loading="eager"
+          >
+          <div class="kumo-collection__image-overlay"></div>
+        </div>
+      {%- endif -%}
+
+      <h1 class="kumo-collection__title kumo-h1 kumo-text-fluffy">{{ collection.title }}</h1>
+
+      {%- if collection.description != blank -%}
+        <div class="kumo-collection__description kumo-text-muted">
+          {{ collection.description }}
+        </div>
+      {%- endif -%}
+
+      <p class="kumo-collection__count kumo-text-sm kumo-text-muted">
+        {{ collection.products_count }} produit{% if collection.products_count > 1 %}s{% endif %}
+      </p>
+    </div>
+
+    {%- comment -%} Products Grid {%- endcomment -%}
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <div class="kumo-collection__grid">
+        {%- for product in collection.products -%}
+          {% render 'kumo-product-card', product: product, delay_index: forloop.index0 | modulo: 4 %}
+        {%- else -%}
+          <p class="kumo-text-center kumo-text-muted" style="grid-column: 1 / -1; padding: 3rem;">
+            Aucun produit dans cette collection.
+          </p>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Pagination {%- endcomment -%}
+      {%- if paginate.pages > 1 -%}
+        <nav class="kumo-pagination kumo-reveal" aria-label="Pagination">
+          <ul class="kumo-pagination__list">
+            {%- if paginate.previous -%}
+              <li>
+                <a href="{{ paginate.previous.url }}" class="kumo-pagination__link" aria-label="Page précédente">
+                  {% render 'kumo-icon', icon: 'chevron-right' %}
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <li>
+                  <a href="{{ part.url }}" class="kumo-pagination__link">{{ part.title }}</a>
+                </li>
+              {%- else -%}
+                {%- if part.title == paginate.current_page -%}
+                  <li>
+                    <span class="kumo-pagination__link is-current" aria-current="page">{{ part.title }}</span>
+                  </li>
+                {%- else -%}
+                  <li>
+                    <span class="kumo-pagination__link is-ellipsis">{{ part.title }}</span>
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+              <li>
+                <a href="{{ paginate.next.url }}" class="kumo-pagination__link" aria-label="Page suivante">
+                  {% render 'kumo-icon', icon: 'chevron-right' %}
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+<style>
+  .kumo-collection__header {
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .kumo-collection__image-wrapper {
+    position: relative;
+    height: 300px;
+    margin-bottom: 2rem;
+    border-radius: var(--kumo-radius-lg);
+    overflow: hidden;
+  }
+
+  .kumo-collection__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .kumo-collection__image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--kumo-background) 0%, transparent 50%);
+  }
+
+  .kumo-collection__title {
+    margin-bottom: 1rem;
+  }
+
+  .kumo-collection__description {
+    max-width: 40rem;
+    margin: 0 auto 1rem;
+    line-height: 1.7;
+  }
+
+  .kumo-collection__count {
+    margin: 0;
+  }
+
+  .kumo-collection__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .kumo-collection__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .kumo-collection__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 2rem;
+    }
+  }
+
+  /* Pagination */
+  .kumo-pagination {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .kumo-pagination__list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .kumo-pagination__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    font-family: var(--kumo-font-family);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--kumo-muted-foreground);
+    background-color: var(--kumo-secondary);
+    border-radius: var(--kumo-radius-full);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .kumo-pagination__link:hover {
+    background-color: var(--kumo-accent);
+    color: var(--kumo-foreground);
+  }
+
+  .kumo-pagination__link.is-current {
+    background-color: var(--kumo-primary);
+    color: var(--kumo-primary-foreground);
+  }
+
+  .kumo-pagination__link.is-ellipsis {
+    background: none;
+  }
+
+  .kumo-pagination__link svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .kumo-pagination__list li:first-child .kumo-pagination__link svg {
+    transform: rotate(180deg);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Collection",
+  "class": "kumo-collection-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "label": "Produits par page",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Collection"
+    }
+  ]
+}
+{% endschema %}

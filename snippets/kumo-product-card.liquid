@@ -1,0 +1,107 @@
+{% comment %}
+  KUMO Product Card
+  Usage: {% render 'kumo-product-card', product: product %}
+  Optional: delay_index for staggered animations
+{% endcomment %}
+
+{% liquid
+  assign delay_class = ''
+  if delay_index
+    case delay_index
+      when 0
+        assign delay_class = ''
+      when 1
+        assign delay_class = 'kumo-reveal-delay-1'
+      when 2
+        assign delay_class = 'kumo-reveal-delay-2'
+      when 3
+        assign delay_class = 'kumo-reveal-delay-3'
+    endcase
+  endif
+%}
+
+<article class="kumo-product-card kumo-reveal {{ delay_class }}">
+  <a href="{{ product.url }}" class="kumo-product-card__link">
+    <div class="kumo-product-card__image-wrapper">
+      {% if product.featured_image %}
+        <img
+          src="{{ product.featured_image | image_url: width: 600 }}"
+          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+          class="kumo-product-card__image"
+          width="600"
+          height="600"
+          loading="lazy"
+        >
+      {% else %}
+        <div class="kumo-product-card__placeholder">
+          {{ 'product-1' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="kumo-product-card__info">
+      <h3 class="kumo-product-card__title">{{ product.title }}</h3>
+      <div class="kumo-product-card__price-wrapper">
+        {% if product.compare_at_price > product.price %}
+          <span class="kumo-product-card__price--compare">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+        <span class="kumo-product-card__price">{{ product.price | money }}</span>
+      </div>
+    </div>
+  </a>
+
+  {% form 'product', product, class: 'kumo-product-card__form' %}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <input type="hidden" name="quantity" value="1">
+    <button
+      type="submit"
+      class="kumo-product-card__button"
+      {% unless product.available %}disabled{% endunless %}
+    >
+      {% if product.available %}
+        Ajouter au panier
+      {% else %}
+        Rupture de stock
+      {% endif %}
+    </button>
+  {% endform %}
+</article>
+
+<style>
+  .kumo-product-card__link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .kumo-product-card__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--kumo-cream-200);
+  }
+
+  .kumo-product-card__placeholder svg {
+    width: 50%;
+    height: 50%;
+    fill: var(--kumo-muted-foreground);
+  }
+
+  .kumo-product-card__price-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .kumo-product-card__form {
+    margin-top: 1rem;
+  }
+
+  .kumo-product-card__button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+</style>

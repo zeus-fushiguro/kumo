@@ -1,0 +1,139 @@
+{% comment %}
+  KUMO Featured Collection Section
+  Badge, title, 3-column product grid, view all link
+{% endcomment %}
+
+<section class="kumo-section" id="collection">
+  <div class="kumo-container">
+    {%- comment -%} Section Header {%- endcomment -%}
+    <div class="kumo-text-center kumo-reveal" style="margin-bottom: 3.5rem;">
+      {%- if section.settings.badge != blank -%}
+        <span class="kumo-badge" style="margin-bottom: 1rem; display: inline-block;">
+          {{ section.settings.badge }}
+        </span>
+      {%- endif -%}
+      <h2 class="kumo-section-title kumo-text-fluffy">{{ section.settings.title }}</h2>
+    </div>
+
+    {%- comment -%} Products Grid {%- endcomment -%}
+    <div class="kumo-featured-collection__grid">
+      {%- if section.settings.collection != blank -%}
+        {%- for product in section.settings.collection.products limit: section.settings.products_count -%}
+          {% render 'kumo-product-card', product: product, delay_index: forloop.index0 %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..3) -%}
+          <article class="kumo-product-card kumo-reveal kumo-reveal-delay-{{ i }}">
+            <div class="kumo-product-card__image-wrapper">
+              {{ 'product-' | append: i | placeholder_svg_tag }}
+            </div>
+            <div class="kumo-product-card__info">
+              <h3 class="kumo-product-card__title">Produit exemple {{ i }}</h3>
+              <span class="kumo-product-card__price">34,99 €</span>
+            </div>
+            <button class="kumo-product-card__button" disabled>Ajouter au panier</button>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} View All Link {%- endcomment -%}
+    {%- if section.settings.show_view_all and section.settings.collection != blank -%}
+      <div class="kumo-text-center kumo-reveal" style="margin-top: 3rem;">
+        <a href="{{ section.settings.collection.url }}" class="kumo-link-primary">
+          {{ section.settings.view_all_text }}
+          {% render 'kumo-icon', icon: 'chevron-right' %}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .kumo-featured-collection__grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 640px) {
+    .kumo-featured-collection__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .kumo-featured-collection__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2rem;
+    }
+  }
+
+  .kumo-featured-collection__grid .kumo-product-card__image-wrapper svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--kumo-muted-foreground);
+    opacity: 0.3;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Collection vedette",
+  "class": "kumo-featured-collection-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "Les Favoris de l'Hiver"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Nos Best-sellers Nuage"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Nombre de produits",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Afficher le lien \"Voir tout\"",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "Texte du lien",
+      "default": "Voir toute la collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Collection vedette",
+      "settings": {
+        "badge": "Les Favoris de l'Hiver",
+        "title": "Nos Best-sellers Nuage",
+        "products_count": 3,
+        "show_view_all": true,
+        "view_all_text": "Voir toute la collection"
+      }
+    }
+  ]
+}
+{% endschema %}

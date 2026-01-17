@@ -1,0 +1,33 @@
+{% comment %}
+  KUMO Accordion
+  Usage: {% render 'kumo-accordion', title: 'Title', content: 'Content', open: false %}
+{% endcomment %}
+
+{% liquid
+  assign accordion_id = 'accordion-' | append: title | handleize | append: '-' | append: 'now' | date: '%s'
+  assign is_open = open | default: false
+%}
+
+<div class="kumo-accordion__item {% if is_open %}is-open{% endif %}" data-accordion-item>
+  <button
+    type="button"
+    class="kumo-accordion__header"
+    aria-expanded="{{ is_open }}"
+    aria-controls="{{ accordion_id }}"
+    data-accordion-trigger
+  >
+    <span>{{ title }}</span>
+    <span class="kumo-accordion__icon">
+      {% render 'kumo-icon', icon: 'chevron-down' %}
+    </span>
+  </button>
+  <div
+    id="{{ accordion_id }}"
+    class="kumo-accordion__content"
+    {% unless is_open %}hidden{% endunless %}
+  >
+    <div class="kumo-accordion__body">
+      {{ content }}
+    </div>
+  </div>
+</div>

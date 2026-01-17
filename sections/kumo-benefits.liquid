@@ -1,0 +1,150 @@
+{% comment %}
+  KUMO Benefits Section
+  Title, subtitle, 3-column grid with icons, titles, badges, descriptions
+{% endcomment %}
+
+<section class="kumo-section" id="story">
+  <div class="kumo-container">
+    {%- comment -%} Section Header {%- endcomment -%}
+    <div class="kumo-text-center kumo-reveal" style="margin-bottom: 4rem;">
+      <h2 class="kumo-section-title kumo-text-fluffy">{{ section.settings.title }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="kumo-text-lg kumo-text-muted" style="margin-top: 1rem; max-width: 28rem; margin-left: auto; margin-right: auto;">
+          {{ section.settings.subtitle }}
+        </p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Benefits Grid {%- endcomment -%}
+    <div class="kumo-benefits__grid">
+      {%- for block in section.blocks -%}
+        <div class="kumo-benefit kumo-reveal kumo-reveal-delay-{{ forloop.index }}" {{ block.shopify_attributes }}>
+          <div class="kumo-benefit__icon">
+            {% render 'kumo-icon', icon: block.settings.icon %}
+          </div>
+          <h3 class="kumo-benefit__title">{{ block.settings.title }}</h3>
+          {%- if block.settings.badge != blank -%}
+            <span class="kumo-benefit__badge">{{ block.settings.badge }}</span>
+          {%- endif -%}
+          <p class="kumo-benefit__description">{{ block.settings.description }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .kumo-benefits__grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2rem;
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .kumo-benefits__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Avantages",
+  "class": "kumo-benefits-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Pourquoi KUMO ?"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Chaque détail est pensé pour votre confort absolu."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Avantage",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "cloud", "label": "Nuage" },
+            { "value": "heart", "label": "Coeur" },
+            { "value": "flame", "label": "Flamme" },
+            { "value": "truck", "label": "Livraison" },
+            { "value": "return", "label": "Retours" },
+            { "value": "check", "label": "Validé" }
+          ],
+          "default": "cloud"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Semelle Cloud-Foam™"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge",
+          "default": "3cm d'épaisseur"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Comme marcher sur un nuage, littéralement."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Avantages",
+      "settings": {
+        "title": "Pourquoi KUMO ?",
+        "subtitle": "Chaque détail est pensé pour votre confort absolu."
+      },
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "cloud",
+            "title": "Semelle Cloud-Foam™",
+            "badge": "3cm d'épaisseur",
+            "description": "Comme marcher sur un nuage, littéralement."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "heart",
+            "title": "Sherpa Ultra-Doux",
+            "badge": "100% Vegan",
+            "description": "Une caresse à chaque instant sur votre peau."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "flame",
+            "title": "Chaleur Instantanée",
+            "badge": "Isolation thermique",
+            "description": "Dites adieu aux pieds froids pour toujours."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

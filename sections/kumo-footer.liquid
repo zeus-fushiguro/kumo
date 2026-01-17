@@ -1,0 +1,171 @@
+{% comment %}
+  KUMO Footer Section
+  Logo, navigation links, payment icons, copyright
+{% endcomment %}
+
+<footer class="kumo-footer">
+  <div class="kumo-container">
+    <div class="kumo-footer__content">
+      {%- comment -%} Logo {%- endcomment -%}
+      <div class="kumo-footer__logo-wrapper">
+        {%- if section.settings.logo != blank -%}
+          <img
+            src="{{ section.settings.logo | image_url: height: 80 }}"
+            alt="{{ shop.name }}"
+            class="kumo-footer__logo"
+            loading="lazy"
+          >
+        {%- else -%}
+          <span class="kumo-footer__logo-text">{{ shop.name }}</span>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Navigation Links {%- endcomment -%}
+      <nav class="kumo-footer__nav">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'link' -%}
+            <a href="{{ block.settings.url }}" class="kumo-footer__link" {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+
+      {%- comment -%} Payment Icons {%- endcomment -%}
+      {%- if section.settings.show_payment -%}
+        <div class="kumo-footer__payment">
+          <span class="kumo-footer__payment-label">Paiement sécurisé</span>
+          <div class="kumo-footer__payment-icons">
+            {%- for type in shop.enabled_payment_types -%}
+              <span class="kumo-footer__payment-icon">
+                {{ type | payment_type_svg_tag }}
+              </span>
+            {%- else -%}
+              <span class="kumo-footer__payment-icon">VISA</span>
+              <span class="kumo-footer__payment-icon">MC</span>
+              <span class="kumo-footer__payment-icon">PP</span>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Copyright {%- endcomment -%}
+    <p class="kumo-footer__copyright">
+      © {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits réservés.
+      {%- if section.settings.tagline != blank -%}
+        {{ section.settings.tagline }}
+      {%- endif -%}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .kumo-footer__logo-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .kumo-footer__logo-wrapper {
+      justify-content: flex-start;
+    }
+  }
+
+  .kumo-footer__logo-text {
+    font-family: var(--kumo-font-family);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--kumo-foreground);
+    opacity: 0.8;
+  }
+
+  .kumo-footer__payment-icon svg {
+    height: 1.5rem;
+    width: auto;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Footer",
+  "class": "kumo-footer-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment",
+      "label": "Afficher les icônes de paiement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline (après copyright)",
+      "default": "Fait avec ☁️ en France."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Lien",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Footer",
+      "settings": {
+        "show_payment": true,
+        "tagline": "Fait avec ☁️ en France."
+      },
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "text": "Collection",
+            "url": "/collections/all"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "text": "Notre Histoire",
+            "url": "/pages/about"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "text": "FAQ",
+            "url": "/pages/faq"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "text": "Contact",
+            "url": "/pages/contact"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

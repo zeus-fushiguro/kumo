@@ -1,0 +1,140 @@
+{% comment %}
+  KUMO Related Products Section
+  "Vous aimerez aussi" - 4 products grid
+{% endcomment %}
+
+<section class="kumo-related-products kumo-section">
+  <div class="kumo-container">
+    {%- comment -%} Section Header {%- endcomment -%}
+    <div class="kumo-text-center kumo-reveal" style="margin-bottom: 3rem;">
+      <h2 class="kumo-section-title kumo-text-fluffy">{{ section.settings.title }}</h2>
+    </div>
+
+    {%- comment -%} Products Grid {%- endcomment -%}
+    <div class="kumo-related-products__grid">
+      {%- liquid
+        assign related_products = product.collections.first.products | where: 'available' | where_exp: 'p', 'p.id != product.id'
+
+        if section.settings.source == 'recommendations'
+          assign related_products = recommendations.products
+        endif
+
+        if related_products.size == 0
+          assign related_products = collections.all.products | where: 'available' | where_exp: 'p', 'p.id != product.id'
+        endif
+      -%}
+
+      {%- for related_product in related_products limit: section.settings.products_count -%}
+        {% render 'kumo-product-card', product: related_product, delay_index: forloop.index0 %}
+      {%- else -%}
+        {%- for i in (1..4) -%}
+          <article class="kumo-product-card kumo-reveal">
+            <div class="kumo-product-card__image-wrapper">
+              {{ 'product-' | append: i | placeholder_svg_tag }}
+            </div>
+            <div class="kumo-product-card__info">
+              <h3 class="kumo-product-card__title">Produit similaire {{ i }}</h3>
+              <span class="kumo-product-card__price">34,99 €</span>
+            </div>
+            <button class="kumo-product-card__button" disabled>Ajouter au panier</button>
+          </article>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} View More Link {%- endcomment -%}
+    {%- if section.settings.show_view_more -%}
+      <div class="kumo-text-center kumo-reveal" style="margin-top: 3rem;">
+        <a href="{{ section.settings.view_more_link | default: collections.all.url }}" class="kumo-link-primary">
+          {{ section.settings.view_more_text }}
+          {% render 'kumo-icon', icon: 'chevron-right' %}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .kumo-related-products__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .kumo-related-products__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  .kumo-related-products__grid .kumo-product-card__image-wrapper svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--kumo-muted-foreground);
+    opacity: 0.3;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Produits similaires",
+  "class": "kumo-related-products-section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Vous aimerez aussi"
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Source des produits",
+      "options": [
+        { "value": "collection", "label": "Même collection" },
+        { "value": "recommendations", "label": "Recommandations Shopify" }
+      ],
+      "default": "collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Nombre de produits",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_more",
+      "label": "Afficher le lien \"Voir plus\"",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "view_more_text",
+      "label": "Texte du lien",
+      "default": "Voir plus"
+    },
+    {
+      "type": "url",
+      "id": "view_more_link",
+      "label": "Lien \"Voir plus\""
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Produits similaires",
+      "settings": {
+        "title": "Vous aimerez aussi",
+        "source": "collection",
+        "products_count": 4,
+        "show_view_more": false
+      }
+    }
+  ]
+}
+{% endschema %}

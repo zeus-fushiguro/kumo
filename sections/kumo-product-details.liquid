@@ -1,0 +1,186 @@
+{% comment %}
+  KUMO Product Details Section
+  Accordion section for description, characteristics, shipping, care
+{% endcomment %}
+
+<section class="kumo-product-details kumo-section">
+  <div class="kumo-container">
+    <div class="kumo-product-details__wrapper">
+      <div class="kumo-accordion" data-accordion>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign is_open = false
+            if block.settings.open_by_default
+              assign is_open = true
+            endif
+
+            case block.settings.content_source
+              when 'product_description'
+                assign content = product.description
+              when 'metafield'
+                assign content = product.metafields[block.settings.metafield_namespace][block.settings.metafield_key]
+              when 'custom'
+                assign content = block.settings.custom_content
+            endcase
+          -%}
+
+          <div class="kumo-accordion__item {% if is_open %}is-open{% endif %}" data-accordion-item {{ block.shopify_attributes }}>
+            <button
+              type="button"
+              class="kumo-accordion__header"
+              aria-expanded="{{ is_open }}"
+              data-accordion-trigger
+            >
+              <span>{{ block.settings.title }}</span>
+              <span class="kumo-accordion__icon">
+                {% render 'kumo-icon', icon: 'chevron-down' %}
+              </span>
+            </button>
+            <div class="kumo-accordion__content" {% unless is_open %}hidden{% endunless %}>
+              <div class="kumo-accordion__body">
+                {{ content }}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kumo-product-details__wrapper {
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  .kumo-accordion {
+    background-color: var(--kumo-card);
+    border-radius: var(--kumo-radius-lg);
+    box-shadow: var(--kumo-shadow-soft);
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const accordions = document.querySelectorAll('[data-accordion]');
+
+    accordions.forEach(accordion => {
+      accordion.addEventListener('click', function(e) {
+        const trigger = e.target.closest('[data-accordion-trigger]');
+        if (!trigger) return;
+
+        const item = trigger.closest('[data-accordion-item]');
+        const content = item.querySelector('.kumo-accordion__content');
+        const isOpen = item.classList.contains('is-open');
+
+        if (isOpen) {
+          item.classList.remove('is-open');
+          content.hidden = true;
+          trigger.setAttribute('aria-expanded', 'false');
+        } else {
+          item.classList.add('is-open');
+          content.hidden = false;
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "KUMO - Détails produit",
+  "class": "kumo-product-details-section",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordéon",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Description"
+        },
+        {
+          "type": "select",
+          "id": "content_source",
+          "label": "Source du contenu",
+          "options": [
+            { "value": "product_description", "label": "Description du produit" },
+            { "value": "metafield", "label": "Métachamp" },
+            { "value": "custom", "label": "Contenu personnalisé" }
+          ],
+          "default": "product_description"
+        },
+        {
+          "type": "text",
+          "id": "metafield_namespace",
+          "label": "Namespace du métachamp",
+          "info": "Ex: custom"
+        },
+        {
+          "type": "text",
+          "id": "metafield_key",
+          "label": "Clé du métachamp",
+          "info": "Ex: care_instructions"
+        },
+        {
+          "type": "richtext",
+          "id": "custom_content",
+          "label": "Contenu personnalisé"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Ouvert par défaut",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Détails produit",
+      "blocks": [
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Description",
+            "content_source": "product_description",
+            "open_by_default": true
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Caractéristiques",
+            "content_source": "custom",
+            "custom_content": "<ul><li>Semelle Cloud-Foam™ de 3cm</li><li>Doublure Sherpa ultra-douce</li><li>Matériaux 100% vegan</li><li>Semelle antidérapante</li></ul>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Livraison & Retours",
+            "content_source": "custom",
+            "custom_content": "<p><strong>Livraison gratuite</strong> dès 50€ d'achat.</p><p>Livraison en 3-5 jours ouvrés.</p><p><strong>Retours gratuits</strong> sous 30 jours. Satisfait ou remboursé.</p>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Conseils d'entretien",
+            "content_source": "custom",
+            "custom_content": "<p>Lavage à la main recommandé. Ne pas passer au sèche-linge. Laisser sécher à l'air libre.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

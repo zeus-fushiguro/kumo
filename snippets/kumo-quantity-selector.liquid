@@ -1,0 +1,60 @@
+{% comment %}
+  KUMO Quantity Selector
+  Usage: {% render 'kumo-quantity-selector', id: 'quantity', value: 1 %}
+{% endcomment %}
+
+{% liquid
+  assign input_id = id | default: 'quantity'
+  assign input_value = value | default: 1
+  assign input_min = min | default: 1
+  assign input_max = max | default: 99
+%}
+
+<div class="kumo-quantity" data-quantity-selector>
+  <button
+    type="button"
+    class="kumo-quantity__btn"
+    data-quantity-minus
+    aria-label="Diminuer la quantité"
+  >
+    {% render 'kumo-icon', icon: 'minus' %}
+  </button>
+  <input
+    type="number"
+    id="{{ input_id }}"
+    name="quantity"
+    class="kumo-quantity__value"
+    value="{{ input_value }}"
+    min="{{ input_min }}"
+    max="{{ input_max }}"
+    readonly
+  >
+  <button
+    type="button"
+    class="kumo-quantity__btn"
+    data-quantity-plus
+    aria-label="Augmenter la quantité"
+  >
+    {% render 'kumo-icon', icon: 'plus' %}
+  </button>
+</div>
+
+<style>
+  .kumo-quantity__value {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    border: none;
+    background: transparent;
+  }
+
+  .kumo-quantity__value::-webkit-outer-spin-button,
+  .kumo-quantity__value::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .kumo-quantity__btn svg {
+    width: 1rem;
+    height: 1rem;
+  }
+</style>

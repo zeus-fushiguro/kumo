@@ -1,0 +1,168 @@
+{
+  "sections": {
+    "kumo-header": {
+      "type": "kumo-header",
+      "settings": {
+        "logo_height": 48
+      },
+      "blocks": {
+        "nav-1": {
+          "type": "nav_link",
+          "settings": {
+            "text": "Collection",
+            "link": "shopify://collections/all"
+          }
+        },
+        "nav-2": {
+          "type": "nav_link",
+          "settings": {
+            "text": "Notre Histoire",
+            "link": ""
+          }
+        }
+      },
+      "block_order": ["nav-1", "nav-2"]
+    },
+    "kumo-hero": {
+      "type": "kumo-hero",
+      "settings": {
+        "title_line1": "Cocooning",
+        "title_line2": "à chaque pas.",
+        "description": "Transformez votre intérieur en un refuge. Découvrez le confort ultime de la collection KUMO.",
+        "button_text": "Explorer le Nuage",
+        "button_link": "shopify://collections/all"
+      }
+    },
+    "kumo-trust-bar": {
+      "type": "kumo-trust-bar",
+      "blocks": {
+        "trust-1": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "video",
+            "text": "Vu sur TikTok"
+          }
+        },
+        "trust-2": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "truck",
+            "text": "Livraison Offerte dès 50€"
+          }
+        },
+        "trust-3": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "return",
+            "text": "Retours Simplifiés 30 Jours"
+          }
+        }
+      },
+      "block_order": ["trust-1", "trust-2", "trust-3"]
+    },
+    "kumo-featured-collection": {
+      "type": "kumo-featured-collection",
+      "settings": {
+        "badge": "Les Favoris de l'Hiver",
+        "title": "Nos Best-sellers Nuage",
+        "products_count": 3,
+        "show_view_all": true,
+        "view_all_text": "Voir toute la collection"
+      }
+    },
+    "kumo-benefits": {
+      "type": "kumo-benefits",
+      "settings": {
+        "title": "Pourquoi KUMO ?",
+        "subtitle": "Chaque détail est pensé pour votre confort absolu."
+      },
+      "blocks": {
+        "benefit-1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cloud",
+            "title": "Semelle Cloud-Foam™",
+            "badge": "3cm d'épaisseur",
+            "description": "Comme marcher sur un nuage, littéralement."
+          }
+        },
+        "benefit-2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "heart",
+            "title": "Sherpa Ultra-Doux",
+            "badge": "100% Vegan",
+            "description": "Une caresse à chaque instant sur votre peau."
+          }
+        },
+        "benefit-3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "flame",
+            "title": "Chaleur Instantanée",
+            "badge": "Isolation thermique",
+            "description": "Dites adieu aux pieds froids pour toujours."
+          }
+        }
+      },
+      "block_order": ["benefit-1", "benefit-2", "benefit-3"]
+    },
+    "kumo-newsletter": {
+      "type": "kumo-newsletter",
+      "settings": {
+        "title": "Rejoignez le Cocon",
+        "description": "Recevez nos offres exclusives et les nouveautés en avant-première.",
+        "placeholder": "votre@email.com",
+        "button_text": "S'inscrire",
+        "success_message": "Merci ! Vous êtes maintenant inscrit(e)."
+      }
+    },
+    "kumo-footer": {
+      "type": "kumo-footer",
+      "settings": {
+        "show_payment": true,
+        "tagline": "Fait avec ☁️ en France."
+      },
+      "blocks": {
+        "link-1": {
+          "type": "link",
+          "settings": {
+            "text": "Collection",
+            "url": "shopify://collections/all"
+          }
+        },
+        "link-2": {
+          "type": "link",
+          "settings": {
+            "text": "Notre Histoire",
+            "url": ""
+          }
+        },
+        "link-3": {
+          "type": "link",
+          "settings": {
+            "text": "FAQ",
+            "url": ""
+          }
+        },
+        "link-4": {
+          "type": "link",
+          "settings": {
+            "text": "Contact",
+            "url": ""
+          }
+        }
+      },
+      "block_order": ["link-1", "link-2", "link-3", "link-4"]
+    }
+  },
+  "order": [
+    "kumo-header",
+    "kumo-hero",
+    "kumo-trust-bar",
+    "kumo-featured-collection",
+    "kumo-benefits",
+    "kumo-newsletter",
+    "kumo-footer"
+  ]
+}

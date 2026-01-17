@@ -1,0 +1,435 @@
+{% comment %}
+  KUMO Product Main Section
+  2-column layout: gallery (left) + info (right)
+  Includes: images, title, rating, price, variants, quantity, add to cart
+{% endcomment %}
+
+<section class="kumo-product-main kumo-section">
+  <div class="kumo-container">
+    <div class="kumo-product-main__grid">
+      {%- comment -%} Gallery (Left) {%- endcomment -%}
+      <div class="kumo-product-gallery">
+        {%- comment -%} Main Image {%- endcomment -%}
+        <div class="kumo-product-gallery__main">
+          {%- if product.featured_image -%}
+            <img
+              id="kumo-main-image"
+              src="{{ product.featured_image | image_url: width: 800 }}"
+              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+              class="kumo-product-gallery__image"
+              loading="eager"
+            >
+          {%- else -%}
+            <div class="kumo-product-gallery__placeholder">
+              {{ 'product-1' | placeholder_svg_tag }}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Thumbnails {%- endcomment -%}
+        {%- if product.images.size > 1 -%}
+          <div class="kumo-product-gallery__thumbs">
+            {%- for image in product.images -%}
+              <button
+                type="button"
+                class="kumo-product-gallery__thumb {% if forloop.first %}is-active{% endif %}"
+                data-image-url="{{ image | image_url: width: 800 }}"
+                data-thumb-index="{{ forloop.index0 }}"
+              >
+                <img
+                  src="{{ image | image_url: width: 150 }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                  loading="lazy"
+                >
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Info (Right) {%- endcomment -%}
+      <div class="kumo-product-info">
+        {%- comment -%} Badge {%- endcomment -%}
+        {%- if section.settings.show_badge and product.metafields.custom.badge -%}
+          <span class="kumo-badge kumo-badge-primary" style="margin-bottom: 1rem;">
+            {{ product.metafields.custom.badge }}
+          </span>
+        {%- elsif section.settings.show_badge and product.tags contains 'nouveau' -%}
+          <span class="kumo-badge kumo-badge-primary" style="margin-bottom: 1rem;">
+            Nouveau
+          </span>
+        {%- elsif section.settings.show_badge and product.tags contains 'best-seller' -%}
+          <span class="kumo-badge kumo-badge-primary" style="margin-bottom: 1rem;">
+            Best-seller
+          </span>
+        {%- endif -%}
+
+        {%- comment -%} Title {%- endcomment -%}
+        <h1 class="kumo-product-info__title">{{ product.title }}</h1>
+
+        {%- comment -%} Rating {%- endcomment -%}
+        {%- if section.settings.show_rating -%}
+          <div class="kumo-product-info__rating">
+            <div class="kumo-stars">
+              {%- for i in (1..5) -%}
+                <span class="kumo-stars__star">{% render 'kumo-icon', icon: 'star' %}</span>
+              {%- endfor -%}
+            </div>
+            <span class="kumo-stars__count">({{ product.metafields.reviews.rating_count | default: '47' }} avis)</span>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Price {%- endcomment -%}
+        <div class="kumo-product-info__price">
+          {% render 'kumo-price', product: product %}
+        </div>
+
+        {%- comment -%} Short Description {%- endcomment -%}
+        {%- if section.settings.show_short_description -%}
+          <div class="kumo-product-info__description">
+            {%- if product.metafields.custom.short_description -%}
+              {{ product.metafields.custom.short_description }}
+            {%- else -%}
+              {{ product.description | strip_html | truncatewords: 30 }}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Product Form {%- endcomment -%}
+        {% form 'product', product, id: 'kumo-product-form', class: 'kumo-product-form', data-product-form: '' %}
+          {%- comment -%} Variant Picker {%- endcomment -%}
+          {% render 'kumo-variant-picker', product: product %}
+
+          {%- comment -%} Hidden variant input {%- endcomment -%}
+          <input
+            type="hidden"
+            name="id"
+            value="{{ product.selected_or_first_available_variant.id }}"
+            data-variant-id
+          >
+
+          {%- comment -%} Quantity + Add to Cart {%- endcomment -%}
+          <div class="kumo-product-form__actions">
+            <div class="kumo-product-form__quantity">
+              <label class="kumo-product-form__label">Quantité</label>
+              {% render 'kumo-quantity-selector', id: 'product-quantity', value: 1 %}
+            </div>
+
+            <button
+              type="submit"
+              class="kumo-btn-cozy kumo-product-form__submit"
+              {% unless product.available %}disabled{% endunless %}
+            >
+              {%- if product.available -%}
+                {% render 'kumo-icon', icon: 'cart' %}
+                <span>Ajouter au panier</span>
+              {%- else -%}
+                <span>Rupture de stock</span>
+              {%- endif -%}
+            </button>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kumo-product-main__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .kumo-product-main__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+  }
+
+  /* Gallery */
+  .kumo-product-gallery__main {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: var(--kumo-radius-lg);
+    background: linear-gradient(to bottom, var(--kumo-cream-100), var(--kumo-cream-200));
+    box-shadow: var(--kumo-shadow-soft);
+  }
+
+  .kumo-product-gallery__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .kumo-product-gallery__main:hover .kumo-product-gallery__image {
+    transform: scale(1.05);
+  }
+
+  .kumo-product-gallery__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kumo-product-gallery__placeholder svg {
+    width: 50%;
+    height: 50%;
+    fill: var(--kumo-muted-foreground);
+    opacity: 0.3;
+  }
+
+  .kumo-product-gallery__thumbs {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+
+  .kumo-product-gallery__thumb {
+    flex-shrink: 0;
+    width: 5rem;
+    height: 5rem;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: var(--kumo-radius);
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--kumo-cream-100);
+    transition: border-color 0.2s ease;
+  }
+
+  .kumo-product-gallery__thumb:hover,
+  .kumo-product-gallery__thumb.is-active {
+    border-color: var(--kumo-primary);
+  }
+
+  .kumo-product-gallery__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Info */
+  .kumo-product-info {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .kumo-product-info__title {
+    font-family: var(--kumo-font-family);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--kumo-foreground);
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+  }
+
+  .kumo-product-info__rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+  }
+
+  .kumo-product-info__rating .kumo-stars__star svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .kumo-product-info__price {
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-product-info__description {
+    font-size: 0.9375rem;
+    color: var(--kumo-muted-foreground);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  /* Form */
+  .kumo-product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .kumo-product-form__label {
+    display: block;
+    font-family: var(--kumo-font-family);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--kumo-foreground);
+    margin-bottom: 0.75rem;
+  }
+
+  .kumo-product-form__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 480px) {
+    .kumo-product-form__actions {
+      flex-direction: row;
+      align-items: flex-end;
+    }
+  }
+
+  .kumo-product-form__quantity {
+    flex-shrink: 0;
+  }
+
+  .kumo-product-form__submit {
+    flex: 1;
+    width: 100%;
+  }
+
+  .kumo-product-form__submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .kumo-product-form__submit svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Image gallery
+    const mainImage = document.getElementById('kumo-main-image');
+    const thumbs = document.querySelectorAll('.kumo-product-gallery__thumb');
+
+    thumbs.forEach(thumb => {
+      thumb.addEventListener('click', function() {
+        const imageUrl = this.dataset.imageUrl;
+        if (mainImage && imageUrl) {
+          mainImage.src = imageUrl;
+          thumbs.forEach(t => t.classList.remove('is-active'));
+          this.classList.add('is-active');
+        }
+      });
+    });
+
+    // Quantity selector
+    const quantitySelectors = document.querySelectorAll('[data-quantity-selector]');
+    quantitySelectors.forEach(selector => {
+      const input = selector.querySelector('input');
+      const minusBtn = selector.querySelector('[data-quantity-minus]');
+      const plusBtn = selector.querySelector('[data-quantity-plus]');
+
+      if (minusBtn && input) {
+        minusBtn.addEventListener('click', function() {
+          const currentVal = parseInt(input.value) || 1;
+          const min = parseInt(input.min) || 1;
+          if (currentVal > min) {
+            input.value = currentVal - 1;
+          }
+        });
+      }
+
+      if (plusBtn && input) {
+        plusBtn.addEventListener('click', function() {
+          const currentVal = parseInt(input.value) || 1;
+          const max = parseInt(input.max) || 99;
+          if (currentVal < max) {
+            input.value = currentVal + 1;
+          }
+        });
+      }
+    });
+
+    // Variant picker
+    const variantPicker = document.querySelector('[data-variant-picker]');
+    const productForm = document.querySelector('[data-product-form]');
+    const variantIdInput = document.querySelector('[data-variant-id]');
+
+    if (variantPicker && productForm) {
+      const productJson = {{ product | json }};
+      const variants = productJson.variants;
+
+      variantPicker.addEventListener('click', function(e) {
+        const button = e.target.closest('[data-option-value]');
+        if (!button) return;
+
+        const optionContainer = button.closest('[data-option-index]');
+        const optionIndex = parseInt(optionContainer.dataset.optionIndex);
+        const optionValue = button.dataset.optionValue;
+
+        // Update selected state
+        optionContainer.querySelectorAll('[data-option-value]').forEach(btn => {
+          btn.classList.remove('is-selected');
+        });
+        button.classList.add('is-selected');
+
+        // Find matching variant
+        const selectedOptions = [];
+        variantPicker.querySelectorAll('[data-option-index]').forEach(container => {
+          const selected = container.querySelector('.is-selected');
+          if (selected) {
+            selectedOptions.push(selected.dataset.optionValue);
+          }
+        });
+
+        const matchingVariant = variants.find(variant => {
+          return variant.options.every((opt, i) => opt === selectedOptions[i]);
+        });
+
+        if (matchingVariant && variantIdInput) {
+          variantIdInput.value = matchingVariant.id;
+
+          // Update URL
+          const url = new URL(window.location.href);
+          url.searchParams.set('variant', matchingVariant.id);
+          window.history.replaceState({}, '', url.toString());
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "KUMO - Produit principal",
+  "class": "kumo-product-main-section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Afficher le badge",
+      "default": true,
+      "info": "Affiche 'Nouveau' ou 'Best-seller' basé sur les tags ou métachamps"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Afficher les étoiles",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_short_description",
+      "label": "Afficher la description courte",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Produit principal"
+    }
+  ]
+}
+{% endschema %}

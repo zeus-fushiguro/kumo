@@ -1,0 +1,68 @@
+{% comment %}
+  KUMO Price Display
+  Usage: {% render 'kumo-price', product: product %}
+  Or: {% render 'kumo-price', price: variant.price, compare_at_price: variant.compare_at_price %}
+{% endcomment %}
+
+{% liquid
+  if product
+    assign current_price = product.price
+    assign compare_price = product.compare_at_price
+    assign on_sale = false
+    if compare_price > current_price
+      assign on_sale = true
+    endif
+  else
+    assign current_price = price
+    assign compare_price = compare_at_price
+    assign on_sale = false
+    if compare_price and compare_price > current_price
+      assign on_sale = true
+    endif
+  endif
+%}
+
+<div class="kumo-price {% if on_sale %}kumo-price--on-sale{% endif %}">
+  {% if on_sale %}
+    <span class="kumo-price__compare">{{ compare_price | money }}</span>
+    {% assign savings = compare_price | minus: current_price %}
+    {% assign savings_percent = savings | times: 100.0 | divided_by: compare_price | round %}
+    <span class="kumo-price__badge">-{{ savings_percent }}%</span>
+  {% endif %}
+  <span class="kumo-price__current">{{ current_price | money }}</span>
+</div>
+
+<style>
+  .kumo-price {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .kumo-price__current {
+    font-family: var(--kumo-font-family);
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--kumo-primary);
+  }
+
+  .kumo-price__compare {
+    font-family: var(--kumo-font-family);
+    font-weight: 400;
+    font-size: 1.125rem;
+    color: var(--kumo-muted-foreground);
+    text-decoration: line-through;
+  }
+
+  .kumo-price__badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-family: var(--kumo-font-family);
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: var(--kumo-primary-foreground);
+    background-color: var(--kumo-primary);
+    border-radius: var(--kumo-radius-full);
+  }
+</style>
