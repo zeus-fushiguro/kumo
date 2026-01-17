@@ -1,0 +1,417 @@
+{% comment %}
+  KUMO Product Accordion Section
+  FAQ-style accordion with product details
+  Matches Lovable/React design
+{% endcomment %}
+
+{%- liquid
+  assign padding_top = section.settings.padding_top | default: 20
+  assign padding_bottom = section.settings.padding_bottom | default: 30
+  assign max_width = section.settings.max_width | default: 'medium'
+  assign style = section.settings.accordion_style | default: 'minimal'
+  assign heading_size = section.settings.heading_size | default: 'medium'
+-%}
+
+<section class="kumo-product-accordion kumo-section kumo-accordion--{{ style }} kumo-accordion--width-{{ max_width }}" style="--section-padding-top: {{ padding_top }}px; --section-padding-bottom: {{ padding_bottom }}px;">
+  <div class="kumo-container">
+    {%- if section.settings.section_title != blank -%}
+      <h2 class="kumo-accordion__section-title kumo-accordion__section-title--{{ heading_size }}">{{ section.settings.section_title }}</h2>
+    {%- endif -%}
+
+    <div class="kumo-accordion">
+      {%- for block in section.blocks -%}
+        <div class="kumo-accordion__item {% if block.settings.open_default %}is-open{% endif %}" {{ block.shopify_attributes }}>
+          <button type="button" class="kumo-accordion__header">
+            <span class="kumo-accordion__title">{{ block.settings.title }}</span>
+            <span class="kumo-accordion__icon">
+              {% render 'kumo-icon', icon: 'chevron-down' %}
+            </span>
+          </button>
+          <div class="kumo-accordion__content">
+            <div class="kumo-accordion__body">
+              {{ block.settings.content }}
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        {%- comment -%} Default accordion items if no blocks {%- endcomment -%}
+        <div class="kumo-accordion__item is-open">
+          <button type="button" class="kumo-accordion__header">
+            <span class="kumo-accordion__title">Pourquoi c'est si doux ?</span>
+            <span class="kumo-accordion__icon">
+              {% render 'kumo-icon', icon: 'chevron-down' %}
+            </span>
+          </button>
+          <div class="kumo-accordion__content">
+            <div class="kumo-accordion__body">
+              <p>Nos pantoufles KUMO sont conçues pour vous offrir la sensation de marcher sur des nuages. La semelle intérieure Cloud-Foam™ de 3cm d'épaisseur absorbe chaque pas et épouse parfaitement la forme de votre pied.</p>
+              <p>L'intérieur en Sherpa ultra-doux enveloppe vos pieds d'une chaleur instantanée, tandis que l'extérieur en peluche premium vous garantit un style unique et craquant.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="kumo-accordion__item">
+          <button type="button" class="kumo-accordion__header">
+            <span class="kumo-accordion__title">Composition & Entretien</span>
+            <span class="kumo-accordion__icon">
+              {% render 'kumo-icon', icon: 'chevron-down' %}
+            </span>
+          </button>
+          <div class="kumo-accordion__content">
+            <div class="kumo-accordion__body">
+              <ul>
+                <li><strong>Extérieur :</strong> Peluche polyester haute qualité</li>
+                <li><strong>Intérieur :</strong> Sherpa vegan ultra-doux</li>
+                <li><strong>Semelle :</strong> Cloud-Foam™ EVA antidérapante</li>
+              </ul>
+              <p><strong>Entretien :</strong> Lavage à la main à l'eau froide. Séchage à l'air libre loin de toute source de chaleur directe.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="kumo-accordion__item">
+          <button type="button" class="kumo-accordion__header">
+            <span class="kumo-accordion__title">Livraison & Retours Gratuits</span>
+            <span class="kumo-accordion__icon">
+              {% render 'kumo-icon', icon: 'chevron-down' %}
+            </span>
+          </button>
+          <div class="kumo-accordion__content">
+            <div class="kumo-accordion__body">
+              <ul>
+                <li><strong>Livraison Standard :</strong> Gratuite dès 50€ (3-5 jours)</li>
+                <li><strong>Livraison Express :</strong> 4,99€ (24-48h)</li>
+                <li><strong>Retours :</strong> Gratuits sous 30 jours</li>
+              </ul>
+              <p>Toutes nos commandes sont expédiées dans un emballage recyclable et incluent un petit mot personnalisé. ☁️</p>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .kumo-product-accordion {
+    padding-top: var(--section-padding-top, 20px);
+    padding-bottom: var(--section-padding-bottom, 30px);
+  }
+
+  .kumo-accordion {
+    margin: 0 auto;
+  }
+
+  /* Width variants */
+  .kumo-accordion--width-small .kumo-accordion { max-width: 32rem; }
+  .kumo-accordion--width-medium .kumo-accordion { max-width: 42rem; }
+  .kumo-accordion--width-large .kumo-accordion { max-width: 56rem; }
+  .kumo-accordion--width-full .kumo-accordion { max-width: 100%; }
+
+  /* Section title */
+  .kumo-accordion__section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-family: var(--kumo-font-family);
+    font-weight: 700;
+    color: var(--kumo-foreground);
+  }
+  .kumo-accordion__section-title--small { font-size: 1.25rem; }
+  .kumo-accordion__section-title--medium { font-size: 1.5rem; }
+  .kumo-accordion__section-title--large { font-size: 2rem; }
+
+  /* Style: Minimal (default) */
+  .kumo-accordion--minimal .kumo-accordion__item {
+    border-bottom: 1px solid var(--kumo-border);
+  }
+  .kumo-accordion--minimal .kumo-accordion__item:first-child {
+    border-top: 1px solid var(--kumo-border);
+  }
+
+  /* Style: Card */
+  .kumo-accordion--card .kumo-accordion__item {
+    background: var(--kumo-card);
+    border-radius: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: var(--kumo-shadow-soft);
+    overflow: hidden;
+  }
+  .kumo-accordion--card .kumo-accordion__header {
+    padding: 1.25rem 1.5rem;
+  }
+  .kumo-accordion--card .kumo-accordion__body {
+    padding: 0 1.5rem 1.5rem;
+  }
+
+  /* Style: Boxed */
+  .kumo-accordion--boxed .kumo-accordion__item {
+    border: 1px solid var(--kumo-border);
+    border-radius: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .kumo-accordion--boxed .kumo-accordion__header {
+    padding: 1rem 1.25rem;
+  }
+  .kumo-accordion--boxed .kumo-accordion__body {
+    padding: 0 1.25rem 1.25rem;
+  }
+
+  .kumo-accordion__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.25rem 0;
+    font-family: var(--kumo-font-family);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--kumo-foreground);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.2s ease;
+  }
+
+  .kumo-accordion__header:hover {
+    color: var(--kumo-primary);
+  }
+
+  .kumo-accordion__title {
+    flex: 1;
+  }
+
+  .kumo-accordion__icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--kumo-muted-foreground);
+    transition: transform 0.3s ease;
+  }
+
+  .kumo-accordion__icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .kumo-accordion__item.is-open .kumo-accordion__icon {
+    transform: rotate(180deg);
+  }
+
+  .kumo-accordion__content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .kumo-accordion__item.is-open .kumo-accordion__content {
+    max-height: 600px;
+  }
+
+  .kumo-accordion__body {
+    padding-bottom: 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--kumo-muted-foreground);
+    line-height: 1.7;
+  }
+
+  .kumo-accordion__body p {
+    margin: 0 0 0.75rem;
+  }
+
+  .kumo-accordion__body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .kumo-accordion__body ul {
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .kumo-accordion__body li {
+    position: relative;
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .kumo-accordion__body li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--kumo-primary);
+  }
+
+  .kumo-accordion__body strong {
+    color: var(--kumo-foreground);
+  }
+
+  @media (max-width: 767px) {
+    .kumo-accordion__header {
+      font-size: 0.9375rem;
+      padding: 1rem 0;
+    }
+
+    .kumo-accordion__body {
+      font-size: 0.875rem;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const accordionHeaders = document.querySelectorAll('.kumo-accordion__header');
+
+  accordionHeaders.forEach(header => {
+    header.addEventListener('click', function() {
+      const item = this.closest('.kumo-accordion__item');
+
+      // Toggle current item
+      item.classList.toggle('is-open');
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "KUMO - Accordéon Produit",
+  "class": "kumo-product-accordion-section",
+  "tag": "div",
+  "templates": ["product"],
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Espacement"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Espacement haut",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Espacement bas",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Titre de section (optionnel)"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Taille du titre",
+      "options": [
+        { "value": "small", "label": "Petit" },
+        { "value": "medium", "label": "Moyen" },
+        { "value": "large", "label": "Grand" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Largeur max",
+      "options": [
+        { "value": "small", "label": "Étroit (32rem)" },
+        { "value": "medium", "label": "Moyen (42rem)" },
+        { "value": "large", "label": "Large (56rem)" },
+        { "value": "full", "label": "Pleine largeur" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "accordion_style",
+      "label": "Style accordéon",
+      "options": [
+        { "value": "minimal", "label": "Minimal (lignes)" },
+        { "value": "card", "label": "Cartes" },
+        { "value": "boxed", "label": "Encadré" }
+      ],
+      "default": "minimal"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion_item",
+      "name": "Élément accordéon",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Pourquoi c'est si doux ?"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Contenu",
+          "default": "<p>Nos pantoufles KUMO sont conçues pour vous offrir la sensation de marcher sur des nuages.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Ouvert par défaut",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Accordéon Produit",
+      "blocks": [
+        {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Pourquoi c'est si doux ?",
+            "content": "<p>Nos pantoufles KUMO sont conçues pour vous offrir la sensation de marcher sur des nuages. La semelle intérieure Cloud-Foam™ de 3cm d'épaisseur absorbe chaque pas et épouse parfaitement la forme de votre pied.</p><p>L'intérieur en Sherpa ultra-doux enveloppe vos pieds d'une chaleur instantanée, tandis que l'extérieur en peluche premium vous garantit un style unique et craquant.</p>",
+            "open_default": false
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Composition & Entretien",
+            "content": "<ul><li><strong>Extérieur :</strong> Peluche polyester haute qualité</li><li><strong>Intérieur :</strong> Sherpa vegan ultra-doux</li><li><strong>Semelle :</strong> Cloud-Foam™ EVA antidérapante</li></ul><p><strong>Entretien :</strong> Lavage à la main à l'eau froide. Séchage à l'air libre loin de toute source de chaleur directe.</p>",
+            "open_default": false
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Livraison & Retours Gratuits",
+            "content": "<ul><li><strong>Livraison Standard :</strong> Gratuite dès 50€ (3-5 jours)</li><li><strong>Livraison Express :</strong> 4,99€ (24-48h)</li><li><strong>Retours :</strong> Gratuits sous 30 jours</li></ul><p>Toutes nos commandes sont expédiées dans un emballage recyclable et incluent un petit mot personnalisé. ☁️</p>",
+            "open_default": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

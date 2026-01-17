@@ -9,58 +9,107 @@
  */
 {
   "sections": {
+    "promo-bar": {
+      "type": "kumo-promo-bar",
+      "settings": {
+        "show_bar": true,
+        "icon": "☁️",
+        "text": "Offre d'Hiver : Livraison Offerte + E-book Cocon inclus pour tout pack Duo !"
+      }
+    },
     "main": {
-      "type": "main-product",
+      "type": "kumo-product-main",
+      "settings": {
+        "show_rating": true,
+        "reviews_count": "482",
+        "show_packs": true,
+        "button_text": "Adopter ce Nuage - Expédition 24h"
+      }
+    },
+    "accordion": {
+      "type": "kumo-product-accordion",
       "blocks": {
-        "title": {
-          "type": "title",
-          "settings": {}
-        },
-        "price": {
-          "type": "price",
-          "settings": {}
-        },
-        "variant_picker": {
-          "type": "variant_picker",
+        "desc": {
+          "type": "accordion_item",
           "settings": {
-            "picker_type": "button"
+            "title": "Pourquoi c'est si doux ?",
+            "content": "<p>Nos pantoufles KUMO sont conçues pour vous offrir la sensation de marcher sur des nuages. La semelle intérieure Cloud-Foam™ de 3cm d'épaisseur absorbe chaque pas et épouse parfaitement la forme de votre pied.</p><p>L'intérieur en Sherpa ultra-doux enveloppe vos pieds d'une chaleur instantanée, tandis que l'extérieur en peluche premium vous garantit un style unique et craquant.</p>",
+            "open_default": false
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
+        "composition": {
+          "type": "accordion_item",
           "settings": {
-            "show_dynamic_checkout": true
+            "title": "Composition & Entretien",
+            "content": "<ul><li><strong>Extérieur :</strong> Peluche polyester haute qualité</li><li><strong>Intérieur :</strong> Sherpa vegan ultra-doux</li><li><strong>Semelle :</strong> Cloud-Foam™ EVA antidérapante</li></ul><p><strong>Entretien :</strong> Lavage à la main à l'eau froide. Séchage à l'air libre loin de toute source de chaleur directe.</p>",
+            "open_default": false
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
+        "shipping": {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Livraison & Retours Gratuits",
+            "content": "<ul><li><strong>Livraison Standard :</strong> Gratuite dès 50€ (3-5 jours)</li><li><strong>Livraison Express :</strong> 4,99€ (24-48h)</li><li><strong>Retours :</strong> Gratuits sous 30 jours</li></ul><p>Toutes nos commandes sont expédiées dans un emballage recyclable et incluent un petit mot personnalisé. ☁️</p>",
+            "open_default": false
+          }
         }
       },
-      "block_order": [
-        "title",
-        "price",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons",
-        "description"
-      ],
+      "block_order": ["desc", "composition", "shipping"],
       "settings": {}
     },
-    "related": {
-      "type": "related-products",
+    "reviews": {
+      "type": "kumo-customer-reviews",
+      "blocks": {
+        "review1": {
+          "type": "review",
+          "settings": {
+            "name": "Marie L.",
+            "comment": "Incroyablement doux ! Je ne les quitte plus. Mes pieds sont au paradis chaque soir.",
+            "date": "Il y a 3 jours"
+          }
+        },
+        "review2": {
+          "type": "review",
+          "settings": {
+            "name": "Thomas D.",
+            "comment": "Cadeau parfait pour ma femme ! Elle adore le design Highland Cow. Qualité au top.",
+            "date": "Il y a 1 semaine"
+          }
+        },
+        "review3": {
+          "type": "review",
+          "settings": {
+            "name": "Sophie M.",
+            "comment": "Vu sur TikTok, commandé, reçu en 2 jours. C'est vraiment comme marcher sur un nuage !",
+            "date": "Il y a 2 semaines"
+          }
+        }
+      },
+      "block_order": ["review1", "review2", "review3"],
       "settings": {
-        "heading": "Vous aimerez aussi",
-        "products_to_show": 4
+        "title": "Ils marchent déjà sur des nuages...",
+        "rating": "4.9/5",
+        "reviews_count": "482"
+      }
+    },
+    "related": {
+      "type": "kumo-related-products",
+      "settings": {
+        "title": "Vous aimerez aussi...",
+        "show_emoji": true,
+        "subtitle": "D'autres nuages à adopter",
+        "source": "collection",
+        "products_count": 3,
+        "show_rating": true,
+        "show_view_more": false
       }
     }
   },
   "order": [
+    "promo-bar",
     "main",
+    "accordion",
+    "reviews",
     "related"
   ]
 }

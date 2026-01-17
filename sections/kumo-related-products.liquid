@@ -1,17 +1,36 @@
 {% comment %}
   KUMO Related Products Section
-  "Vous aimerez aussi" - 4 products grid
+  "Vous aimerez aussi..." section
+  Matches Lovable/React design from captures
 {% endcomment %}
 
-<section class="kumo-related-products kumo-section">
+{%- liquid
+  assign padding_top = section.settings.padding_top | default: 48
+  assign padding_bottom = section.settings.padding_bottom | default: 48
+  assign max_width = section.settings.max_width | default: 'large'
+  assign columns = section.settings.columns_desktop | default: 3
+  assign card_style = section.settings.card_style | default: 'card'
+  assign heading_size = section.settings.heading_size | default: 'medium'
+  assign text_align = section.settings.text_alignment | default: 'center'
+-%}
+
+<section class="kumo-related kumo-section kumo-related--{{ card_style }} kumo-related--cols-{{ columns }} kumo-related--width-{{ max_width }} kumo-related--align-{{ text_align }}" style="--section-padding-top: {{ padding_top }}px; --section-padding-bottom: {{ padding_bottom }}px;">
   <div class="kumo-container">
     {%- comment -%} Section Header {%- endcomment -%}
-    <div class="kumo-text-center kumo-reveal" style="margin-bottom: 3rem;">
-      <h2 class="kumo-section-title kumo-text-fluffy">{{ section.settings.title }}</h2>
+    <div class="kumo-related__header kumo-reveal">
+      <h2 class="kumo-related__title kumo-related__title--{{ heading_size }}">
+        {{ section.settings.title }}
+        {%- if section.settings.show_emoji -%}
+          <span class="kumo-related__emoji">☁️</span>
+        {%- endif -%}
+      </h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="kumo-related__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
     </div>
 
     {%- comment -%} Products Grid {%- endcomment -%}
-    <div class="kumo-related-products__grid">
+    <div class="kumo-related__grid">
       {%- liquid
         assign related_products = product.collections.first.products | where: 'available' | where_exp: 'p', 'p.id != product.id'
 
@@ -25,26 +44,76 @@
       -%}
 
       {%- for related_product in related_products limit: section.settings.products_count -%}
-        {% render 'kumo-product-card', product: related_product, delay_index: forloop.index0 %}
+        <a href="{{ related_product.url }}" class="kumo-related__card kumo-reveal" style="animation-delay: {{ forloop.index0 | times: 0.1 }}s">
+          {%- comment -%} Product Image {%- endcomment -%}
+          <div class="kumo-related__image-wrapper">
+            {%- if related_product.featured_image -%}
+              <img
+                src="{{ related_product.featured_image | image_url: width: 400 }}"
+                alt="{{ related_product.featured_image.alt | default: related_product.title | escape }}"
+                class="kumo-related__image"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="kumo-related__placeholder">
+                {{ 'product-' | append: forloop.index | placeholder_svg_tag }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} Product Info {%- endcomment -%}
+          <div class="kumo-related__info">
+            <h3 class="kumo-related__name">{{ related_product.title }}</h3>
+
+            {%- if section.settings.show_rating -%}
+              <div class="kumo-related__rating">
+                <div class="kumo-related__stars">
+                  {%- for i in (1..5) -%}
+                    <span class="kumo-related__star">★</span>
+                  {%- endfor -%}
+                </div>
+                <span class="kumo-related__reviews">({{ related_product.metafields.reviews.rating_count | default: '127' }})</span>
+              </div>
+            {%- endif -%}
+
+            <div class="kumo-related__price-row">
+              <span class="kumo-related__price">{{ related_product.price | money }}</span>
+              <span class="kumo-related__cta">Voir le produit →</span>
+            </div>
+          </div>
+        </a>
       {%- else -%}
-        {%- for i in (1..4) -%}
-          <article class="kumo-product-card kumo-reveal">
-            <div class="kumo-product-card__image-wrapper">
-              {{ 'product-' | append: i | placeholder_svg_tag }}
+        {%- comment -%} Placeholder products {%- endcomment -%}
+        {%- for i in (1..3) -%}
+          <div class="kumo-related__card kumo-reveal" style="animation-delay: {{ forloop.index0 | times: 0.1 }}s">
+            <div class="kumo-related__image-wrapper">
+              <div class="kumo-related__placeholder">
+                {{ 'product-' | append: i | placeholder_svg_tag }}
+              </div>
             </div>
-            <div class="kumo-product-card__info">
-              <h3 class="kumo-product-card__title">Produit similaire {{ i }}</h3>
-              <span class="kumo-product-card__price">34,99 €</span>
+            <div class="kumo-related__info">
+              <h3 class="kumo-related__name">Produit similaire {{ i }}</h3>
+              <div class="kumo-related__rating">
+                <div class="kumo-related__stars">
+                  {%- for j in (1..5) -%}
+                    <span class="kumo-related__star">★</span>
+                  {%- endfor -%}
+                </div>
+                <span class="kumo-related__reviews">(127)</span>
+              </div>
+              <div class="kumo-related__price-row">
+                <span class="kumo-related__price">34,99 €</span>
+                <span class="kumo-related__cta">Voir le produit →</span>
+              </div>
             </div>
-            <button class="kumo-product-card__button" disabled>Ajouter au panier</button>
-          </article>
+          </div>
         {%- endfor -%}
       {%- endfor -%}
     </div>
 
     {%- comment -%} View More Link {%- endcomment -%}
     {%- if section.settings.show_view_more -%}
-      <div class="kumo-text-center kumo-reveal" style="margin-top: 3rem;">
+      <div class="kumo-related__footer kumo-reveal">
         <a href="{{ section.settings.view_more_link | default: collections.all.url }}" class="kumo-link-primary">
           {{ section.settings.view_more_text }}
           {% render 'kumo-icon', icon: 'chevron-right' %}
@@ -55,39 +124,303 @@
 </section>
 
 <style>
-  .kumo-related-products__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+  .kumo-related {
+    background: hsla(35, 30%, 90%, 0.3);
+    padding-top: var(--section-padding-top, 48px);
+    padding-bottom: var(--section-padding-bottom, 48px);
   }
 
-  @media (min-width: 768px) {
-    .kumo-related-products__grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1.5rem;
+  /* Width variants */
+  .kumo-related--width-small .kumo-container { max-width: 48rem; }
+  .kumo-related--width-medium .kumo-container { max-width: 64rem; }
+  .kumo-related--width-large .kumo-container { max-width: 80rem; }
+  .kumo-related--width-full .kumo-container { max-width: 100%; }
+
+  /* Text alignment */
+  .kumo-related--align-left .kumo-related__header { text-align: left; }
+  .kumo-related--align-center .kumo-related__header { text-align: center; }
+  .kumo-related--align-right .kumo-related__header { text-align: right; }
+
+  .kumo-related__header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .kumo-related__title {
+    font-family: var(--kumo-font-family);
+    font-weight: 700;
+    color: var(--kumo-foreground);
+    margin: 0 0 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Heading sizes */
+  .kumo-related__title--small { font-size: clamp(1.25rem, 3vw, 1.5rem); }
+  .kumo-related__title--medium { font-size: clamp(1.5rem, 4vw, 2rem); }
+  .kumo-related__title--large { font-size: clamp(1.75rem, 5vw, 2.5rem); }
+
+  .kumo-related__emoji {
+    font-size: 1.25em;
+  }
+
+  .kumo-related__subtitle {
+    font-size: 1rem;
+    color: var(--kumo-muted-foreground);
+    margin: 0;
+  }
+
+  /* Products Grid */
+  .kumo-related__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .kumo-related--cols-2 .kumo-related__grid,
+    .kumo-related--cols-3 .kumo-related__grid,
+    .kumo-related--cols-4 .kumo-related__grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  .kumo-related-products__grid .kumo-product-card__image-wrapper svg {
+  @media (min-width: 1024px) {
+    .kumo-related--cols-2 .kumo-related__grid { grid-template-columns: repeat(2, 1fr); }
+    .kumo-related--cols-3 .kumo-related__grid { grid-template-columns: repeat(3, 1fr); }
+    .kumo-related--cols-4 .kumo-related__grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  /* Product Card - Base */
+  .kumo-related__card {
+    display: block;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  /* Card Style: Card (default) */
+  .kumo-related--card .kumo-related__card {
+    background: var(--kumo-card);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: var(--kumo-shadow-soft);
+  }
+  .kumo-related--card .kumo-related__card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--kumo-shadow-float);
+  }
+
+  /* Card Style: Minimal */
+  .kumo-related--minimal .kumo-related__card {
+    background: transparent;
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  .kumo-related--minimal .kumo-related__card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Card Style: Bordered */
+  .kumo-related--bordered .kumo-related__card {
+    background: var(--kumo-card);
+    border: 1px solid var(--kumo-border);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  .kumo-related--bordered .kumo-related__card:hover {
+    border-color: var(--kumo-primary);
+    transform: translateY(-4px);
+  }
+
+  /* Card Style: Flat */
+  .kumo-related--flat .kumo-related__card {
+    background: var(--kumo-accent);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  .kumo-related--flat .kumo-related__card:hover {
+    background: var(--kumo-card);
+  }
+
+  /* Image */
+  .kumo-related__image-wrapper {
+    position: relative;
+    aspect-ratio: 1;
+    background: var(--kumo-cream-100);
+    padding: 1.5rem;
+    overflow: hidden;
+  }
+
+  .kumo-related__image {
     width: 100%;
     height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+  }
+
+  .kumo-related__card:hover .kumo-related__image {
+    transform: scale(1.1);
+  }
+
+  .kumo-related__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kumo-related__placeholder svg {
+    width: 60%;
+    height: 60%;
     fill: var(--kumo-muted-foreground);
     opacity: 0.3;
+  }
+
+  /* Info */
+  .kumo-related__info {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .kumo-related__name {
+    font-family: var(--kumo-font-family);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--kumo-foreground);
+    margin: 0;
+    transition: color 0.2s ease;
+  }
+
+  .kumo-related__card:hover .kumo-related__name {
+    color: var(--kumo-primary);
+  }
+
+  .kumo-related__rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .kumo-related__stars {
+    display: flex;
+    gap: 0.0625rem;
+  }
+
+  .kumo-related__star {
+    color: #facc15;
+    font-size: 0.875rem;
+  }
+
+  .kumo-related__reviews {
+    font-size: 0.75rem;
+    color: var(--kumo-muted-foreground);
+  }
+
+  .kumo-related__price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+  }
+
+  .kumo-related__price {
+    font-family: var(--kumo-font-family);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--kumo-primary);
+  }
+
+  .kumo-related__cta {
+    font-size: 0.75rem;
+    color: var(--kumo-muted-foreground);
+    background: var(--kumo-accent);
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--kumo-radius-full);
+    transition: all 0.2s ease;
+  }
+
+  .kumo-related__card:hover .kumo-related__cta {
+    background: var(--kumo-primary);
+    color: var(--kumo-primary-foreground);
+  }
+
+  /* Footer */
+  .kumo-related__footer {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  /* Animation */
+  .kumo-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: kumoReveal 0.6s ease forwards;
+  }
+
+  @keyframes kumoReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
 {% schema %}
 {
-  "name": "KUMO - Similaires",
-  "class": "kumo-related-products-section",
-  "tag": "section",
+  "name": "KUMO - Produits Similaires",
+  "class": "kumo-related-section",
+  "tag": "div",
   "templates": ["product"],
   "settings": [
+    {
+      "type": "header",
+      "content": "Espacement"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacement haut",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacement bas",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
     {
       "type": "text",
       "id": "title",
       "label": "Titre",
-      "default": "Vous aimerez aussi"
+      "default": "Vous aimerez aussi..."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_emoji",
+      "label": "Afficher l'emoji nuage",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "D'autres nuages à adopter"
     },
     {
       "type": "select",
@@ -103,10 +436,16 @@
       "type": "range",
       "id": "products_count",
       "min": 2,
-      "max": 8,
+      "max": 6,
       "step": 1,
       "label": "Nombre de produits",
-      "default": 4
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Afficher les notes",
+      "default": true
     },
     {
       "type": "checkbox",
@@ -118,21 +457,87 @@
       "type": "text",
       "id": "view_more_text",
       "label": "Texte du lien",
-      "default": "Voir plus"
+      "default": "Voir toute la collection"
     },
     {
       "type": "url",
       "id": "view_more_link",
       "label": "Lien \"Voir plus\""
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Largeur max",
+      "options": [
+        { "value": "small", "label": "Étroit (48rem)" },
+        { "value": "medium", "label": "Moyen (64rem)" },
+        { "value": "large", "label": "Large (80rem)" },
+        { "value": "full", "label": "Pleine largeur" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Colonnes (desktop)",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alignement du titre",
+      "options": [
+        { "value": "left", "label": "Gauche" },
+        { "value": "center", "label": "Centré" },
+        { "value": "right", "label": "Droite" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Taille du titre",
+      "options": [
+        { "value": "small", "label": "Petit" },
+        { "value": "medium", "label": "Moyen" },
+        { "value": "large", "label": "Grand" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Style des cartes",
+      "options": [
+        { "value": "card", "label": "Carte avec ombre" },
+        { "value": "bordered", "label": "Bordure" },
+        { "value": "minimal", "label": "Minimal" },
+        { "value": "flat", "label": "Plat" }
+      ],
+      "default": "card"
     }
   ],
   "presets": [
     {
-      "name": "KUMO - Similaires",
+      "name": "KUMO - Produits Similaires",
       "settings": {
-        "title": "Vous aimerez aussi",
+        "title": "Vous aimerez aussi...",
+        "show_emoji": true,
+        "subtitle": "D'autres nuages à adopter",
         "source": "collection",
-        "products_count": 4,
+        "products_count": 3,
+        "show_rating": true,
         "show_view_more": false
       }
     }

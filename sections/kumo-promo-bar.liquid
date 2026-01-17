@@ -1,0 +1,245 @@
+{% comment %}
+  KUMO Promo Bar
+  Fixed promotional banner at top of product page
+{% endcomment %}
+
+{%- liquid
+  assign position = section.settings.position | default: 'top'
+  assign style = section.settings.bar_style | default: 'pill'
+  assign font_size = section.settings.font_size | default: 'medium'
+  assign bg_color = section.settings.background_color | default: 'primary'
+-%}
+
+{%- if section.settings.show_bar -%}
+<div class="kumo-promo-bar kumo-promo-bar--{{ position }} kumo-promo-bar--{{ style }} kumo-promo-bar--bg-{{ bg_color }} kumo-promo-bar--size-{{ font_size }}">
+  <div class="kumo-promo-bar__inner">
+    <p class="kumo-promo-bar__text">
+      {%- if section.settings.icon != blank -%}
+        <span class="kumo-promo-bar__icon">{{ section.settings.icon }}</span>
+      {%- endif -%}
+      {{ section.settings.text }}
+    </p>
+    {%- if section.settings.show_link and section.settings.link_text != blank -%}
+      <a href="{{ section.settings.link_url }}" class="kumo-promo-bar__link">{{ section.settings.link_text }}</a>
+    {%- endif -%}
+  </div>
+</div>
+{%- endif -%}
+
+<style>
+  .kumo-promo-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    pointer-events: none;
+  }
+
+  /* Position */
+  .kumo-promo-bar--top { top: 0; bottom: auto; }
+  .kumo-promo-bar--bottom { bottom: 0; top: auto; }
+
+  .kumo-promo-bar__inner {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0.625rem 1.5rem;
+    box-shadow: var(--kumo-shadow-soft);
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  /* Style: Pill (default) */
+  .kumo-promo-bar--pill .kumo-promo-bar__inner {
+    border-radius: var(--kumo-radius-full);
+  }
+
+  /* Style: Bar (full width) */
+  .kumo-promo-bar--bar {
+    padding: 0;
+  }
+  .kumo-promo-bar--bar .kumo-promo-bar__inner {
+    width: 100%;
+    border-radius: 0;
+    justify-content: center;
+  }
+
+  /* Style: Badge */
+  .kumo-promo-bar--badge .kumo-promo-bar__inner {
+    border-radius: 0.75rem;
+    padding: 0.5rem 1rem;
+  }
+
+  /* Background Colors */
+  .kumo-promo-bar--bg-primary .kumo-promo-bar__inner {
+    background: var(--kumo-primary);
+    color: var(--kumo-primary-foreground);
+  }
+  .kumo-promo-bar--bg-latte .kumo-promo-bar__inner {
+    background: var(--kumo-latte-light, hsl(28, 35%, 62%));
+    color: var(--kumo-primary-foreground);
+  }
+  .kumo-promo-bar--bg-accent .kumo-promo-bar__inner {
+    background: var(--kumo-accent);
+    color: var(--kumo-foreground);
+  }
+  .kumo-promo-bar--bg-dark .kumo-promo-bar__inner {
+    background: var(--kumo-foreground);
+    color: var(--kumo-background);
+  }
+
+  .kumo-promo-bar__text {
+    margin: 0;
+    font-family: var(--kumo-font-family);
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Font Sizes */
+  .kumo-promo-bar--size-small .kumo-promo-bar__text { font-size: 0.75rem; }
+  .kumo-promo-bar--size-medium .kumo-promo-bar__text { font-size: 0.875rem; }
+  .kumo-promo-bar--size-large .kumo-promo-bar__text { font-size: 1rem; }
+
+  .kumo-promo-bar__icon {
+    font-size: 1em;
+  }
+
+  .kumo-promo-bar__link {
+    font-size: 0.75em;
+    font-weight: 600;
+    text-decoration: underline;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+  }
+  .kumo-promo-bar__link:hover {
+    opacity: 1;
+  }
+
+  @media (max-width: 767px) {
+    .kumo-promo-bar--size-small .kumo-promo-bar__text { font-size: 0.6875rem; }
+    .kumo-promo-bar--size-medium .kumo-promo-bar__text { font-size: 0.75rem; }
+    .kumo-promo-bar--size-large .kumo-promo-bar__text { font-size: 0.875rem; }
+    .kumo-promo-bar__inner {
+      padding: 0.5rem 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Barre Promo",
+  "class": "kumo-promo-bar-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_bar",
+      "label": "Afficher la barre promo",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "icon",
+      "label": "Icône (emoji)",
+      "default": "☁️"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Texte promotionnel",
+      "default": "Offre d'Hiver : Livraison Offerte + E-book Cocon inclus pour tout pack Duo !"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_link",
+      "label": "Afficher un lien",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Texte du lien",
+      "default": "En savoir plus"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "URL du lien"
+    },
+    {
+      "type": "header",
+      "content": "Position & Style"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position",
+      "options": [
+        { "value": "top", "label": "Haut de page" },
+        { "value": "bottom", "label": "Bas de page" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "select",
+      "id": "bar_style",
+      "label": "Style",
+      "options": [
+        { "value": "pill", "label": "Pilule (arrondi)" },
+        { "value": "bar", "label": "Barre pleine largeur" },
+        { "value": "badge", "label": "Badge" }
+      ],
+      "default": "pill"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Couleur de fond",
+      "options": [
+        { "value": "primary", "label": "Primaire" },
+        { "value": "latte", "label": "Latte (beige)" },
+        { "value": "accent", "label": "Accent (clair)" },
+        { "value": "dark", "label": "Sombre" }
+      ],
+      "default": "latte"
+    },
+    {
+      "type": "select",
+      "id": "font_size",
+      "label": "Taille du texte",
+      "options": [
+        { "value": "small", "label": "Petit" },
+        { "value": "medium", "label": "Moyen" },
+        { "value": "large", "label": "Grand" }
+      ],
+      "default": "medium"
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Barre Promo",
+      "settings": {
+        "show_bar": true,
+        "icon": "☁️",
+        "text": "Offre d'Hiver : Livraison Offerte + E-book Cocon inclus pour tout pack Duo !",
+        "position": "top",
+        "bar_style": "pill",
+        "background_color": "latte",
+        "font_size": "medium"
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,504 @@
+{% comment %}
+  KUMO Customer Reviews Section
+  "Ils marchent déjà sur des nuages..." testimonials
+  Matches Lovable/React design
+{% endcomment %}
+
+{%- liquid
+  assign padding_top = section.settings.padding_top | default: 48
+  assign padding_bottom = section.settings.padding_bottom | default: 48
+  assign max_width = section.settings.max_width | default: 'large'
+  assign columns = section.settings.columns_desktop | default: 3
+  assign card_style = section.settings.card_style | default: 'card'
+  assign heading_size = section.settings.heading_size | default: 'medium'
+  assign text_align = section.settings.text_alignment | default: 'center'
+-%}
+
+<section class="kumo-reviews kumo-section kumo-reviews--{{ card_style }} kumo-reviews--cols-{{ columns }} kumo-reviews--width-{{ max_width }} kumo-reviews--align-{{ text_align }}" style="--section-padding-top: {{ padding_top }}px; --section-padding-bottom: {{ padding_bottom }}px;">
+  <div class="kumo-container">
+    {%- comment -%} Section Header {%- endcomment -%}
+    <div class="kumo-reviews__header kumo-reveal">
+      <h2 class="kumo-reviews__title kumo-reviews__title--{{ heading_size }}">{{ section.settings.title }}</h2>
+      <div class="kumo-reviews__rating">
+        <div class="kumo-reviews__stars">
+          {%- for i in (1..5) -%}
+            <span class="kumo-reviews__star">★</span>
+          {%- endfor -%}
+        </div>
+        <span class="kumo-reviews__count">{{ section.settings.rating }} basé sur {{ section.settings.reviews_count }} avis</span>
+      </div>
+    </div>
+
+    {%- comment -%} Reviews Grid {%- endcomment -%}
+    <div class="kumo-reviews__grid">
+      {%- for block in section.blocks -%}
+        <div class="kumo-reviews__card kumo-reveal" style="animation-delay: {{ forloop.index0 | times: 0.1 }}s" {{ block.shopify_attributes }}>
+          <div class="kumo-reviews__author">
+            {%- if block.settings.avatar != blank -%}
+              <img
+                src="{{ block.settings.avatar | image_url: width: 120 }}"
+                alt="{{ block.settings.name }}"
+                class="kumo-reviews__avatar"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="kumo-reviews__avatar kumo-reviews__avatar--placeholder">
+                {{ block.settings.name | slice: 0 }}
+              </div>
+            {%- endif -%}
+            <div class="kumo-reviews__author-info">
+              <span class="kumo-reviews__name">{{ block.settings.name }}</span>
+              <div class="kumo-reviews__author-stars">
+                {%- for i in (1..5) -%}
+                  <span class="kumo-reviews__star kumo-reviews__star--small">★</span>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+          <p class="kumo-reviews__comment">"{{ block.settings.comment }}"</p>
+          <span class="kumo-reviews__date">{{ block.settings.date }}</span>
+        </div>
+      {%- else -%}
+        {%- comment -%} Default reviews if no blocks {%- endcomment -%}
+        <div class="kumo-reviews__card kumo-reveal">
+          <div class="kumo-reviews__author">
+            <div class="kumo-reviews__avatar kumo-reviews__avatar--placeholder">M</div>
+            <div class="kumo-reviews__author-info">
+              <span class="kumo-reviews__name">Marie L.</span>
+              <div class="kumo-reviews__author-stars">
+                {%- for i in (1..5) -%}
+                  <span class="kumo-reviews__star kumo-reviews__star--small">★</span>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+          <p class="kumo-reviews__comment">"Incroyablement doux ! Je ne les quitte plus. Mes pieds sont au paradis chaque soir."</p>
+          <span class="kumo-reviews__date">Il y a 3 jours</span>
+        </div>
+
+        <div class="kumo-reviews__card kumo-reveal" style="animation-delay: 0.1s">
+          <div class="kumo-reviews__author">
+            <div class="kumo-reviews__avatar kumo-reviews__avatar--placeholder">T</div>
+            <div class="kumo-reviews__author-info">
+              <span class="kumo-reviews__name">Thomas D.</span>
+              <div class="kumo-reviews__author-stars">
+                {%- for i in (1..5) -%}
+                  <span class="kumo-reviews__star kumo-reviews__star--small">★</span>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+          <p class="kumo-reviews__comment">"Cadeau parfait pour ma femme ! Elle adore le design Highland Cow. Qualité au top."</p>
+          <span class="kumo-reviews__date">Il y a 1 semaine</span>
+        </div>
+
+        <div class="kumo-reviews__card kumo-reveal" style="animation-delay: 0.2s">
+          <div class="kumo-reviews__author">
+            <div class="kumo-reviews__avatar kumo-reviews__avatar--placeholder">S</div>
+            <div class="kumo-reviews__author-info">
+              <span class="kumo-reviews__name">Sophie M.</span>
+              <div class="kumo-reviews__author-stars">
+                {%- for i in (1..5) -%}
+                  <span class="kumo-reviews__star kumo-reviews__star--small">★</span>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+          <p class="kumo-reviews__comment">"Vu sur TikTok, commandé, reçu en 2 jours. C'est vraiment comme marcher sur un nuage !"</p>
+          <span class="kumo-reviews__date">Il y a 2 semaines</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .kumo-reviews {
+    padding-top: var(--section-padding-top, 48px);
+    padding-bottom: var(--section-padding-bottom, 48px);
+  }
+
+  /* Width variants */
+  .kumo-reviews--width-small .kumo-container { max-width: 48rem; }
+  .kumo-reviews--width-medium .kumo-container { max-width: 64rem; }
+  .kumo-reviews--width-large .kumo-container { max-width: 80rem; }
+  .kumo-reviews--width-full .kumo-container { max-width: 100%; }
+
+  /* Text alignment */
+  .kumo-reviews--align-left .kumo-reviews__header { text-align: left; }
+  .kumo-reviews--align-center .kumo-reviews__header { text-align: center; }
+  .kumo-reviews--align-right .kumo-reviews__header { text-align: right; }
+
+  .kumo-reviews__header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .kumo-reviews__title {
+    font-family: var(--kumo-font-family);
+    font-weight: 700;
+    color: var(--kumo-foreground);
+    margin: 0 0 0.75rem;
+    font-style: italic;
+  }
+
+  /* Heading sizes */
+  .kumo-reviews__title--small { font-size: clamp(1.25rem, 3vw, 1.5rem); }
+  .kumo-reviews__title--medium { font-size: clamp(1.5rem, 4vw, 2rem); }
+  .kumo-reviews__title--large { font-size: clamp(1.75rem, 5vw, 2.5rem); }
+
+  .kumo-reviews__rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .kumo-reviews__stars {
+    display: flex;
+    gap: 0.125rem;
+  }
+
+  .kumo-reviews__star {
+    color: #facc15;
+    font-size: 1.125rem;
+  }
+
+  .kumo-reviews__star--small {
+    font-size: 0.875rem;
+  }
+
+  .kumo-reviews__count {
+    font-size: 0.875rem;
+    color: var(--kumo-muted-foreground);
+  }
+
+  /* Reviews Grid */
+  .kumo-reviews__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .kumo-reviews--cols-2 .kumo-reviews__grid,
+    .kumo-reviews--cols-3 .kumo-reviews__grid,
+    .kumo-reviews--cols-4 .kumo-reviews__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .kumo-reviews--cols-2 .kumo-reviews__grid { grid-template-columns: repeat(2, 1fr); }
+    .kumo-reviews--cols-3 .kumo-reviews__grid { grid-template-columns: repeat(3, 1fr); }
+    .kumo-reviews--cols-4 .kumo-reviews__grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  /* Review Card - Base */
+  .kumo-reviews__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Card Style: Card (default) */
+  .kumo-reviews--card .kumo-reviews__card {
+    background: var(--kumo-card);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: var(--kumo-shadow-soft);
+  }
+
+  /* Card Style: Minimal */
+  .kumo-reviews--minimal .kumo-reviews__card {
+    background: transparent;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--kumo-border);
+  }
+  .kumo-reviews--minimal .kumo-reviews__card:last-child {
+    border-bottom: none;
+  }
+
+  /* Card Style: Bordered */
+  .kumo-reviews--bordered .kumo-reviews__card {
+    background: var(--kumo-card);
+    border: 1px solid var(--kumo-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+
+  /* Card Style: Quote */
+  .kumo-reviews--quote .kumo-reviews__card {
+    background: var(--kumo-accent);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    position: relative;
+  }
+  .kumo-reviews--quote .kumo-reviews__card::before {
+    content: '"';
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    font-size: 3rem;
+    color: var(--kumo-primary);
+    opacity: 0.3;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  .kumo-reviews__author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .kumo-reviews__avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 0 2px var(--kumo-accent);
+  }
+
+  .kumo-reviews__avatar--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--kumo-primary);
+    color: var(--kumo-primary-foreground);
+    font-family: var(--kumo-font-family);
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+
+  .kumo-reviews__author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .kumo-reviews__name {
+    font-family: var(--kumo-font-family);
+    font-weight: 600;
+    color: var(--kumo-foreground);
+  }
+
+  .kumo-reviews__author-stars {
+    display: flex;
+    gap: 0.0625rem;
+  }
+
+  .kumo-reviews__comment {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--kumo-muted-foreground);
+    margin: 0;
+  }
+
+  .kumo-reviews__date {
+    font-size: 0.75rem;
+    color: var(--kumo-muted-foreground);
+    opacity: 0.7;
+    margin-top: auto;
+  }
+
+  /* Animation */
+  .kumo-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: kumoReveal 0.6s ease forwards;
+  }
+
+  @keyframes kumoReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Avis Clients",
+  "class": "kumo-reviews-section",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Espacement"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacement haut",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacement bas",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Ils marchent déjà sur des nuages..."
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Note moyenne",
+      "default": "4.9/5"
+    },
+    {
+      "type": "text",
+      "id": "reviews_count",
+      "label": "Nombre d'avis",
+      "default": "482"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Largeur max",
+      "options": [
+        { "value": "small", "label": "Étroit (48rem)" },
+        { "value": "medium", "label": "Moyen (64rem)" },
+        { "value": "large", "label": "Large (80rem)" },
+        { "value": "full", "label": "Pleine largeur" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Colonnes (desktop)",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alignement du titre",
+      "options": [
+        { "value": "left", "label": "Gauche" },
+        { "value": "center", "label": "Centré" },
+        { "value": "right", "label": "Droite" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Taille du titre",
+      "options": [
+        { "value": "small", "label": "Petit" },
+        { "value": "medium", "label": "Moyen" },
+        { "value": "large", "label": "Grand" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Style des cartes",
+      "options": [
+        { "value": "card", "label": "Carte avec ombre" },
+        { "value": "bordered", "label": "Bordure" },
+        { "value": "minimal", "label": "Minimal" },
+        { "value": "quote", "label": "Citation" }
+      ],
+      "default": "card"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Avis client",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Photo (optionnel)"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nom",
+          "default": "Marie L."
+        },
+        {
+          "type": "textarea",
+          "id": "comment",
+          "label": "Commentaire",
+          "default": "Incroyablement doux ! Je ne les quitte plus. Mes pieds sont au paradis chaque soir."
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "Il y a 3 jours"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Avis Clients",
+      "settings": {
+        "title": "Ils marchent déjà sur des nuages...",
+        "rating": "4.9/5",
+        "reviews_count": "482"
+      },
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "name": "Marie L.",
+            "comment": "Incroyablement doux ! Je ne les quitte plus. Mes pieds sont au paradis chaque soir.",
+            "date": "Il y a 3 jours"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Thomas D.",
+            "comment": "Cadeau parfait pour ma femme ! Elle adore le design Highland Cow. Qualité au top.",
+            "date": "Il y a 1 semaine"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Sophie M.",
+            "comment": "Vu sur TikTok, commandé, reçu en 2 jours. C'est vraiment comme marcher sur un nuage !",
+            "date": "Il y a 2 semaines"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
