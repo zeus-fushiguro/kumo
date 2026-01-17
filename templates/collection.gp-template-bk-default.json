@@ -8,78 +8,86 @@
  * ------------------------------------------------------------
  */
 {
-  "sections": {
-    "kumo-header": {
-      "type": "kumo-header",
-      "settings": {
-        "logo_height": 48
-      },
-      "blocks": {
-        "nav-1": {
-          "type": "nav_link",
-          "settings": {
-            "text": "Collection",
-            "link": "shopify://collections/all"
-          }
-        },
-        "nav-2": {
-          "type": "nav_link",
-          "settings": {
-            "text": "Notre Histoire",
-            "link": ""
-          }
-        }
-      },
-      "block_order": ["nav-1", "nav-2"]
-    },
-    "kumo-collection": {
-      "type": "kumo-collection",
-      "settings": {
-        "products_per_page": 12
-      }
-    },
-    "kumo-footer": {
-      "type": "kumo-footer",
-      "settings": {
-        "show_payment": true,
-        "tagline": "Fait avec ☁️ en France."
-      },
-      "blocks": {
-        "link-1": {
-          "type": "link",
-          "settings": {
-            "text": "Collection",
-            "url": "shopify://collections/all"
-          }
-        },
-        "link-2": {
-          "type": "link",
-          "settings": {
-            "text": "Notre Histoire",
-            "url": ""
-          }
-        },
-        "link-3": {
-          "type": "link",
-          "settings": {
-            "text": "FAQ",
-            "url": ""
-          }
-        },
-        "link-4": {
-          "type": "link",
-          "settings": {
-            "text": "Contact",
-            "url": ""
-          }
-        }
-      },
-      "block_order": ["link-1", "link-2", "link-3", "link-4"]
-    }
-  },
   "order": [
     "kumo-header",
     "kumo-collection",
     "kumo-footer"
-  ]
+  ],
+  "sections": {
+    "kumo-collection": {
+      "settings": {
+        "products_per_page": 12
+      },
+      "type": "kumo-collection"
+    },
+    "kumo-footer": {
+      "block_order": [
+        "link-1",
+        "link-2",
+        "link-3",
+        "link-4"
+      ],
+      "blocks": {
+        "link-1": {
+          "settings": {
+            "text": "Collection",
+            "url": "shopify://collections/all"
+          },
+          "type": "link"
+        },
+        "link-2": {
+          "settings": {
+            "text": "Notre Histoire",
+            "url": ""
+          },
+          "type": "link"
+        },
+        "link-3": {
+          "settings": {
+            "text": "FAQ",
+            "url": ""
+          },
+          "type": "link"
+        },
+        "link-4": {
+          "settings": {
+            "text": "Contact",
+            "url": ""
+          },
+          "type": "link"
+        }
+      },
+      "settings": {
+        "show_payment": true,
+        "tagline": "Fait avec ☁️ en France."
+      },
+      "type": "kumo-footer"
+    },
+    "kumo-header": {
+      "block_order": [
+        "nav-1",
+        "nav-2"
+      ],
+      "blocks": {
+        "nav-1": {
+          "settings": {
+            "link": "shopify://collections/all",
+            "text": "Collection"
+          },
+          "type": "nav_link"
+        },
+        "nav-2": {
+          "settings": {
+            "link": "",
+            "text": "Notre Histoire"
+          },
+          "type": "nav_link"
+        }
+      },
+      "settings": {
+        "logo_height": 48
+      },
+      "type": "kumo-header"
+    }
+  }
 }
