@@ -46,28 +46,61 @@
         "button_link": "shopify://collections/all"
       }
     },
+    "kumo-social-proof": {
+      "type": "kumo-social-proof",
+      "settings": {
+        "show_title": true,
+        "title": "Ils adorent"
+      },
+      "blocks": {
+        "badge-1": {
+          "type": "badge",
+          "settings": {
+            "icon": "tiktok",
+            "text": "Viral sur TikTok"
+          }
+        },
+        "stat-1": {
+          "type": "stat",
+          "settings": {
+            "icon": "heart",
+            "number": "50K+",
+            "label": "clients heureux"
+          }
+        },
+        "stat-2": {
+          "type": "stat",
+          "settings": {
+            "icon": "star",
+            "number": "4.9/5",
+            "label": "note moyenne"
+          }
+        }
+      },
+      "block_order": ["badge-1", "stat-1", "stat-2"]
+    },
     "kumo-trust-bar": {
       "type": "kumo-trust-bar",
       "blocks": {
         "trust-1": {
           "type": "trust_item",
           "settings": {
-            "icon": "video",
-            "text": "Vu sur TikTok"
+            "icon": "truck",
+            "text": "Livraison Offerte dès 50€"
           }
         },
         "trust-2": {
           "type": "trust_item",
           "settings": {
-            "icon": "truck",
-            "text": "Livraison Offerte dès 50€"
+            "icon": "return",
+            "text": "Retours Gratuits 30j"
           }
         },
         "trust-3": {
           "type": "trust_item",
           "settings": {
-            "icon": "return",
-            "text": "Retours Simplifiés 30 Jours"
+            "icon": "cloud",
+            "text": "Confort Garanti"
           }
         }
       },
@@ -130,6 +163,67 @@
         "subtitle": "Chaque détail est pensé pour votre confort absolu."
       }
     },
+    "kumo-testimonials": {
+      "type": "kumo-testimonials",
+      "settings": {
+        "badge": "Avis clients",
+        "title": "Ce qu'ils en pensent",
+        "subtitle": "Rejoignez des milliers de clients satisfaits",
+        "show_trust_indicator": true,
+        "trust_rating": "4.9/5",
+        "trust_count": "2,847"
+      },
+      "blocks": {
+        "testimonial-1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "content": "Les chaussons les plus confortables que j'ai jamais portés ! On dirait qu'on marche sur des nuages. Je ne peux plus m'en passer.",
+            "name": "Marie L.",
+            "product": "KUMO Cloud",
+            "verified": true
+          }
+        },
+        "testimonial-2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "content": "Parfaits pour le télétravail ! Mes pieds restent au chaud toute la journée. La qualité est vraiment au rendez-vous.",
+            "name": "Thomas B.",
+            "product": "KUMO Cozy",
+            "verified": true
+          }
+        },
+        "testimonial-3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "content": "J'ai offert une paire à ma mère, elle les adore ! Commande déjà la 3ème paire pour toute la famille.",
+            "name": "Sophie M.",
+            "product": "KUMO Original",
+            "verified": true
+          }
+        }
+      },
+      "block_order": ["testimonial-1", "testimonial-2", "testimonial-3"]
+    },
+    "kumo-instagram": {
+      "type": "kumo-instagram",
+      "settings": {
+        "title": "#KUMOFamily",
+        "handle": "kumo.official",
+        "show_cta": true
+      },
+      "blocks": {
+        "img-1": { "type": "image" },
+        "img-2": { "type": "image" },
+        "img-3": { "type": "image" },
+        "img-4": { "type": "image" },
+        "img-5": { "type": "image" },
+        "img-6": { "type": "image" }
+      },
+      "block_order": ["img-1", "img-2", "img-3", "img-4", "img-5", "img-6"]
+    },
     "kumo-newsletter": {
       "type": "kumo-newsletter",
       "settings": {
@@ -187,9 +281,12 @@
   "order": [
     "kumo-header",
     "kumo-hero",
+    "kumo-social-proof",
     "kumo-trust-bar",
     "kumo-featured-collection",
     "kumo-benefits",
+    "kumo-testimonials",
+    "kumo-instagram",
     "kumo-newsletter",
     "kumo-footer"
   ]

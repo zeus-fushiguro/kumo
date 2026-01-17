@@ -305,10 +305,17 @@
    Section Spacing
    ============================================ */
 .kumo-section {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .kumo-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
 }
 
 .kumo-section-sm {
@@ -316,4 +323,23 @@
   padding-bottom: 1.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+/* ============================================
+   Mobile-first Typography Fixes
+   ============================================ */
+@media (max-width: 767px) {
+  .kumo-h1 {
+    font-size: 2rem;
+  }
+
+  .kumo-h2,
+  .kumo-section-title {
+    font-size: 1.5rem;
+  }
+
+  .kumo-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

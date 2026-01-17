@@ -1,0 +1,352 @@
+{% comment %}
+  KUMO Social Proof Section
+  "Vu sur", press mentions, social media stats
+{% endcomment %}
+
+<section class="kumo-social-proof kumo-section-sm">
+  <div class="kumo-container">
+    <div class="kumo-social-proof__wrapper kumo-reveal">
+      {%- if section.settings.show_title -%}
+        <p class="kumo-social-proof__title">{{ section.settings.title }}</p>
+      {%- endif -%}
+
+      <div class="kumo-social-proof__items">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'stat' -%}
+              <div class="kumo-social-proof__stat" {{ block.shopify_attributes }}>
+                <span class="kumo-social-proof__stat-icon">
+                  {%- if block.settings.icon == 'tiktok' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                    </svg>
+                  {%- elsif block.settings.icon == 'instagram' -%}
+                    {% render 'kumo-icon', icon: 'instagram' %}
+                  {%- elsif block.settings.icon == 'heart' -%}
+                    {% render 'kumo-icon', icon: 'heart' %}
+                  {%- elsif block.settings.icon == 'star' -%}
+                    {% render 'kumo-icon', icon: 'star' %}
+                  {%- elsif block.settings.icon == 'users' -%}
+                    {% render 'kumo-icon', icon: 'users' %}
+                  {%- elsif block.settings.icon == 'truck' -%}
+                    {% render 'kumo-icon', icon: 'truck' %}
+                  {%- else -%}
+                    {% render 'kumo-icon', icon: 'check' %}
+                  {%- endif -%}
+                </span>
+                <div class="kumo-social-proof__stat-content">
+                  <span class="kumo-social-proof__stat-number">{{ block.settings.number }}</span>
+                  <span class="kumo-social-proof__stat-label">{{ block.settings.label }}</span>
+                </div>
+              </div>
+
+            {%- when 'logo' -%}
+              <div class="kumo-social-proof__logo" {{ block.shopify_attributes }}>
+                {%- if block.settings.image != blank -%}
+                  <img
+                    src="{{ block.settings.image | image_url: height: 40 }}"
+                    alt="{{ block.settings.alt | default: 'Logo' }}"
+                    loading="lazy"
+                  >
+                {%- else -%}
+                  <span class="kumo-social-proof__logo-text">{{ block.settings.text }}</span>
+                {%- endif -%}
+              </div>
+
+            {%- when 'badge' -%}
+              <div class="kumo-social-proof__badge" {{ block.shopify_attributes }}>
+                <span class="kumo-social-proof__badge-icon">
+                  {%- if block.settings.icon == 'tiktok' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                    </svg>
+                  {%- elsif block.settings.icon == 'fire' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 22c4-2 8-6 8-12 0-2-2-4-4-4-1 0-2 .5-3 1.5L12 8l-1-1.5C10 5.5 9 5 8 5c-2 0-4 2-4 4 0 6 4 10 8 13z"/>
+                    </svg>
+                  {%- else -%}
+                    {% render 'kumo-icon', icon: 'trending' %}
+                  {%- endif -%}
+                </span>
+                <span class="kumo-social-proof__badge-text">{{ block.settings.text }}</span>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kumo-social-proof__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background-color: var(--kumo-card);
+    border-radius: var(--kumo-radius-full);
+    box-shadow: var(--kumo-shadow-soft);
+  }
+
+  @media (min-width: 768px) {
+    .kumo-social-proof__wrapper {
+      flex-direction: row;
+      justify-content: center;
+      gap: 3rem;
+    }
+  }
+
+  .kumo-social-proof__title {
+    font-family: var(--kumo-font-family);
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--kumo-muted-foreground);
+    margin: 0;
+  }
+
+  .kumo-social-proof__items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .kumo-social-proof__items {
+      gap: 2.5rem;
+    }
+  }
+
+  /* Stats */
+  .kumo-social-proof__stat {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .kumo-social-proof__stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--kumo-primary);
+    border-radius: var(--kumo-radius-full);
+    color: var(--kumo-primary-foreground);
+  }
+
+  .kumo-social-proof__stat-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .kumo-social-proof__stat-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kumo-social-proof__stat-number {
+    font-family: var(--kumo-font-family);
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--kumo-foreground);
+    line-height: 1.2;
+  }
+
+  .kumo-social-proof__stat-label {
+    font-family: var(--kumo-font-family);
+    font-size: 0.75rem;
+    color: var(--kumo-muted-foreground);
+  }
+
+  /* Badge */
+  .kumo-social-proof__badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+    border-radius: var(--kumo-radius-full);
+    color: white;
+    animation: kumo-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes kumo-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  .kumo-social-proof__badge-icon svg {
+    width: 1rem;
+    height: 1rem;
+    stroke: currentColor;
+  }
+
+  .kumo-social-proof__badge-text {
+    font-family: var(--kumo-font-family);
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  /* Logo */
+  .kumo-social-proof__logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .kumo-social-proof__logo img {
+    height: 1.5rem;
+    width: auto;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  .kumo-social-proof__logo:hover img {
+    opacity: 1;
+  }
+
+  .kumo-social-proof__logo-text {
+    font-family: var(--kumo-font-family);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--kumo-muted-foreground);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Social Proof",
+  "class": "kumo-social-proof-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Afficher le titre",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Ils adorent"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Statistique",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "tiktok", "label": "TikTok" },
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "heart", "label": "Cœur" },
+            { "value": "star", "label": "Étoile" },
+            { "value": "users", "label": "Clients" },
+            { "value": "truck", "label": "Livraison" }
+          ],
+          "default": "heart"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Nombre",
+          "default": "50K+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Description",
+          "default": "clients heureux"
+        }
+      ]
+    },
+    {
+      "type": "badge",
+      "name": "Badge trending",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "tiktok", "label": "TikTok" },
+            { "value": "fire", "label": "Feu / Trending" },
+            { "value": "trending", "label": "Flèche" }
+          ],
+          "default": "tiktok"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Viral sur TikTok"
+        }
+      ]
+    },
+    {
+      "type": "logo",
+      "name": "Logo presse",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Logo"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte (si pas d'image)",
+          "default": "ELLE"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Texte alternatif"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Social Proof",
+      "settings": {
+        "show_title": true,
+        "title": "Ils adorent"
+      },
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "tiktok",
+            "text": "Viral sur TikTok"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "icon": "heart",
+            "number": "50K+",
+            "label": "clients heureux"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "icon": "star",
+            "number": "4.9/5",
+            "label": "note moyenne"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

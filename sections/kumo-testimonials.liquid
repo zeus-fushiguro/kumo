@@ -1,0 +1,391 @@
+{% comment %}
+  KUMO Testimonials Section
+  Customer reviews carousel/grid
+{% endcomment %}
+
+<section class="kumo-testimonials kumo-section">
+  <div class="kumo-container">
+    {%- comment -%} Section Header {%- endcomment -%}
+    <div class="kumo-text-center kumo-reveal" style="margin-bottom: 3rem;">
+      {%- if section.settings.badge != blank -%}
+        <span class="kumo-badge" style="margin-bottom: 1rem;">{{ section.settings.badge }}</span>
+      {%- endif -%}
+      <h2 class="kumo-section-title kumo-text-fluffy">{{ section.settings.title }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="kumo-text-muted" style="max-width: 32rem; margin: 1rem auto 0;">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Testimonials Grid {%- endcomment -%}
+    <div class="kumo-testimonials__grid">
+      {%- for block in section.blocks -%}
+        <article class="kumo-testimonial kumo-reveal" style="animation-delay: {{ forloop.index0 | times: 0.1 }}s;" {{ block.shopify_attributes }}>
+          {%- comment -%} Stars {%- endcomment -%}
+          <div class="kumo-testimonial__stars">
+            {%- assign rating = block.settings.rating | default: 5 -%}
+            {%- for i in (1..5) -%}
+              <span class="kumo-stars__star {% if i > rating %}kumo-stars__star--empty{% endif %}">
+                {% render 'kumo-icon', icon: 'star' %}
+              </span>
+            {%- endfor -%}
+          </div>
+
+          {%- comment -%} Content {%- endcomment -%}
+          <blockquote class="kumo-testimonial__content">
+            <p>{{ block.settings.content }}</p>
+          </blockquote>
+
+          {%- comment -%} Author {%- endcomment -%}
+          <footer class="kumo-testimonial__author">
+            {%- if block.settings.avatar != blank -%}
+              <img
+                src="{{ block.settings.avatar | image_url: width: 80 }}"
+                alt="{{ block.settings.name }}"
+                class="kumo-testimonial__avatar"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="kumo-testimonial__avatar kumo-testimonial__avatar--placeholder">
+                {{ block.settings.name | slice: 0 }}
+              </div>
+            {%- endif -%}
+            <div class="kumo-testimonial__meta">
+              <cite class="kumo-testimonial__name">{{ block.settings.name }}</cite>
+              {%- if block.settings.product != blank -%}
+                <span class="kumo-testimonial__product">{{ block.settings.product }}</span>
+              {%- endif -%}
+              {%- if block.settings.verified -%}
+                <span class="kumo-testimonial__verified">
+                  {% render 'kumo-icon', icon: 'check' %}
+                  Achat vérifié
+                </span>
+              {%- endif -%}
+            </div>
+          </footer>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Trust indicator {%- endcomment -%}
+    {%- if section.settings.show_trust_indicator -%}
+      <div class="kumo-testimonials__trust kumo-reveal">
+        <div class="kumo-testimonials__trust-stars">
+          {%- for i in (1..5) -%}
+            <span class="kumo-stars__star">{% render 'kumo-icon', icon: 'star' %}</span>
+          {%- endfor -%}
+        </div>
+        <p class="kumo-testimonials__trust-text">
+          <strong>{{ section.settings.trust_rating }}</strong> basé sur <strong>{{ section.settings.trust_count }}</strong> avis
+        </p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .kumo-testimonials__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .kumo-testimonials__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .kumo-testimonials__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .kumo-testimonial {
+    background-color: var(--kumo-card);
+    border-radius: var(--kumo-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--kumo-shadow-soft);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .kumo-testimonial:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--kumo-shadow-float);
+  }
+
+  .kumo-testimonial__stars {
+    display: flex;
+    gap: 0.125rem;
+    margin-bottom: 1rem;
+  }
+
+  .kumo-testimonial__stars .kumo-stars__star {
+    color: #fbbf24;
+  }
+
+  .kumo-testimonial__stars .kumo-stars__star svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+  }
+
+  .kumo-testimonial__stars .kumo-stars__star--empty svg {
+    fill: none;
+    stroke: currentColor;
+  }
+
+  .kumo-testimonial__content {
+    margin: 0 0 1.5rem;
+    padding: 0;
+    border: none;
+  }
+
+  .kumo-testimonial__content p {
+    font-family: var(--kumo-font-family);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--kumo-foreground);
+    margin: 0;
+  }
+
+  .kumo-testimonial__author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .kumo-testimonial__avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .kumo-testimonial__avatar--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--kumo-primary);
+    color: var(--kumo-primary-foreground);
+    font-family: var(--kumo-font-family);
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+  }
+
+  .kumo-testimonial__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .kumo-testimonial__name {
+    font-family: var(--kumo-font-family);
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-style: normal;
+    color: var(--kumo-foreground);
+  }
+
+  .kumo-testimonial__product {
+    font-size: 0.75rem;
+    color: var(--kumo-muted-foreground);
+  }
+
+  .kumo-testimonial__verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.6875rem;
+    color: #10b981;
+    font-weight: 500;
+  }
+
+  .kumo-testimonial__verified svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  /* Trust indicator */
+  .kumo-testimonials__trust {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background-color: var(--kumo-secondary);
+    border-radius: var(--kumo-radius-full);
+  }
+
+  @media (min-width: 640px) {
+    .kumo-testimonials__trust {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  .kumo-testimonials__trust-stars {
+    display: flex;
+    gap: 0.125rem;
+  }
+
+  .kumo-testimonials__trust-stars .kumo-stars__star {
+    color: #fbbf24;
+  }
+
+  .kumo-testimonials__trust-stars .kumo-stars__star svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: currentColor;
+  }
+
+  .kumo-testimonials__trust-text {
+    font-family: var(--kumo-font-family);
+    font-size: 0.875rem;
+    color: var(--kumo-muted-foreground);
+    margin: 0;
+  }
+
+  .kumo-testimonials__trust-text strong {
+    color: var(--kumo-foreground);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "KUMO - Témoignages",
+  "class": "kumo-testimonials-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "Avis clients"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Ce qu'ils en pensent"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Rejoignez des milliers de clients satisfaits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_indicator",
+      "label": "Afficher l'indicateur de confiance",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_rating",
+      "label": "Note globale",
+      "default": "4.9/5"
+    },
+    {
+      "type": "text",
+      "id": "trust_count",
+      "label": "Nombre d'avis",
+      "default": "2,847"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Témoignage",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Note",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Contenu",
+          "default": "Les chaussons les plus confortables que j'ai jamais portés ! On dirait qu'on marche sur des nuages. Je ne peux plus m'en passer."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nom",
+          "default": "Marie L."
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "product",
+          "label": "Produit acheté",
+          "default": "KUMO Cloud"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Achat vérifié",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Témoignages",
+      "settings": {
+        "badge": "Avis clients",
+        "title": "Ce qu'ils en pensent",
+        "subtitle": "Rejoignez des milliers de clients satisfaits",
+        "show_trust_indicator": true,
+        "trust_rating": "4.9/5",
+        "trust_count": "2,847"
+      },
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "content": "Les chaussons les plus confortables que j'ai jamais portés ! On dirait qu'on marche sur des nuages. Je ne peux plus m'en passer.",
+            "name": "Marie L.",
+            "product": "KUMO Cloud",
+            "verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "content": "Parfaits pour le télétravail ! Mes pieds restent au chaud toute la journée. La qualité est vraiment au rendez-vous.",
+            "name": "Thomas B.",
+            "product": "KUMO Cozy",
+            "verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "content": "J'ai offert une paire à ma mère, elle les adore ! Commande déjà la 3ème paire pour toute la famille.",
+            "name": "Sophie M.",
+            "product": "KUMO Original",
+            "verified": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
