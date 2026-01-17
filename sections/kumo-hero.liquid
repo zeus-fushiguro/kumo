@@ -6,7 +6,7 @@
 {%- liquid
   assign fade_opacity = section.settings.fade_opacity | default: 75
   assign fade_start = fade_opacity | times: 0.01
-  assign fade_mid = fade_opacity | times: 0.007
+  assign fade_mid = fade_opacity | times: 0.008
 -%}
 
 <section class="kumo-hero kumo-hero--align-{{ section.settings.content_alignment }}">
@@ -24,7 +24,7 @@
       <div class="kumo-hero__placeholder"></div>
     {%- endif -%}
     {%- comment -%} Gradient fade overlay - fades from left (text side) to right (image visible) {%- endcomment -%}
-    <div class="kumo-hero__fade" style="background: linear-gradient(to right, hsla(35, 45%, 97%, {{ fade_start }}) 0%, hsla(35, 45%, 97%, {{ fade_mid }}) 40%, hsla(35, 45%, 97%, 0) 70%);"></div>
+    <div class="kumo-hero__fade" style="background: linear-gradient(to right, hsla(35, 45%, 97%, {{ fade_start }}) 0%, hsla(35, 45%, 97%, {{ fade_start }}) 25%, hsla(35, 45%, 97%, {{ fade_mid }}) 50%, hsla(35, 45%, 97%, 0) 75%);"></div>
   </div>
 
   {%- comment -%} Content {%- endcomment -%}
