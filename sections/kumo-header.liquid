@@ -42,10 +42,10 @@
 
       {%- comment -%} Right: Account + Cart {%- endcomment -%}
       <div class="kumo-navbar__right">
-        <a href="{{ routes.account_url }}" class="kumo-btn-icon" aria-label="Mon compte">
+        <a href="{{ routes.account_login_url | default: '/account/login' }}" class="kumo-btn-icon kumo-navbar__icon" aria-label="Mon compte">
           {% render 'kumo-icon', icon: 'user' %}
         </a>
-        <a href="{{ routes.cart_url }}" class="kumo-btn-icon kumo-navbar__cart" aria-label="Panier">
+        <a href="{{ routes.cart_url }}" class="kumo-btn-icon kumo-navbar__icon kumo-navbar__cart" aria-label="Panier">
           {% render 'kumo-icon', icon: 'cart' %}
           {%- if cart.item_count > 0 -%}
             <span class="kumo-navbar__cart-count">{{ cart.item_count }}</span>
@@ -146,6 +146,15 @@
     font-weight: 700;
     font-size: 1.5rem;
     color: var(--kumo-foreground);
+  }
+
+  .kumo-navbar__icon {
+    padding: 0.625rem;
+  }
+
+  .kumo-navbar__icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .kumo-navbar__cart {

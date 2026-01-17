@@ -1,10 +1,15 @@
 {% comment %}
   KUMO Hero Section
-  Full-screen hero with heavily faded background, prominent title (Lovable style)
+  Full-screen hero with customizable fade overlay
 {% endcomment %}
 
+{%- liquid
+  assign fade_opacity = section.settings.fade_opacity | default: 75
+  assign fade_decimal = fade_opacity | divided_by: 100.0
+-%}
+
 <section class="kumo-hero kumo-hero--align-{{ section.settings.content_alignment }}">
-  {%- comment -%} Background Image with Heavy Fade {%- endcomment -%}
+  {%- comment -%} Background Image {%- endcomment -%}
   <div class="kumo-hero__background">
     {%- if section.settings.image != blank -%}
       <img
@@ -17,9 +22,9 @@
     {%- else -%}
       <div class="kumo-hero__placeholder"></div>
     {%- endif -%}
-    {%- comment -%} Heavy cream overlay - background almost invisible {%- endcomment -%}
-    <div class="kumo-hero__fade"></div>
-    {%- comment -%} Extra gradient on left for text {%- endcomment -%}
+    {%- comment -%} Customizable fade overlay {%- endcomment -%}
+    <div class="kumo-hero__fade" style="background: hsla(35, 45%, 97%, {{ fade_decimal }});"></div>
+    {%- comment -%} Gradient for text readability {%- endcomment -%}
     <div class="kumo-hero__gradient"></div>
   </div>
 
@@ -76,22 +81,21 @@
     background: linear-gradient(135deg, hsl(35, 45%, 96%) 0%, hsl(30, 40%, 93%) 100%);
   }
 
-  /* HEAVY cream overlay - makes background very faded like Lovable */
+  /* Fade overlay - opacity controlled via inline style */
   .kumo-hero__fade {
     position: absolute;
     inset: 0;
-    background: hsla(35, 45%, 97%, 0.78);
   }
 
-  /* Extra gradient on text side */
+  /* Gradient for text side */
   .kumo-hero__gradient {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to right,
-      hsla(35, 45%, 97%, 0.95) 0%,
-      hsla(35, 45%, 97%, 0.6) 40%,
-      transparent 70%
+      hsla(35, 45%, 97%, 0.9) 0%,
+      hsla(35, 45%, 97%, 0.5) 35%,
+      transparent 60%
     );
   }
 
@@ -106,7 +110,7 @@
     max-width: 32rem;
   }
 
-  /* Title - tight line spacing like Lovable */
+  /* Title - tight spacing */
   .kumo-hero__title {
     font-family: var(--kumo-font-family);
     font-size: clamp(2.75rem, 7vw, 4.5rem);
@@ -139,7 +143,7 @@
     display: inline-block;
   }
 
-  /* Alignment: Left (default) */
+  /* Alignment: Left */
   .kumo-hero--align-left .kumo-hero__inner {
     text-align: left;
   }
@@ -160,9 +164,9 @@
   .kumo-hero--align-center .kumo-hero__gradient {
     background: radial-gradient(
       ellipse at center,
-      hsla(35, 45%, 97%, 0.9) 0%,
-      hsla(35, 45%, 97%, 0.5) 50%,
-      transparent 80%
+      hsla(35, 45%, 97%, 0.85) 0%,
+      hsla(35, 45%, 97%, 0.4) 50%,
+      transparent 75%
     );
   }
 
@@ -180,9 +184,9 @@
   .kumo-hero--align-right .kumo-hero__gradient {
     background: linear-gradient(
       to left,
-      hsla(35, 45%, 97%, 0.95) 0%,
-      hsla(35, 45%, 97%, 0.6) 40%,
-      transparent 70%
+      hsla(35, 45%, 97%, 0.9) 0%,
+      hsla(35, 45%, 97%, 0.5) 35%,
+      transparent 60%
     );
   }
 
@@ -191,25 +195,17 @@
     .kumo-hero {
       min-height: 100svh;
     }
-
     .kumo-hero__content {
       padding: 6rem 0 3rem;
     }
-
     .kumo-hero__title {
       font-size: 2.5rem;
     }
-
-    .kumo-hero__fade {
-      background: hsla(35, 45%, 97%, 0.85);
-    }
-
     .kumo-hero__gradient {
       background: linear-gradient(
         to bottom,
-        hsla(35, 45%, 97%, 0.98) 0%,
-        hsla(35, 45%, 97%, 0.75) 50%,
-        hsla(35, 45%, 97%, 0.5) 80%,
+        hsla(35, 45%, 97%, 0.95) 0%,
+        hsla(35, 45%, 97%, 0.6) 50%,
         transparent 100%
       );
     }
@@ -225,6 +221,17 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image de fond"
+    },
+    {
+      "type": "range",
+      "id": "fade_opacity",
+      "min": 0,
+      "max": 95,
+      "step": 5,
+      "unit": "%",
+      "label": "Opacité du fondu (fade)",
+      "default": 75,
+      "info": "0% = image nette, 95% = image très fade"
     },
     {
       "type": "select",
@@ -275,7 +282,8 @@
         "title_line2": "à chaque pas.",
         "description": "Transformez votre intérieur en un refuge. Découvrez le confort ultime de la collection KUMO.",
         "button_text": "Explorer le Nuage",
-        "content_alignment": "left"
+        "content_alignment": "left",
+        "fade_opacity": 75
       }
     }
   ]
