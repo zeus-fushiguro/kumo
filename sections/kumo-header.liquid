@@ -1,30 +1,28 @@
 {% comment %}
   KUMO Header Section
-  Fixed header with pill-shaped navbar, centered logo, nav links, and cart
+  Fixed header with pill-shaped navbar, centered logo, nav links, account, and cart
 {% endcomment %}
 
 <header class="kumo-header kumo-animate-slide-down" id="kumo-header">
   <div class="kumo-container">
     <nav class="kumo-navbar">
-      {%- comment -%} Mobile menu spacer {%- endcomment -%}
-      <div class="kumo-navbar__spacer kumo-navbar__mobile-toggle">
-        <button type="button" class="kumo-btn-icon kumo-mobile-menu-toggle" aria-label="Menu">
+      {%- comment -%} Left: Mobile menu + Desktop Nav {%- endcomment -%}
+      <div class="kumo-navbar__left">
+        <button type="button" class="kumo-btn-icon kumo-mobile-menu-toggle kumo-navbar__mobile-only" aria-label="Menu">
           {% render 'kumo-icon', icon: 'menu' %}
         </button>
+        <div class="kumo-navbar__nav kumo-navbar__desktop-only">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'nav_link' -%}
+              <a href="{{ block.settings.link }}" class="kumo-navbar__link">
+                {{ block.settings.text }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
       </div>
 
-      {%- comment -%} Left Navigation (Desktop) {%- endcomment -%}
-      <div class="kumo-navbar__nav">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'nav_link' -%}
-            <a href="{{ block.settings.link }}" class="kumo-navbar__link">
-              {{ block.settings.text }}
-            </a>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-
-      {%- comment -%} Center Logo {%- endcomment -%}
+      {%- comment -%} Center: Logo {%- endcomment -%}
       <a href="{{ routes.root_url }}" class="kumo-navbar__logo">
         {%- if section.settings.logo -%}
           {%- assign logo_height = section.settings.logo_height | default: 48 -%}
@@ -33,8 +31,7 @@
             src="{{ section.settings.logo | image_url: height: logo_height_2x }}"
             srcset="{{ section.settings.logo | image_url: height: logo_height }} 1x, {{ section.settings.logo | image_url: height: logo_height_2x }} 2x"
             alt="{{ shop.name }}"
-            height="{{ logo_height }}"
-            width="auto"
+            style="height: {{ logo_height }}px; width: auto;"
             loading="eager"
             class="kumo-navbar__logo-img"
           >
@@ -43,11 +40,16 @@
         {%- endif -%}
       </a>
 
-      {%- comment -%} Right - Cart {%- endcomment -%}
-      <div class="kumo-navbar__cart">
-        <a href="{{ routes.cart_url }}" class="kumo-btn-icon" aria-label="Panier">
+      {%- comment -%} Right: Account + Cart {%- endcomment -%}
+      <div class="kumo-navbar__right">
+        <a href="{{ routes.account_url }}" class="kumo-btn-icon" aria-label="Mon compte">
+          {% render 'kumo-icon', icon: 'user' %}
+        </a>
+        <a href="{{ routes.cart_url }}" class="kumo-btn-icon kumo-navbar__cart" aria-label="Panier">
           {% render 'kumo-icon', icon: 'cart' %}
-          <span class="kumo-navbar__cart-count" data-cart-count>{{ cart.item_count }}</span>
+          {%- if cart.item_count > 0 -%}
+            <span class="kumo-navbar__cart-count">{{ cart.item_count }}</span>
+          {%- endif -%}
         </a>
       </div>
     </nav>
@@ -69,6 +71,9 @@
           </a>
         {%- endif -%}
       {%- endfor -%}
+      <a href="{{ routes.account_url }}" class="kumo-mobile-menu__link">
+        Mon compte
+      </a>
     </nav>
   </div>
 </div>
@@ -81,10 +86,57 @@
     height: 80px;
   }
 
+  .kumo-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: hsla(38, 50%, 96%, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--kumo-radius-full);
+    padding: 0.5rem 1rem;
+    box-shadow: var(--kumo-shadow-soft);
+  }
+
+  .kumo-navbar__left,
+  .kumo-navbar__right {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 80px;
+  }
+
+  .kumo-navbar__right {
+    justify-content: flex-end;
+  }
+
+  .kumo-navbar__nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .kumo-navbar__link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--kumo-muted-foreground);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .kumo-navbar__link:hover {
+    color: var(--kumo-foreground);
+  }
+
+  .kumo-navbar__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .kumo-navbar__logo-img {
     display: block;
-    height: auto;
-    max-height: 48px;
     width: auto;
     object-fit: contain;
   }
@@ -96,13 +148,48 @@
     color: var(--kumo-foreground);
   }
 
-  .kumo-navbar__mobile-toggle {
-    display: block;
+  .kumo-navbar__cart {
+    position: relative;
+  }
+
+  .kumo-navbar__cart-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 1.125rem;
+    height: 1.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--kumo-primary-foreground);
+    background-color: var(--kumo-primary);
+    border-radius: 50%;
+    padding: 0 0.25rem;
+  }
+
+  /* Mobile / Desktop visibility */
+  .kumo-navbar__mobile-only {
+    display: flex;
+  }
+  .kumo-navbar__desktop-only {
+    display: none;
   }
 
   @media (min-width: 768px) {
-    .kumo-navbar__mobile-toggle {
+    .kumo-navbar {
+      padding: 0.75rem 1.5rem;
+    }
+    .kumo-navbar__mobile-only {
       display: none;
+    }
+    .kumo-navbar__desktop-only {
+      display: flex;
+    }
+    .kumo-navbar__left,
+    .kumo-navbar__right {
+      min-width: 120px;
     }
   }
 
@@ -213,12 +300,12 @@
     {
       "type": "range",
       "id": "logo_height",
-      "min": 24,
-      "max": 80,
+      "min": 32,
+      "max": 120,
       "step": 4,
       "unit": "px",
       "label": "Hauteur du logo",
-      "default": 48
+      "default": 56
     }
   ],
   "blocks": [

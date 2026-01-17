@@ -1,10 +1,10 @@
 {% comment %}
   KUMO Hero Section
-  Full-screen hero with dreamy faded background, prominent title
+  Full-screen hero with heavily faded background, prominent title (Lovable style)
 {% endcomment %}
 
 <section class="kumo-hero kumo-hero--align-{{ section.settings.content_alignment }}">
-  {%- comment -%} Background Image with Dreamy Fade {%- endcomment -%}
+  {%- comment -%} Background Image with Heavy Fade {%- endcomment -%}
   <div class="kumo-hero__background">
     {%- if section.settings.image != blank -%}
       <img
@@ -15,13 +15,11 @@
         fetchpriority="high"
       >
     {%- else -%}
-      <div class="kumo-hero__placeholder">
-        {{ 'lifestyle-1' | placeholder_svg_tag }}
-      </div>
+      <div class="kumo-hero__placeholder"></div>
     {%- endif -%}
-    {%- comment -%} Dreamy cream overlay - fades the background {%- endcomment -%}
+    {%- comment -%} Heavy cream overlay - background almost invisible {%- endcomment -%}
     <div class="kumo-hero__fade"></div>
-    {%- comment -%} Gradient for text readability {%- endcomment -%}
+    {%- comment -%} Extra gradient on left for text {%- endcomment -%}
     <div class="kumo-hero__gradient"></div>
   </div>
 
@@ -31,16 +29,15 @@
       <div class="kumo-hero__inner">
         <h1 class="kumo-hero__title kumo-animate-fade-up">
           <span class="kumo-hero__title-line1">{{ section.settings.title_line1 }}</span>
-          <br>
           <span class="kumo-hero__title-line2">{{ section.settings.title_line2 }}</span>
         </h1>
 
-        <p class="kumo-hero__description kumo-animate-fade-up" style="animation-delay: 0.2s;">
+        <p class="kumo-hero__description kumo-animate-fade-up" style="animation-delay: 0.15s;">
           {{ section.settings.description }}
         </p>
 
         {%- if section.settings.button_text != blank -%}
-          <div class="kumo-hero__cta kumo-animate-fade-up" style="animation-delay: 0.4s;">
+          <div class="kumo-hero__cta kumo-animate-fade-up" style="animation-delay: 0.3s;">
             <a href="{{ section.settings.button_link }}" class="kumo-btn-cozy">
               <span>{{ section.settings.button_text }}</span>
               {% render 'kumo-icon', icon: 'arrow-right' %}
@@ -76,78 +73,66 @@
   .kumo-hero__placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, hsl(35, 45%, 95%) 0%, hsl(30, 40%, 90%) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: linear-gradient(135deg, hsl(35, 45%, 96%) 0%, hsl(30, 40%, 93%) 100%);
   }
 
-  .kumo-hero__placeholder svg {
-    width: 40%;
-    height: 40%;
-    fill: var(--kumo-muted-foreground);
-    opacity: 0.3;
-  }
-
-  /* Dreamy cream fade overlay - makes background soft/faded */
+  /* HEAVY cream overlay - makes background very faded like Lovable */
   .kumo-hero__fade {
     position: absolute;
     inset: 0;
-    background: hsla(35, 45%, 97%, 0.65);
-    backdrop-filter: blur(1px);
+    background: hsla(35, 45%, 97%, 0.78);
   }
 
-  /* Gradient for better text contrast on left side */
+  /* Extra gradient on text side */
   .kumo-hero__gradient {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to right,
-      hsla(35, 45%, 97%, 0.9) 0%,
-      hsla(35, 45%, 97%, 0.7) 30%,
-      hsla(35, 45%, 97%, 0.3) 60%,
-      transparent 100%
+      hsla(35, 45%, 97%, 0.95) 0%,
+      hsla(35, 45%, 97%, 0.6) 40%,
+      transparent 70%
     );
   }
 
   .kumo-hero__content {
     position: relative;
     z-index: 1;
-    padding: 8rem 0 4rem;
+    padding: 7rem 0 4rem;
     width: 100%;
   }
 
   .kumo-hero__inner {
-    max-width: 36rem;
+    max-width: 32rem;
   }
 
-  /* Title styling - prominent and dark */
+  /* Title - tight line spacing like Lovable */
   .kumo-hero__title {
     font-family: var(--kumo-font-family);
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.75rem, 7vw, 4.5rem);
     font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.03em;
   }
 
   .kumo-hero__title-line1 {
-    color: var(--kumo-foreground);
     display: block;
+    color: var(--kumo-foreground);
   }
 
   .kumo-hero__title-line2 {
-    color: var(--kumo-primary);
     display: block;
+    color: var(--kumo-primary);
   }
 
   .kumo-hero__description {
     font-family: var(--kumo-font-family);
-    font-size: 1rem;
-    line-height: 1.7;
+    font-size: 0.9375rem;
+    line-height: 1.6;
     color: var(--kumo-muted-foreground);
-    max-width: 26rem;
-    margin-bottom: 2rem;
+    max-width: 24rem;
+    margin-bottom: 1.75rem;
   }
 
   .kumo-hero__cta {
@@ -157,10 +142,6 @@
   /* Alignment: Left (default) */
   .kumo-hero--align-left .kumo-hero__inner {
     text-align: left;
-  }
-  .kumo-hero--align-left .kumo-hero__description {
-    margin-left: 0;
-    margin-right: auto;
   }
 
   /* Alignment: Center */
@@ -179,7 +160,7 @@
   .kumo-hero--align-center .kumo-hero__gradient {
     background: radial-gradient(
       ellipse at center,
-      hsla(35, 45%, 97%, 0.85) 0%,
+      hsla(35, 45%, 97%, 0.9) 0%,
       hsla(35, 45%, 97%, 0.5) 50%,
       transparent 80%
     );
@@ -192,47 +173,43 @@
   .kumo-hero--align-right .kumo-hero__inner {
     text-align: right;
     margin-left: auto;
-    margin-right: 0;
   }
   .kumo-hero--align-right .kumo-hero__description {
     margin-left: auto;
-    margin-right: 0;
   }
   .kumo-hero--align-right .kumo-hero__gradient {
     background: linear-gradient(
       to left,
-      hsla(35, 45%, 97%, 0.9) 0%,
-      hsla(35, 45%, 97%, 0.7) 30%,
-      hsla(35, 45%, 97%, 0.3) 60%,
-      transparent 100%
+      hsla(35, 45%, 97%, 0.95) 0%,
+      hsla(35, 45%, 97%, 0.6) 40%,
+      transparent 70%
     );
   }
 
-  /* Mobile adjustments */
+  /* Mobile */
   @media (max-width: 767px) {
+    .kumo-hero {
+      min-height: 100svh;
+    }
+
     .kumo-hero__content {
-      padding: 7rem 0 3rem;
+      padding: 6rem 0 3rem;
     }
 
-    .kumo-hero__inner {
-      text-align: left;
-    }
-
-    .kumo-hero__description {
-      margin-left: 0;
-      font-size: 0.9375rem;
+    .kumo-hero__title {
+      font-size: 2.5rem;
     }
 
     .kumo-hero__fade {
-      background: hsla(35, 45%, 97%, 0.75);
+      background: hsla(35, 45%, 97%, 0.85);
     }
 
     .kumo-hero__gradient {
       background: linear-gradient(
         to bottom,
-        hsla(35, 45%, 97%, 0.95) 0%,
-        hsla(35, 45%, 97%, 0.7) 40%,
-        hsla(35, 45%, 97%, 0.4) 70%,
+        hsla(35, 45%, 97%, 0.98) 0%,
+        hsla(35, 45%, 97%, 0.75) 50%,
+        hsla(35, 45%, 97%, 0.5) 80%,
         transparent 100%
       );
     }
