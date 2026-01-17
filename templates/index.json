@@ -1,10 +1,16 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "kumo-header": {
       "type": "kumo-header",
-      "settings": {
-        "logo_height": 48
-      },
       "blocks": {
         "nav-1": {
           "type": "nav_link",
@@ -21,7 +27,14 @@
           }
         }
       },
-      "block_order": ["nav-1", "nav-2"]
+      "block_order": [
+        "nav-1",
+        "nav-2"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/store-logo-1768439294888_d2a85ca0-339c-4814-b625-efd35076dec9.png",
+        "logo_height": 40
+      }
     },
     "kumo-hero": {
       "type": "kumo-hero",
@@ -58,13 +71,19 @@
           }
         }
       },
-      "block_order": ["trust-1", "trust-2", "trust-3"]
+      "block_order": [
+        "trust-1",
+        "trust-2",
+        "trust-3"
+      ],
+      "settings": {}
     },
     "kumo-featured-collection": {
       "type": "kumo-featured-collection",
       "settings": {
         "badge": "Les Favoris de l'Hiver",
         "title": "Nos Best-sellers Nuage",
+        "collection": "",
         "products_count": 3,
         "show_view_all": true,
         "view_all_text": "Voir toute la collection"
@@ -72,10 +91,6 @@
     },
     "kumo-benefits": {
       "type": "kumo-benefits",
-      "settings": {
-        "title": "Pourquoi KUMO ?",
-        "subtitle": "Chaque détail est pensé pour votre confort absolu."
-      },
       "blocks": {
         "benefit-1": {
           "type": "benefit",
@@ -105,7 +120,15 @@
           }
         }
       },
-      "block_order": ["benefit-1", "benefit-2", "benefit-3"]
+      "block_order": [
+        "benefit-1",
+        "benefit-2",
+        "benefit-3"
+      ],
+      "settings": {
+        "title": "Pourquoi KUMO ?",
+        "subtitle": "Chaque détail est pensé pour votre confort absolu."
+      }
     },
     "kumo-newsletter": {
       "type": "kumo-newsletter",
@@ -119,10 +142,6 @@
     },
     "kumo-footer": {
       "type": "kumo-footer",
-      "settings": {
-        "show_payment": true,
-        "tagline": "Fait avec ☁️ en France."
-      },
       "blocks": {
         "link-1": {
           "type": "link",
@@ -153,7 +172,16 @@
           }
         }
       },
-      "block_order": ["link-1", "link-2", "link-3", "link-4"]
+      "block_order": [
+        "link-1",
+        "link-2",
+        "link-3",
+        "link-4"
+      ],
+      "settings": {
+        "show_payment": true,
+        "tagline": "Fait avec ☁️ en France."
+      }
     }
   },
   "order": [
