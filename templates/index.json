@@ -39,7 +39,7 @@
     "kumo-hero": {
       "type": "kumo-hero",
       "settings": {
-        "image": "shopify://shop_images/hero-3.jpg",
+        "image": "shopify://shop_images/hero-slippers.jpg",
         "fade_opacity": 95,
         "content_alignment": "left",
         "title_line1": "Cocooning",
