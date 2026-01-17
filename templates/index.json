@@ -48,10 +48,6 @@
     },
     "kumo-social-proof": {
       "type": "kumo-social-proof",
-      "settings": {
-        "show_title": true,
-        "title": "Ils adorent"
-      },
       "blocks": {
         "badge-1": {
           "type": "badge",
@@ -77,7 +73,15 @@
           }
         }
       },
-      "block_order": ["badge-1", "stat-1", "stat-2"]
+      "block_order": [
+        "badge-1",
+        "stat-1",
+        "stat-2"
+      ],
+      "settings": {
+        "show_title": true,
+        "title": "Ils adorent"
+      }
     },
     "kumo-trust-bar": {
       "type": "kumo-trust-bar",
@@ -116,8 +120,8 @@
       "settings": {
         "badge": "Les Favoris de l'Hiver",
         "title": "Nos Best-sellers Nuage",
-        "collection": "",
-        "products_count": 3,
+        "collection": "slippers",
+        "products_count": 5,
         "show_view_all": true,
         "view_all_text": "Voir toute la collection"
       }
@@ -165,14 +169,6 @@
     },
     "kumo-testimonials": {
       "type": "kumo-testimonials",
-      "settings": {
-        "badge": "Avis clients",
-        "title": "Ce qu'ils en pensent",
-        "subtitle": "Rejoignez des milliers de clients satisfaits",
-        "show_trust_indicator": true,
-        "trust_rating": "4.9/5",
-        "trust_count": "2,847"
-      },
       "blocks": {
         "testimonial-1": {
           "type": "testimonial",
@@ -205,24 +201,79 @@
           }
         }
       },
-      "block_order": ["testimonial-1", "testimonial-2", "testimonial-3"]
+      "block_order": [
+        "testimonial-1",
+        "testimonial-2",
+        "testimonial-3"
+      ],
+      "settings": {
+        "badge": "Avis clients",
+        "title": "Ce qu'ils en pensent",
+        "subtitle": "Rejoignez des milliers de clients satisfaits",
+        "show_trust_indicator": true,
+        "trust_rating": "4.9/5",
+        "trust_count": "2,847"
+      }
     },
     "kumo-instagram": {
       "type": "kumo-instagram",
+      "blocks": {
+        "img-1": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "alt": ""
+          }
+        },
+        "img-2": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "alt": ""
+          }
+        },
+        "img-3": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "alt": ""
+          }
+        },
+        "img-4": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "alt": ""
+          }
+        },
+        "img-5": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "alt": ""
+          }
+        },
+        "img-6": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "img-1",
+        "img-2",
+        "img-3",
+        "img-4",
+        "img-5",
+        "img-6"
+      ],
       "settings": {
         "title": "#KUMOFamily",
         "handle": "kumo.official",
         "show_cta": true
-      },
-      "blocks": {
-        "img-1": { "type": "image" },
-        "img-2": { "type": "image" },
-        "img-3": { "type": "image" },
-        "img-4": { "type": "image" },
-        "img-5": { "type": "image" },
-        "img-6": { "type": "image" }
-      },
-      "block_order": ["img-1", "img-2", "img-3", "img-4", "img-5", "img-6"]
+      }
     },
     "kumo-newsletter": {
       "type": "kumo-newsletter",
