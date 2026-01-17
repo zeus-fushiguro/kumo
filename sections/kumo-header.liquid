@@ -26,13 +26,17 @@
 
       {%- comment -%} Center Logo {%- endcomment -%}
       <a href="{{ routes.root_url }}" class="kumo-navbar__logo">
-        {%- if section.settings.logo != blank -%}
+        {%- if section.settings.logo -%}
+          {%- assign logo_height = section.settings.logo_height | default: 48 -%}
+          {%- assign logo_height_2x = logo_height | times: 2 -%}
           <img
-            src="{{ section.settings.logo | image_url: height: section.settings.logo_height | times: 2 }}"
+            src="{{ section.settings.logo | image_url: height: logo_height_2x }}"
+            srcset="{{ section.settings.logo | image_url: height: logo_height }} 1x, {{ section.settings.logo | image_url: height: logo_height_2x }} 2x"
             alt="{{ shop.name }}"
-            height="{{ section.settings.logo_height }}"
+            height="{{ logo_height }}"
             width="auto"
             loading="eager"
+            class="kumo-navbar__logo-img"
           >
         {%- else -%}
           <span class="kumo-navbar__logo-text">{{ shop.name }}</span>
@@ -75,6 +79,14 @@
 <style>
   .kumo-header-spacer {
     height: 80px;
+  }
+
+  .kumo-navbar__logo-img {
+    display: block;
+    height: auto;
+    max-height: 48px;
+    width: auto;
+    object-fit: contain;
   }
 
   .kumo-navbar__logo-text {
