@@ -4,7 +4,7 @@
       "type": "kumo-gift-card",
       "settings": {
         "title": "Offrez un Nuage de Douceur.",
-        "subtitle": "Le cadeau parfait, envoyé instantanément par email. Valable sur toute la boutique.",
+        "subtitle": "<p>Le cadeau parfait, envoyé <em>instantanément<\/em> par email.<\/p><p>Valable sur toute la boutique.<\/p>",
         "button_text": "Envoyer ce Cocon"
       }
     }
