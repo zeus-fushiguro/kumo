@@ -6,13 +6,15 @@
 <section class="kumo-gift-card">
   <div class="kumo-gift-card__container">
 
-    {%- comment -%} Product Image - Large, centered, super rounded {%- endcomment -%}
+    {%- comment -%} Product Image - Always show first image, ignore variant images {%- endcomment -%}
     <div class="kumo-gift-card__image-wrapper">
-      {%- if product.featured_image != blank -%}
+      {%- assign gift_card_image = product.images[0] | default: product.featured_image -%}
+      {%- if gift_card_image != blank -%}
         <img
-          src="{{ product.featured_image | image_url: width: 800 }}"
-          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+          src="{{ gift_card_image | image_url: width: 800 }}"
+          alt="{{ gift_card_image.alt | default: product.title | escape }}"
           class="kumo-gift-card__image"
+          id="kumo-gift-card-image"
           loading="eager"
         >
       {%- else -%}
@@ -104,11 +106,11 @@
     text-align: center;
   }
 
-  /* Image - Large, super rounded */
+  /* Image - Large, super rounded, square ratio to show full design */
   .kumo-gift-card__image-wrapper {
     width: 100%;
-    max-width: 520px;
-    aspect-ratio: 4 / 3;
+    max-width: 420px;
+    aspect-ratio: 1 / 1;
     margin-bottom: 1.5rem;
     border-radius: 1.5rem;
     overflow: hidden;
@@ -118,7 +120,8 @@
   .kumo-gift-card__image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: linear-gradient(135deg, hsl(280, 40%, 92%) 0%, hsl(200, 50%, 92%) 100%);
   }
 
   .kumo-gift-card__image-placeholder {
