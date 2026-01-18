@@ -38,10 +38,16 @@
     },
     "kumo-hero": {
       "type": "kumo-hero",
+      "custom_css": [
+        "@media screen and (max-width: 750px) {.banner__content, .banner__media {display: none !important; }}"
+      ],
       "settings": {
-        "image": "shopify://shop_images/hero-slippers.jpg",
+        "image": "shopify://shop_images/kumo_hero_3_6d131bd6-09aa-4666-baca-addc5c123bb0.png",
         "fade_opacity": 95,
         "content_alignment": "left",
+        "enable_intro_animation": false,
+        "image_display_duration": 1.5,
+        "fade_duration": 0.8,
         "title_line1": "Cocooning",
         "title_line2": "à chaque pas.",
         "description": "Transformez votre intérieur en un refuge. Découvrez le confort ultime de la collection KUMO.",
@@ -120,6 +126,7 @@
     },
     "kumo-featured-collection": {
       "type": "kumo-featured-collection",
+      "custom_css": [],
       "settings": {
         "badge": "Les Favoris de l'Hiver",
         "title": "Nos Best-sellers Nuage",
