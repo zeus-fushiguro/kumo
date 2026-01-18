@@ -6,15 +6,18 @@
 <section class="kumo-gift-card">
   <div class="kumo-gift-card__container">
 
-    {%- comment -%} Product Image - Always show first image, ignore variant images {%- endcomment -%}
+    {%- comment -%} Product Image - Shows variant image, changes on variant selection {%- endcomment -%}
+    {%- assign default_variant = product.selected_or_first_available_variant -%}
+    {%- assign current_image = default_variant.image | default: product.featured_image -%}
     <div class="kumo-gift-card__image-wrapper">
-      {%- assign gift_card_image = product.images[0] | default: product.featured_image -%}
-      {%- if gift_card_image != blank -%}
+      {%- if current_image != blank -%}
         <img
-          src="{{ gift_card_image | image_url: width: 800 }}"
-          alt="{{ gift_card_image.alt | default: product.title | escape }}"
+          src="{{ current_image | image_url: width: 800 }}"
+          alt="{{ current_image.alt | default: product.title | escape }}"
           class="kumo-gift-card__image"
           id="kumo-gift-card-image"
+          width="800"
+          height="800"
           loading="eager"
         >
       {%- else -%}
