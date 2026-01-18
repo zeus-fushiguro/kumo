@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "kumo-gift-card",
+      "settings": {
+        "title": "Offrez un Nuage de Douceur.",
+        "subtitle": "Le cadeau parfait, envoyé instantanément par email. Valable sur toute la boutique.",
+        "button_text": "Envoyer ce Cocon"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
