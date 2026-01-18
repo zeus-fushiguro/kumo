@@ -42,14 +42,15 @@
     <p class="kumo-gift-card__amount-label">Choisissez le montant :</p>
 
     {%- comment -%} Amount Selector - Square rounded buttons {%- endcomment -%}
-    <div class="kumo-gift-card__amounts">
+    {%- assign default_variant = product.selected_or_first_available_variant -%}
+    <div class="kumo-gift-card__amounts" id="kumo-gift-card-amounts">
       {%- for variant in product.variants -%}
         <button
           type="button"
-          class="kumo-gift-card__amount-btn{% if forloop.index == 2 %} kumo-gift-card__amount-btn--active{% endif %}"
+          class="kumo-gift-card__amount-btn{% if variant.id == default_variant.id %} kumo-gift-card__amount-btn--active{% endif %}"
           data-variant-id="{{ variant.id }}"
           data-price="{{ variant.price | money }}"
-          data-price-raw="{{ variant.price }}"
+          onclick="selectGiftCardVariant(this)"
         >
           {{ variant.price | money_without_trailing_zeros }}
         </button>
@@ -58,12 +59,12 @@
 
     {%- comment -%} Add to Cart Form {%- endcomment -%}
     <form action="/cart/add" method="post" class="kumo-gift-card__form" id="kumo-gift-card-form">
-      <input type="hidden" name="id" id="kumo-gift-card-variant" value="{{ product.variants[1].id | default: product.selected_or_first_available_variant.id }}">
+      <input type="hidden" name="id" id="kumo-gift-card-variant" value="{{ default_variant.id }}">
       <input type="hidden" name="quantity" value="1">
 
       <button type="submit" class="kumo-gift-card__cta" id="kumo-gift-card-cta">
         <span>{{ section.settings.button_text | default: "Envoyer ce Cocon" }}</span>
-        <span class="kumo-gift-card__cta-price">({{ product.variants[1].price | default: product.selected_or_first_available_variant.price | money }})</span>
+        <span class="kumo-gift-card__cta-price" id="kumo-gift-card-price">({{ default_variant.price | money }})</span>
       </button>
     </form>
 
@@ -313,24 +314,28 @@
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const amountBtns = document.querySelectorAll('.kumo-gift-card__amount-btn');
-    const variantInput = document.getElementById('kumo-gift-card-variant');
-    const ctaPriceEl = document.querySelector('.kumo-gift-card__cta-price');
+  function selectGiftCardVariant(btn) {
+    // Remove active from all buttons
+    var allBtns = document.querySelectorAll('.kumo-gift-card__amount-btn');
+    for (var i = 0; i < allBtns.length; i++) {
+      allBtns[i].classList.remove('kumo-gift-card__amount-btn--active');
+    }
 
-    amountBtns.forEach(btn => {
-      btn.addEventListener('click', function() {
-        // Remove active from all
-        amountBtns.forEach(b => b.classList.remove('kumo-gift-card__amount-btn--active'));
-        // Add active to clicked
-        this.classList.add('kumo-gift-card__amount-btn--active');
-        // Update hidden input
-        variantInput.value = this.dataset.variantId;
-        // Update CTA price
-        ctaPriceEl.textContent = '(' + this.dataset.price + ')';
-      });
-    });
-  });
+    // Add active to clicked button
+    btn.classList.add('kumo-gift-card__amount-btn--active');
+
+    // Update hidden variant input
+    var variantInput = document.getElementById('kumo-gift-card-variant');
+    if (variantInput) {
+      variantInput.value = btn.getAttribute('data-variant-id');
+    }
+
+    // Update CTA price display
+    var priceEl = document.getElementById('kumo-gift-card-price');
+    if (priceEl) {
+      priceEl.textContent = '(' + btn.getAttribute('data-price') + ')';
+    }
+  }
 </script>
 
 {% schema %}

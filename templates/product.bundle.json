@@ -1,0 +1,79 @@
+{
+  "sections": {
+    "main": {
+      "type": "kumo-bundle-product",
+      "blocks": {
+        "item1": {
+          "type": "included_item",
+          "settings": {
+            "item_text": "2x Pantoufles KUMO au choix"
+          }
+        },
+        "item2": {
+          "type": "included_item",
+          "settings": {
+            "item_text": "Pochette de rangement offerte"
+          }
+        },
+        "item3": {
+          "type": "included_item",
+          "settings": {
+            "item_text": "E-book \"Cocon\" inclus"
+          }
+        },
+        "item4": {
+          "type": "included_item",
+          "settings": {
+            "item_text": "Livraison express gratuite"
+          }
+        }
+      },
+      "block_order": ["item1", "item2", "item3", "item4"],
+      "settings": {
+        "badge_text": "Pack Duo",
+        "show_includes": true,
+        "show_description": true,
+        "button_text": "Ajouter le Pack au Panier"
+      }
+    },
+    "accordion": {
+      "type": "kumo-product-accordion",
+      "blocks": {
+        "desc": {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Pourquoi choisir un pack ?",
+            "content": "<p>Nos packs vous permettent d'économiser tout en faisant plaisir à vos proches. Chaque pack inclut des bonus exclusifs non disponibles à l'achat séparé.</p>",
+            "open_default": false
+          }
+        },
+        "shipping": {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Livraison & Retours",
+            "content": "<ul><li><strong>Livraison Express :</strong> Gratuite pour tous les packs</li><li><strong>Délai :</strong> 24-48h ouvrées</li><li><strong>Retours :</strong> Gratuits sous 30 jours</li></ul>",
+            "open_default": false
+          }
+        }
+      },
+      "block_order": ["desc", "shipping"],
+      "settings": {
+        "padding_top": 20,
+        "padding_bottom": 40
+      }
+    },
+    "related": {
+      "type": "kumo-related-products",
+      "settings": {
+        "title": "Complétez votre pack",
+        "show_emoji": true,
+        "products_count": 3
+      }
+    }
+  },
+  "order": [
+    "main",
+    "accordion",
+    "related"
+  ]
+}

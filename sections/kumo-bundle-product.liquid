@@ -1,0 +1,672 @@
+{% comment %}
+  KUMO Bundle/Package Product Section
+  Display product bundles with savings highlight
+  Ready for bundle apps integration (Bundler, Bundle Products, etc.)
+{% endcomment %}
+
+{%- liquid
+  assign padding_top = section.settings.padding_top | default: 60
+  assign padding_bottom = section.settings.padding_bottom | default: 60
+-%}
+
+<section class="kumo-bundle" style="--padding-top: {{ padding_top }}px; --padding-bottom: {{ padding_bottom }}px;">
+  <div class="kumo-container">
+    <div class="kumo-bundle__layout">
+
+      {%- comment -%} Gallery {%- endcomment -%}
+      <div class="kumo-bundle__gallery">
+        <div class="kumo-bundle__main-image">
+          {%- if product.featured_image != blank -%}
+            <img
+              src="{{ product.featured_image | image_url: width: 800 }}"
+              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+              id="kumo-bundle-main-image"
+              loading="eager"
+            >
+          {%- else -%}
+            <div class="kumo-bundle__placeholder">
+              {{ 'product-1' | placeholder_svg_tag }}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Savings Badge {%- endcomment -%}
+          {%- if product.compare_at_price > product.price -%}
+            {%- assign savings = product.compare_at_price | minus: product.price -%}
+            {%- assign savings_percent = savings | times: 100.0 | divided_by: product.compare_at_price | round -%}
+            <div class="kumo-bundle__savings-badge">
+              -{{ savings_percent }}%
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if product.images.size > 1 -%}
+          <div class="kumo-bundle__thumbnails">
+            {%- for image in product.images limit: 5 -%}
+              <button
+                type="button"
+                class="kumo-bundle__thumb{% if forloop.first %} kumo-bundle__thumb--active{% endif %}"
+                onclick="selectBundleImage(this, '{{ image | image_url: width: 800 }}')"
+              >
+                <img
+                  src="{{ image | image_url: width: 150 }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                  loading="lazy"
+                >
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Info {%- endcomment -%}
+      <div class="kumo-bundle__info">
+
+        {%- comment -%} Badge {%- endcomment -%}
+        <div class="kumo-bundle__badge">
+          <span>📦</span>
+          <span>{{ section.settings.badge_text | default: "Pack Économique" }}</span>
+        </div>
+
+        {%- comment -%} Title {%- endcomment -%}
+        <h1 class="kumo-bundle__title">{{ product.title }}</h1>
+
+        {%- comment -%} What's Included {%- endcomment -%}
+        {%- if section.settings.show_includes -%}
+          <div class="kumo-bundle__includes">
+            <p class="kumo-bundle__includes-label">{{ section.settings.includes_label | default: "Ce pack contient :" }}</p>
+            <ul class="kumo-bundle__includes-list">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'included_item' -%}
+                  <li class="kumo-bundle__includes-item" {{ block.shopify_attributes }}>
+                    <span class="kumo-bundle__includes-check">✓</span>
+                    <span>{{ block.settings.item_text }}</span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if section.blocks.size == 0 -%}
+                {%- comment -%} Default items from product description or metafields {%- endcomment -%}
+                <li class="kumo-bundle__includes-item">
+                  <span class="kumo-bundle__includes-check">✓</span>
+                  <span>2x Pantoufles KUMO</span>
+                </li>
+                <li class="kumo-bundle__includes-item">
+                  <span class="kumo-bundle__includes-check">✓</span>
+                  <span>Pochette de rangement offerte</span>
+                </li>
+                <li class="kumo-bundle__includes-item">
+                  <span class="kumo-bundle__includes-check">✓</span>
+                  <span>E-book "Cocon" inclus</span>
+                </li>
+              {%- endif -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Pricing {%- endcomment -%}
+        <div class="kumo-bundle__pricing">
+          <div class="kumo-bundle__price-row">
+            <span class="kumo-bundle__price" id="kumo-bundle-price">{{ product.selected_or_first_available_variant.price | money }}</span>
+            {%- if product.compare_at_price > product.price -%}
+              <span class="kumo-bundle__compare-price">{{ product.compare_at_price | money }}</span>
+            {%- endif -%}
+          </div>
+          {%- if product.compare_at_price > product.price -%}
+            <p class="kumo-bundle__savings-text">
+              Vous économisez {{ product.compare_at_price | minus: product.price | money }}
+            </p>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Variant Selector (if applicable) {%- endcomment -%}
+        {%- if product.has_only_default_variant == false -%}
+          <div class="kumo-bundle__variants">
+            {%- for option in product.options_with_values -%}
+              <div class="kumo-bundle__option">
+                <label class="kumo-bundle__option-label">{{ option.name }}</label>
+                <div class="kumo-bundle__option-values">
+                  {%- for value in option.values -%}
+                    {%- assign option_index = 'option' | append: forloop.parentloop.index -%}
+                    <button
+                      type="button"
+                      class="kumo-bundle__option-btn{% if product.selected_or_first_available_variant[option_index] == value %} kumo-bundle__option-btn--active{% endif %}"
+                      data-option-index="{{ forloop.parentloop.index }}"
+                      data-value="{{ value }}"
+                      onclick="selectBundleOption(this)"
+                    >
+                      {{ value }}
+                    </button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Add to Cart {%- endcomment -%}
+        <form action="/cart/add" method="post" class="kumo-bundle__form" id="kumo-bundle-form">
+          <input type="hidden" name="id" id="kumo-bundle-variant" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+
+          <button
+            type="submit"
+            class="kumo-bundle__cta"
+            {% unless product.available %}disabled{% endunless %}
+          >
+            {%- if product.available -%}
+              <span>{{ section.settings.button_text | default: "Ajouter le Pack au Panier" }}</span>
+            {%- else -%}
+              <span>Rupture de stock</span>
+            {%- endif -%}
+          </button>
+        </form>
+
+        {%- comment -%} Trust signals {%- endcomment -%}
+        <div class="kumo-bundle__trust">
+          <div class="kumo-bundle__trust-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+            <span>Livraison gratuite</span>
+          </div>
+          <div class="kumo-bundle__trust-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="1 4 1 10 7 10"></polyline>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </svg>
+            <span>Retours 30 jours</span>
+          </div>
+        </div>
+
+        {%- comment -%} Description {%- endcomment -%}
+        {%- if product.description != blank and section.settings.show_description -%}
+          <div class="kumo-bundle__description">
+            {{ product.description }}
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kumo-bundle {
+    padding-top: var(--padding-top, 60px);
+    padding-bottom: var(--padding-bottom, 60px);
+    background: var(--kumo-background, hsl(35, 45%, 97%));
+  }
+
+  .kumo-bundle__layout {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 1024px) {
+    .kumo-bundle__layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  /* Gallery */
+  .kumo-bundle__gallery {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .kumo-bundle__main-image {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    background: var(--kumo-card, white);
+    box-shadow: 0 8px 30px -8px hsla(25, 30%, 20%, 0.12);
+  }
+
+  .kumo-bundle__main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .kumo-bundle__savings-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: hsl(0, 70%, 55%);
+    color: white;
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    padding: 0.5rem 0.875rem;
+    border-radius: 9999px;
+  }
+
+  .kumo-bundle__thumbnails {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    justify-content: center;
+  }
+
+  .kumo-bundle__thumb {
+    width: 72px;
+    height: 72px;
+    border: 2px solid transparent;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--kumo-card, white);
+    padding: 0;
+    transition: all 0.2s ease;
+  }
+
+  .kumo-bundle__thumb:hover {
+    border-color: hsl(25, 20%, 80%);
+  }
+
+  .kumo-bundle__thumb--active {
+    border-color: var(--kumo-primary, hsl(25, 30%, 52%));
+  }
+
+  .kumo-bundle__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Info */
+  .kumo-bundle__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: hsl(145, 50%, 88%);
+    border-radius: 9999px;
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: hsl(145, 45%, 30%);
+    margin-bottom: 1rem;
+  }
+
+  .kumo-bundle__title {
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--kumo-foreground, hsl(25, 30%, 25%));
+    margin: 0 0 1.5rem;
+    line-height: 1.2;
+  }
+
+  /* Includes */
+  .kumo-bundle__includes {
+    background: var(--kumo-card, white);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-bundle__includes-label {
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--kumo-foreground, hsl(25, 30%, 25%));
+    margin: 0 0 0.75rem;
+  }
+
+  .kumo-bundle__includes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .kumo-bundle__includes-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.9375rem;
+    color: var(--kumo-muted-foreground, hsl(25, 15%, 50%));
+  }
+
+  .kumo-bundle__includes-check {
+    color: hsl(145, 50%, 45%);
+    font-weight: 700;
+  }
+
+  /* Pricing */
+  .kumo-bundle__pricing {
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-bundle__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .kumo-bundle__price {
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--kumo-primary, hsl(25, 30%, 52%));
+  }
+
+  .kumo-bundle__compare-price {
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 1.25rem;
+    color: var(--kumo-muted-foreground, hsl(25, 15%, 60%));
+    text-decoration: line-through;
+  }
+
+  .kumo-bundle__savings-text {
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.875rem;
+    color: hsl(145, 50%, 40%);
+    margin: 0.375rem 0 0;
+    font-weight: 600;
+  }
+
+  /* Variants */
+  .kumo-bundle__variants {
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-bundle__option {
+    margin-bottom: 1rem;
+  }
+
+  .kumo-bundle__option-label {
+    display: block;
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--kumo-foreground, hsl(25, 30%, 25%));
+    margin-bottom: 0.5rem;
+  }
+
+  .kumo-bundle__option-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .kumo-bundle__option-btn {
+    padding: 0.625rem 1.25rem;
+    background: var(--kumo-card, white);
+    border: 2px solid hsl(25, 20%, 88%);
+    border-radius: 9999px;
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--kumo-foreground, hsl(25, 30%, 35%));
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .kumo-bundle__option-btn:hover {
+    border-color: hsl(25, 25%, 75%);
+  }
+
+  .kumo-bundle__option-btn--active {
+    background: var(--kumo-primary, hsl(25, 30%, 52%));
+    border-color: var(--kumo-primary, hsl(25, 30%, 52%));
+    color: white;
+  }
+
+  /* CTA */
+  .kumo-bundle__form {
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-bundle__cta {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.125rem 2rem;
+    background: var(--kumo-primary, hsl(25, 30%, 52%));
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .kumo-bundle__cta:hover:not(:disabled) {
+    background: hsl(25, 30%, 46%);
+  }
+
+  .kumo-bundle__cta:disabled {
+    background: hsl(25, 10%, 75%);
+    cursor: not-allowed;
+  }
+
+  /* Trust */
+  .kumo-bundle__trust {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-bundle__trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.8125rem;
+    color: var(--kumo-muted-foreground, hsl(25, 15%, 55%));
+  }
+
+  .kumo-bundle__trust-item svg {
+    color: hsl(25, 25%, 60%);
+  }
+
+  /* Description */
+  .kumo-bundle__description {
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--kumo-muted-foreground, hsl(25, 15%, 50%));
+    padding-top: 1.5rem;
+    border-top: 1px solid hsl(25, 20%, 90%);
+  }
+
+  .kumo-bundle__description p {
+    margin: 0 0 1rem;
+  }
+
+  .kumo-bundle__description p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .kumo-bundle__trust {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+</style>
+
+<script>
+  function selectBundleImage(btn, imageUrl) {
+    // Update main image
+    var mainImg = document.getElementById('kumo-bundle-main-image');
+    if (mainImg) {
+      mainImg.src = imageUrl;
+    }
+
+    // Update active thumbnail
+    var allThumbs = document.querySelectorAll('.kumo-bundle__thumb');
+    for (var i = 0; i < allThumbs.length; i++) {
+      allThumbs[i].classList.remove('kumo-bundle__thumb--active');
+    }
+    btn.classList.add('kumo-bundle__thumb--active');
+  }
+
+  function selectBundleOption(btn) {
+    // Get all buttons for this option
+    var parent = btn.closest('.kumo-bundle__option-values');
+    var allBtns = parent.querySelectorAll('.kumo-bundle__option-btn');
+
+    // Update active state
+    for (var i = 0; i < allBtns.length; i++) {
+      allBtns[i].classList.remove('kumo-bundle__option-btn--active');
+    }
+    btn.classList.add('kumo-bundle__option-btn--active');
+
+    // Find matching variant (simplified - for complex variants, use Shopify's native variant selector)
+    updateBundleVariant();
+  }
+
+  function updateBundleVariant() {
+    // This is a simplified version - for full variant support,
+    // integrate with your bundle app's variant selector
+    var productJson = {{ product | json }};
+    var selectedOptions = [];
+
+    document.querySelectorAll('.kumo-bundle__option-btn--active').forEach(function(btn) {
+      selectedOptions.push(btn.getAttribute('data-value'));
+    });
+
+    // Find matching variant
+    for (var i = 0; i < productJson.variants.length; i++) {
+      var variant = productJson.variants[i];
+      var match = true;
+
+      for (var j = 0; j < selectedOptions.length; j++) {
+        if (variant['option' + (j + 1)] !== selectedOptions[j]) {
+          match = false;
+          break;
+        }
+      }
+
+      if (match) {
+        document.getElementById('kumo-bundle-variant').value = variant.id;
+        document.getElementById('kumo-bundle-price').textContent = Shopify.formatMoney(variant.price);
+        break;
+      }
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "KUMO - Produit Bundle",
+  "tag": "section",
+  "class": "section-kumo-bundle",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Texte du badge",
+      "default": "Pack Économique"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_includes",
+      "label": "Afficher \"Ce pack contient\"",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "includes_label",
+      "label": "Libellé \"Ce pack contient\"",
+      "default": "Ce pack contient :"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Afficher la description",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Ajouter le Pack au Panier"
+    },
+    {
+      "type": "header",
+      "content": "Espacement"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Espacement haut",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Espacement bas",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "included_item",
+      "name": "Élément inclus",
+      "settings": [
+        {
+          "type": "text",
+          "id": "item_text",
+          "label": "Texte",
+          "default": "2x Pantoufles KUMO"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Produit Bundle",
+      "blocks": [
+        {
+          "type": "included_item",
+          "settings": {
+            "item_text": "2x Pantoufles KUMO"
+          }
+        },
+        {
+          "type": "included_item",
+          "settings": {
+            "item_text": "Pochette de rangement offerte"
+          }
+        },
+        {
+          "type": "included_item",
+          "settings": {
+            "item_text": "E-book \"Cocon\" inclus"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
