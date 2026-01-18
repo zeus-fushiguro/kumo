@@ -42,9 +42,36 @@
         "@media screen and (max-width: 750px) {.banner__content, .banner__media {display: none !important; }}"
       ],
       "settings": {
-        "image": "shopify://shop_images/kumo_hero_3_6d131bd6-09aa-4666-baca-addc5c123bb0.png",
+        "image": "shopify://shop_images/kumo_hero_3_da4ec3c3-07c9-4c82-8346-5aba4e9ef248.png",
         "fade_opacity": 95,
         "content_alignment": "left",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "margin_top": -30,
+        "margin_bottom": 0,
+        "enable_intro_animation": false,
+        "image_display_duration": 1.5,
+        "fade_duration": 0.8,
+        "title_line1": "Cocooning",
+        "title_line2": "à chaque pas.",
+        "description": "Transformez votre intérieur en un refuge. Découvrez le confort ultime de la collection KUMO.",
+        "button_text": "Explorer le Nuage",
+        "button_link": "shopify://collections/all"
+      }
+    },
+    "kumo_hero_YXmmtm": {
+      "type": "kumo-hero",
+      "custom_css": [
+        "@media screen and (min-width: 751px) {div {display: none !important; }}"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/hermobiletrue.jpg",
+        "fade_opacity": 95,
+        "content_alignment": "left",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "margin_top": -30,
+        "margin_bottom": 0,
         "enable_intro_animation": false,
         "image_display_duration": 1.5,
         "fade_duration": 0.8,
@@ -342,6 +369,7 @@
   "order": [
     "kumo-header",
     "kumo-hero",
+    "kumo_hero_YXmmtm",
     "kumo-social-proof",
     "kumo-trust-bar",
     "kumo-featured-collection",
