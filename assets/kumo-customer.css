@@ -1,0 +1,848 @@
+/* ============================================
+   KUMO THEME - Customer Pages & Cart Styles
+   ============================================ */
+
+/* ============================================
+   CUSTOMER PAGES (Login, Register, Account)
+   ============================================ */
+
+/* Container principal */
+.kumo-customer {
+  font-family: var(--kumo-font-family);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  min-height: 60vh;
+}
+
+/* Card wrapper */
+.kumo-customer-card {
+  background: var(--kumo-card);
+  border-radius: var(--kumo-radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--kumo-shadow-soft);
+}
+
+/* Header avec icône */
+.kumo-customer-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.kumo-customer-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  background: var(--kumo-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kumo-customer-icon svg {
+  width: 28px;
+  height: 28px;
+  color: var(--kumo-primary);
+}
+
+/* Titres */
+.kumo-customer h1 {
+  font-family: var(--kumo-font-family);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--kumo-foreground);
+  text-align: center;
+  margin: 0 0 0.5rem 0;
+}
+
+.kumo-customer-subtitle {
+  text-align: center;
+  color: var(--kumo-muted-foreground);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+/* Champs de formulaire */
+.kumo-field {
+  margin-bottom: 1.25rem;
+}
+
+.kumo-field label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--kumo-foreground);
+  margin-bottom: 0.5rem;
+}
+
+.kumo-field input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--kumo-border);
+  border-radius: var(--kumo-radius);
+  font-family: var(--kumo-font-family);
+  font-size: 1rem;
+  background: white;
+  transition: all 0.2s ease;
+  color: var(--kumo-foreground);
+}
+
+.kumo-field input:focus {
+  outline: none;
+  border-color: var(--kumo-primary);
+  box-shadow: 0 0 0 3px hsla(25, 30%, 52%, 0.15);
+}
+
+.kumo-field input::placeholder {
+  color: var(--kumo-muted-foreground);
+}
+
+/* Bouton principal */
+.kumo-btn-primary {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: var(--kumo-primary);
+  color: var(--kumo-primary-foreground);
+  border: none;
+  border-radius: var(--kumo-radius-full);
+  font-family: var(--kumo-font-family);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.kumo-btn-primary:hover {
+  background: var(--kumo-latte-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--kumo-shadow-cozy);
+}
+
+.kumo-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Bouton secondaire */
+.kumo-btn-secondary {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: var(--kumo-secondary);
+  color: var(--kumo-foreground);
+  border: 2px solid var(--kumo-border);
+  border-radius: var(--kumo-radius-full);
+  font-family: var(--kumo-font-family);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.kumo-btn-secondary:hover {
+  background: var(--kumo-border);
+  transform: translateY(-1px);
+}
+
+/* Liens */
+.kumo-link {
+  color: var(--kumo-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.kumo-link:hover {
+  color: var(--kumo-latte-dark);
+  text-decoration: underline;
+}
+
+/* Lien mot de passe oublié */
+.kumo-forgot-link {
+  display: block;
+  text-align: right;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+/* Footer links */
+.kumo-customer-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--kumo-muted-foreground);
+}
+
+.kumo-customer-footer a {
+  color: var(--kumo-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.kumo-customer-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Séparateur "ou" */
+.kumo-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.kumo-divider::before,
+.kumo-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--kumo-border);
+}
+
+.kumo-divider span {
+  padding: 0 1rem;
+  color: var(--kumo-muted-foreground);
+  font-size: 0.85rem;
+  text-transform: lowercase;
+}
+
+/* Messages d'erreur */
+.kumo-error {
+  background: hsl(0, 70%, 97%);
+  border: 1px solid hsl(0, 50%, 85%);
+  border-radius: var(--kumo-radius-sm);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: hsl(0, 50%, 40%);
+  font-size: 0.9rem;
+}
+
+.kumo-error svg {
+  width: 18px;
+  height: 18px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.kumo-error ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.5rem;
+}
+
+/* Messages de succès */
+.kumo-success {
+  background: hsl(140, 50%, 97%);
+  border: 1px solid hsl(140, 40%, 80%);
+  border-radius: var(--kumo-radius-sm);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: hsl(140, 40%, 30%);
+  font-size: 0.9rem;
+}
+
+.kumo-success svg {
+  width: 18px;
+  height: 18px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Shop Pay / Social Login buttons */
+.kumo-social-login {
+  margin-top: 1rem;
+}
+
+.kumo-social-login .shopify-cleanslate {
+  margin: 0 auto;
+}
+
+/* Recover password form (hidden by default) */
+.kumo-recover-form {
+  display: none;
+}
+
+.kumo-recover-form.active {
+  display: block;
+}
+
+.kumo-login-form.hidden {
+  display: none;
+}
+
+/* ============================================
+   CART PAGE STYLES
+   ============================================ */
+
+.kumo-cart {
+  font-family: var(--kumo-font-family);
+  padding: 2rem 0;
+}
+
+.kumo-cart.is-empty .cart__contents {
+  display: none;
+}
+
+.kumo-cart:not(.is-empty) .kumo-cart-empty {
+  display: none;
+}
+
+.kumo-cart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Header panier */
+.kumo-cart-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.kumo-cart-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--kumo-foreground);
+  margin: 0 0 0.5rem 0;
+}
+
+.kumo-cart-count {
+  color: var(--kumo-muted-foreground);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.kumo-cart-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--kumo-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.kumo-cart-continue:hover {
+  color: var(--kumo-latte-dark);
+  gap: 0.75rem;
+}
+
+.kumo-cart-continue svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Layout 2 colonnes desktop */
+.kumo-cart-layout {
+  display: grid;
+  gap: 2rem;
+}
+
+@media screen and (min-width: 900px) {
+  .kumo-cart-layout {
+    grid-template-columns: 1fr 380px;
+    align-items: start;
+  }
+}
+
+/* Wrapper for cart page sections */
+cart-items + .kumo-cart-sidebar {
+  margin-top: -1rem;
+}
+
+@media screen and (min-width: 900px) {
+  /* Create side-by-side layout with CSS Grid on page level */
+  cart-items {
+    display: block;
+  }
+  
+  cart-items .kumo-cart-container {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+    align-items: start;
+  }
+  
+  cart-items .kumo-cart-header {
+    grid-column: 1 / -1;
+  }
+  
+  cart-items .kumo-cart-items {
+    grid-column: 1;
+  }
+}
+
+/* Footer sidebar positioning */
+.kumo-cart-sidebar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+}
+
+.kumo-cart-sidebar.is-empty {
+  display: none;
+}
+
+@media screen and (min-width: 900px) {
+  .kumo-cart-sidebar {
+    position: fixed;
+    right: calc((100vw - 1200px) / 2 + 1.5rem);
+    top: 180px;
+    width: 380px;
+    padding: 0;
+  }
+  
+  /* Fallback for smaller screens */
+  @media screen and (max-width: 1248px) {
+    .kumo-cart-sidebar {
+      right: 1.5rem;
+    }
+  }
+}
+
+/* Items du panier */
+.kumo-cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.kumo-cart-item {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: var(--kumo-card);
+  border-radius: var(--kumo-radius);
+  box-shadow: var(--kumo-shadow-soft);
+  transition: all 0.2s ease;
+}
+
+.kumo-cart-item:hover {
+  box-shadow: var(--kumo-shadow-cozy);
+}
+
+.kumo-cart-item__media {
+  flex-shrink: 0;
+}
+
+.kumo-cart-item__image {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--kumo-radius-sm);
+  object-fit: cover;
+}
+
+@media screen and (min-width: 750px) {
+  .kumo-cart-item__image {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+.kumo-cart-item__details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.kumo-cart-item__title {
+  font-weight: 600;
+  color: var(--kumo-foreground);
+  text-decoration: none;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.kumo-cart-item__title:hover {
+  color: var(--kumo-primary);
+}
+
+.kumo-cart-item__variant {
+  font-size: 0.85rem;
+  color: var(--kumo-muted-foreground);
+}
+
+.kumo-cart-item__price {
+  font-weight: 700;
+  color: var(--kumo-primary);
+  font-size: 1.1rem;
+}
+
+.kumo-cart-item__price-old {
+  text-decoration: line-through;
+  color: var(--kumo-muted-foreground);
+  font-weight: 400;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.kumo-cart-item__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+/* Quantité */
+.kumo-quantity {
+  display: inline-flex;
+  align-items: center;
+  background: var(--kumo-secondary);
+  border-radius: var(--kumo-radius-full);
+  padding: 0.25rem;
+}
+
+.kumo-quantity__btn {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kumo-foreground);
+  transition: background 0.2s ease;
+  border-radius: 50%;
+}
+
+.kumo-quantity__btn:hover {
+  background: var(--kumo-border);
+}
+
+.kumo-quantity__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.kumo-quantity__btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.kumo-quantity__input {
+  width: 2.5rem;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  font-family: var(--kumo-font-family);
+  font-size: 0.95rem;
+  color: var(--kumo-foreground);
+}
+
+.kumo-quantity__input::-webkit-outer-spin-button,
+.kumo-quantity__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Bouton supprimer */
+.kumo-cart-item__remove {
+  background: none;
+  border: none;
+  color: var(--kumo-muted-foreground);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kumo-cart-item__remove:hover {
+  color: hsl(0, 50%, 50%);
+  background: hsl(0, 50%, 95%);
+}
+
+.kumo-cart-item__remove svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Discounts sur item */
+.kumo-cart-item__discounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.kumo-cart-item__discount {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: hsl(140, 50%, 95%);
+  color: hsl(140, 40%, 35%);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--kumo-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.kumo-cart-item__discount svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Footer panier / Sidebar */
+.kumo-cart-sidebar {
+  position: sticky;
+  top: 2rem;
+}
+
+.kumo-cart-footer {
+  background: var(--kumo-card);
+  border-radius: var(--kumo-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--kumo-shadow-soft);
+}
+
+/* Note panier */
+.kumo-cart-note {
+  margin-bottom: 1.5rem;
+}
+
+.kumo-cart-note label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--kumo-foreground);
+  margin-bottom: 0.5rem;
+}
+
+.kumo-cart-note textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--kumo-border);
+  border-radius: var(--kumo-radius);
+  font-family: var(--kumo-font-family);
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.2s ease;
+}
+
+.kumo-cart-note textarea:focus {
+  outline: none;
+  border-color: var(--kumo-primary);
+}
+
+/* Totaux */
+.kumo-cart-totals {
+  margin-bottom: 1.5rem;
+}
+
+.kumo-cart-totals__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--kumo-foreground);
+}
+
+.kumo-cart-totals__row--discount {
+  color: hsl(140, 40%, 35%);
+}
+
+.kumo-cart-totals__row--total {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--kumo-foreground);
+  border-top: 1px solid var(--kumo-border);
+  padding-top: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.kumo-cart-totals__label {
+  color: var(--kumo-muted-foreground);
+}
+
+.kumo-cart-totals__value {
+  font-weight: 600;
+}
+
+/* Note taxes/shipping */
+.kumo-cart-tax-note {
+  font-size: 0.8rem;
+  color: var(--kumo-muted-foreground);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.kumo-cart-tax-note a {
+  color: var(--kumo-primary);
+}
+
+/* Bouton Checkout */
+.kumo-checkout-btn {
+  width: 100%;
+  padding: 1.125rem 1.5rem;
+  background: var(--kumo-primary);
+  color: var(--kumo-primary-foreground);
+  border: none;
+  border-radius: var(--kumo-radius-full);
+  font-family: var(--kumo-font-family);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.kumo-checkout-btn:hover:not(:disabled) {
+  background: var(--kumo-latte-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--kumo-shadow-cozy);
+}
+
+.kumo-checkout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.kumo-checkout-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Boutons paiement express */
+.kumo-express-checkout {
+  margin-top: 1rem;
+}
+
+.kumo-express-checkout .additional-checkout-buttons {
+  margin: 0;
+}
+
+.kumo-express-checkout [data-shopify-buttoncontainer] {
+  justify-content: center;
+}
+
+/* Trust badges panier */
+.kumo-cart-trust {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--kumo-border);
+  flex-wrap: wrap;
+}
+
+.kumo-cart-trust__item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--kumo-muted-foreground);
+}
+
+.kumo-cart-trust__item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--kumo-primary);
+}
+
+/* ============================================
+   PANIER VIDE
+   ============================================ */
+
+.kumo-cart-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.kumo-cart-empty__icon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 1.5rem;
+  background: var(--kumo-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kumo-cart-empty__icon svg {
+  width: 48px;
+  height: 48px;
+  color: var(--kumo-muted-foreground);
+}
+
+.kumo-cart-empty h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.75rem 0;
+  color: var(--kumo-foreground);
+  font-weight: 700;
+}
+
+.kumo-cart-empty p {
+  color: var(--kumo-muted-foreground);
+  margin: 0 0 2rem 0;
+  font-size: 0.95rem;
+}
+
+.kumo-cart-empty__login {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--kumo-border);
+}
+
+.kumo-cart-empty__login h3 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem 0;
+  color: var(--kumo-foreground);
+}
+
+.kumo-cart-empty__login p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media screen and (max-width: 749px) {
+  .kumo-customer {
+    padding: 2rem 1rem;
+  }
+
+  .kumo-customer-card {
+    padding: 1.5rem;
+  }
+
+  .kumo-customer h1 {
+    font-size: 1.5rem;
+  }
+
+  .kumo-cart-item {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .kumo-cart-item__image {
+    width: 100%;
+    height: 200px;
+  }
+
+  .kumo-cart-trust {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

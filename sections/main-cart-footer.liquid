@@ -1,135 +1,140 @@
-{{ 'component-cart.css' | asset_url | stylesheet_tag }}
-{{ 'component-totals.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+{{ 'kumo-customer.css' | asset_url | stylesheet_tag }}
 
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
+<div class="kumo-cart-sidebar{% if cart == empty %} is-empty{% endif %}" id="main-cart-footer" data-id="{{ section.id }}">
+  <div class="kumo-cart-footer">
+    
+    {%- if settings.show_cart_note -%}
+      <cart-note class="kumo-cart-note">
+        <label for="Cart-note">{{ 'sections.cart.note' | t }}</label>
+        <textarea
+          name="note"
+          form="cart"
+          id="Cart-note"
+          placeholder="Ajoutez une note à votre commande..."
+        >{{ cart.note }}</textarea>
+      </cart-note>
+    {%- endif -%}
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
+    {% for block in section.blocks %}
+      {%- case block.type -%}
+        {%- when '@app' -%}
+          {% render block %}
 
-<div
-  class="gradient color-{{ section.settings.color_scheme }}{% if cart == empty %} is-empty{% endif %}"
-  id="main-cart-footer"
-  data-id="{{ section.id }}"
->
-  <div class="page-width">
-    <div class="cart__footer isolate section-{{ section.id }}-padding">
-      {%- if settings.show_cart_note -%}
-        <cart-note class="cart__note field">
-          <label for="Cart-note">{{ 'sections.cart.note' | t }}</label>
-          <textarea
-            class="text-area field__input"
-            name="note"
-            form="cart"
-            id="Cart-note"
-            placeholder="{{ 'sections.cart.note' | t }}"
-          >{{ cart.note }}</textarea>
-        </cart-note>
-      {%- endif -%}
-
-      <div class="cart__blocks">
-        {% for block in section.blocks %}
-          {%- case block.type -%}
-            {%- when '@app' -%}
-              {% render block %}
-            {%- when 'subtotal' -%}
-              <div class="js-contents" {{ block.shopify_attributes }}>
-                <div>
-                  {%- if cart.cart_level_discount_applications.size > 0 -%}
-                    <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
-                      {%- for discount in cart.cart_level_discount_applications -%}
-                        <li class="discounts__discount discounts__discount--position">
-                          {{- 'icon-discount.svg' | inline_asset_content -}}
-                          {{ discount.title | escape }}
-                          (-{{ discount.total_allocated_amount | money }})
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  {%- endif -%}
+        {%- when 'subtotal' -%}
+          <div class="kumo-cart-totals js-contents" {{ block.shopify_attributes }}>
+            
+            {%- if cart.cart_level_discount_applications.size > 0 -%}
+              {%- for discount in cart.cart_level_discount_applications -%}
+                <div class="kumo-cart-totals__row kumo-cart-totals__row--discount">
+                  <span class="kumo-cart-totals__label">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 0.25rem;">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                    {{ discount.title | escape }}
+                  </span>
+                  <span class="kumo-cart-totals__value">-{{ discount.total_allocated_amount | money }}</span>
                 </div>
+              {%- endfor -%}
+            {%- endif -%}
 
-                <div class="totals">
-                  <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-                  <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+            <div class="kumo-cart-totals__row">
+              <span class="kumo-cart-totals__label">Sous-total</span>
+              <span class="kumo-cart-totals__value">{{ cart.items_subtotal_price | money }}</span>
+            </div>
+
+            <div class="kumo-cart-totals__row">
+              <span class="kumo-cart-totals__label">Livraison</span>
+              <span class="kumo-cart-totals__value" style="font-size: 0.85rem;">Calculée à l'étape suivante</span>
+            </div>
+
+            <div class="kumo-cart-totals__row kumo-cart-totals__row--total">
+              <span>{{ 'sections.cart.estimated_total' | t }}</span>
+              <span>{{ cart.total_price | money_with_currency }}</span>
+            </div>
+
+            <p class="kumo-cart-tax-note">
+              {%- if cart.duties_included and cart.taxes_included -%}
+                {%- if shop.shipping_policy.body == blank -%}
+                  {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_without_policy' | t }}
+                {%- else -%}
+                  {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
+                {%- endif -%}
+              {%- elsif cart.duties_included == false and cart.taxes_included -%}
+                {%- if shop.shipping_policy.body == blank -%}
+                  {{ 'sections.cart.taxes_included_shipping_at_checkout_without_policy' | t }}
+                {%- else -%}
+                  {{ 'sections.cart.taxes_included_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
+                {%- endif -%}
+              {%- elsif cart.duties_included and cart.taxes_included == false -%}
+                {%- if shop.shipping_policy.body == blank -%}
+                  {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
+                {%- else -%}
+                  {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
+                {%- endif -%}
+              {%- elsif cart.duties_included == false and cart.taxes_included == false -%}
+                {%- if shop.shipping_policy.body == blank -%}
+                  {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
+                {%- else -%}
+                  {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
+                {%- endif -%}
+              {%- endif -%}
+            </p>
+          </div>
+
+        {%- when 'buttons' -%}
+          <div {{ block.shopify_attributes }}>
+            <button
+              type="submit"
+              id="checkout"
+              class="kumo-checkout-btn"
+              name="checkout"
+              {% if cart == empty %}disabled{% endif %}
+              form="cart"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              {{ 'sections.cart.checkout' | t }}
+            </button>
+
+            {%- if additional_checkout_buttons -%}
+              <div class="kumo-express-checkout">
+                <div class="kumo-divider">
+                  <span>ou payer avec</span>
                 </div>
-
-                <small class="tax-note caption-large rte">
-                  {%- if cart.duties_included and cart.taxes_included -%}
-                    {%- if shop.shipping_policy.body == blank -%}
-                      {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_without_policy' | t }}
-                    {%- else -%}
-                      {{
-                        'sections.cart.duties_and_taxes_included_shipping_at_checkout_with_policy_html'
-                        | t: link: shop.shipping_policy.url
-                      }}
-                    {%- endif -%}
-                  {%- elsif cart.duties_included == false and cart.taxes_included -%}
-                    {%- if shop.shipping_policy.body == blank -%}
-                      {{ 'sections.cart.taxes_included_shipping_at_checkout_without_policy' | t }}
-                    {%- else -%}
-                      {{
-                        'sections.cart.taxes_included_shipping_at_checkout_with_policy_html'
-                        | t: link: shop.shipping_policy.url
-                      }}
-                    {%- endif -%}
-                  {%- elsif cart.duties_included and cart.taxes_included == false -%}
-                    {%- if shop.shipping_policy.body == blank -%}
-                      {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
-                    {%- else -%}
-                      {{
-                        'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html'
-                        | t: link: shop.shipping_policy.url
-                      }}
-                    {%- endif -%}
-                  {%- elsif cart.duties_included == false and cart.taxes_included == false -%}
-                    {%- if shop.shipping_policy.body == blank -%}
-                      {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
-                    {%- else -%}
-                      {{
-                        'sections.cart.taxes_at_checkout_shipping_at_checkout_with_policy_html'
-                        | t: link: shop.shipping_policy.url
-                      }}
-                    {%- endif -%}
-                  {%- endif -%}
-                </small>
-              </div>
-            {%- else -%}
-              <div class="cart__ctas" {{ block.shopify_attributes }}>
-                <button
-                  type="submit"
-                  id="checkout"
-                  class="cart__checkout-button button"
-                  name="checkout"
-                  {% if cart == empty %}
-                    disabled
-                  {% endif %}
-                  form="cart"
-                >
-                  {{ 'sections.cart.checkout' | t }}
-                </button>
-              </div>
-
-              {%- if additional_checkout_buttons -%}
-                <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
+                <div class="additional-checkout-buttons">
                   {{ content_for_additional_checkout_buttons }}
                 </div>
-              {%- endif -%}
-          {%- endcase -%}
-        {% endfor %}
+              </div>
+            {%- endif -%}
+          </div>
+      {%- endcase -%}
+    {% endfor %}
 
-        <div id="cart-errors"></div>
+    <!-- Trust Badges -->
+    <div class="kumo-cart-trust">
+      <div class="kumo-cart-trust__item">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        Paiement sécurisé
+      </div>
+      <div class="kumo-cart-trust__item">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+        </svg>
+        Livraison rapide
+      </div>
+      <div class="kumo-cart-trust__item">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        Retours 30 jours
       </div>
     </div>
+
+    <div id="cart-errors"></div>
   </div>
 </div>
 
