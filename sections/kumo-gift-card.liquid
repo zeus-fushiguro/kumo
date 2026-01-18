@@ -1,0 +1,370 @@
+{% comment %}
+  KUMO Gift Card - Zen Minimalist Design
+  "La Simplicité Purifiée" - Zero friction experience
+{% endcomment %}
+
+<section class="kumo-gift-card">
+  <div class="kumo-gift-card__container">
+
+    {%- comment -%} Product Image - Large, centered, super rounded {%- endcomment -%}
+    <div class="kumo-gift-card__image-wrapper">
+      {%- if product.featured_image != blank -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 800 }}"
+          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+          class="kumo-gift-card__image"
+          loading="eager"
+        >
+      {%- else -%}
+        <div class="kumo-gift-card__image-placeholder">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+          </svg>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Badge {%- endcomment -%}
+    <div class="kumo-gift-card__badge">
+      <span class="kumo-gift-card__badge-icon">🎁</span>
+      <span>{{ section.settings.badge_text | default: "Carte Cadeau Digitale" }}</span>
+    </div>
+
+    {%- comment -%} Title & Promise {%- endcomment -%}
+    <div class="kumo-gift-card__header">
+      <h1 class="kumo-gift-card__title">{{ section.settings.title | default: "Offrez un Nuage de Douceur." }}</h1>
+      <p class="kumo-gift-card__subtitle">{{ section.settings.subtitle | default: "Le cadeau parfait, envoyé <em>instantanément</em> par email.<br>Valable sur toute la boutique." }}</p>
+    </div>
+
+    {%- comment -%} Amount Label {%- endcomment -%}
+    <p class="kumo-gift-card__amount-label">Choisissez le montant :</p>
+
+    {%- comment -%} Amount Selector - Square rounded buttons {%- endcomment -%}
+    <div class="kumo-gift-card__amounts">
+      {%- for variant in product.variants -%}
+        <button
+          type="button"
+          class="kumo-gift-card__amount-btn{% if forloop.index == 2 %} kumo-gift-card__amount-btn--active{% endif %}"
+          data-variant-id="{{ variant.id }}"
+          data-price="{{ variant.price | money }}"
+          data-price-raw="{{ variant.price }}"
+        >
+          {{ variant.price | money_without_trailing_zeros }}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Add to Cart Form {%- endcomment -%}
+    <form action="/cart/add" method="post" class="kumo-gift-card__form" id="kumo-gift-card-form">
+      <input type="hidden" name="id" id="kumo-gift-card-variant" value="{{ product.variants[1].id | default: product.selected_or_first_available_variant.id }}">
+      <input type="hidden" name="quantity" value="1">
+
+      <button type="submit" class="kumo-gift-card__cta" id="kumo-gift-card-cta">
+        <span>{{ section.settings.button_text | default: "Envoyer ce Cocon" }}</span>
+        <span class="kumo-gift-card__cta-price">({{ product.variants[1].price | default: product.selected_or_first_available_variant.price | money }})</span>
+      </button>
+    </form>
+
+    {%- comment -%} Digital Reassurance - Minimal {%- endcomment -%}
+    <div class="kumo-gift-card__reassurance">
+      <div class="kumo-gift-card__reassurance-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="20" height="16" x="2" y="4" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+        <span>Reçu immédiatement</span>
+      </div>
+      <span class="kumo-gift-card__reassurance-dot">·</span>
+      <div class="kumo-gift-card__reassurance-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z"/>
+        </svg>
+        <span>Valable sans limite</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .kumo-gift-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem 4rem;
+    background: var(--kumo-background, hsl(35, 45%, 97%));
+  }
+
+  .kumo-gift-card__container {
+    max-width: 560px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Image - Large, super rounded */
+  .kumo-gift-card__image-wrapper {
+    width: 100%;
+    max-width: 520px;
+    aspect-ratio: 4 / 3;
+    margin-bottom: 1.5rem;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 20px 50px -15px hsla(25, 30%, 30%, 0.2);
+  }
+
+  .kumo-gift-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .kumo-gift-card__image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, hsl(30, 50%, 92%) 0%, hsl(35, 45%, 88%) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--kumo-muted-foreground, hsl(25, 20%, 50%));
+  }
+
+  /* Badge */
+  .kumo-gift-card__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: hsl(30, 30%, 85%);
+    border-radius: 9999px;
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: hsl(25, 35%, 35%);
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-gift-card__badge-icon {
+    font-size: 1rem;
+  }
+
+  /* Header */
+  .kumo-gift-card__header {
+    margin-bottom: 2rem;
+  }
+
+  .kumo-gift-card__title {
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: clamp(1.875rem, 5vw, 2.5rem);
+    font-weight: 700;
+    color: hsl(25, 30%, 35%);
+    line-height: 1.2;
+    margin: 0 0 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .kumo-gift-card__subtitle {
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 1rem;
+    color: hsl(25, 15%, 55%);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .kumo-gift-card__subtitle em {
+    font-style: italic;
+  }
+
+  /* Amount Label */
+  .kumo-gift-card__amount-label {
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.8125rem;
+    color: hsl(25, 15%, 60%);
+    margin: 0 0 1rem;
+  }
+
+  /* Amount Selector - Square rounded buttons */
+  .kumo-gift-card__amounts {
+    display: flex;
+    justify-content: center;
+    gap: 0.625rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-gift-card__amount-btn {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 1rem;
+    background: hsl(35, 30%, 92%);
+    color: hsl(25, 20%, 55%);
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .kumo-gift-card__amount-btn:hover {
+    background: hsl(30, 28%, 88%);
+    color: hsl(25, 25%, 40%);
+  }
+
+  .kumo-gift-card__amount-btn--active {
+    background: hsl(25, 30%, 52%);
+    color: white;
+  }
+
+  .kumo-gift-card__amount-btn--active:hover {
+    background: hsl(25, 30%, 48%);
+    color: white;
+  }
+
+  /* CTA Button */
+  .kumo-gift-card__form {
+    width: 100%;
+    max-width: 380px;
+    margin-bottom: 1.5rem;
+  }
+
+  .kumo-gift-card__cta {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 1.125rem 2rem;
+    background: hsl(25, 30%, 52%);
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .kumo-gift-card__cta:hover {
+    background: hsl(25, 30%, 46%);
+  }
+
+  .kumo-gift-card__cta-price {
+    font-weight: 600;
+  }
+
+  /* Reassurance */
+  .kumo-gift-card__reassurance {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    color: hsl(25, 15%, 60%);
+    font-family: var(--kumo-font-family, 'Quicksand', sans-serif);
+    font-size: 0.8125rem;
+  }
+
+  .kumo-gift-card__reassurance-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .kumo-gift-card__reassurance-item svg {
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .kumo-gift-card__reassurance-dot {
+    font-size: 1rem;
+    opacity: 0.5;
+  }
+
+  /* Responsive */
+  @media (max-width: 540px) {
+    .kumo-gift-card {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .kumo-gift-card__image-wrapper {
+      border-radius: 1.25rem;
+    }
+
+    .kumo-gift-card__amount-btn {
+      width: 64px;
+      height: 64px;
+      font-size: 1.125rem;
+      border-radius: 0.875rem;
+    }
+
+    .kumo-gift-card__reassurance {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const amountBtns = document.querySelectorAll('.kumo-gift-card__amount-btn');
+    const variantInput = document.getElementById('kumo-gift-card-variant');
+    const ctaPriceEl = document.querySelector('.kumo-gift-card__cta-price');
+
+    amountBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Remove active from all
+        amountBtns.forEach(b => b.classList.remove('kumo-gift-card__amount-btn--active'));
+        // Add active to clicked
+        this.classList.add('kumo-gift-card__amount-btn--active');
+        // Update hidden input
+        variantInput.value = this.dataset.variantId;
+        // Update CTA price
+        ctaPriceEl.textContent = '(' + this.dataset.price + ')';
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "KUMO - Carte Cadeau",
+  "tag": "section",
+  "class": "section-kumo-gift-card",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Texte du badge",
+      "default": "Carte Cadeau Digitale"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Offrez un Nuage de Douceur."
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "<p>Le cadeau parfait, envoyé <em>instantanément</em> par email.<br>Valable sur toute la boutique.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Envoyer ce Cocon"
+    }
+  ],
+  "presets": [
+    {
+      "name": "KUMO - Carte Cadeau"
+    }
+  ]
+}
+{% endschema %}

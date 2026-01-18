@@ -1,15 +1,27 @@
 {% comment %}
   KUMO Hero Section
   Full-screen hero with customizable fade overlay
+  Optional intro animation: image → fade to white → text slides in
 {% endcomment %}
 
 {%- liquid
   assign fade_opacity = section.settings.fade_opacity | default: 75
   assign fade_start = fade_opacity | times: 0.01
   assign fade_mid = fade_opacity | times: 0.008
+
+  assign enable_animation = section.settings.enable_intro_animation
+  assign image_duration = section.settings.image_display_duration | default: 1.5
+  assign fade_duration = section.settings.fade_duration | default: 0.8
+  assign text_delay = image_duration | plus: fade_duration
+  assign text_stagger = 0.15
 -%}
 
-<section class="kumo-hero kumo-hero--align-{{ section.settings.content_alignment }}">
+<section
+  class="kumo-hero kumo-hero--align-{{ section.settings.content_alignment }}{% if enable_animation %} kumo-hero--animated{% endif %}"
+  {% if enable_animation %}
+    style="--anim-image-duration: {{ image_duration }}s; --anim-fade-duration: {{ fade_duration }}s; --anim-text-delay: {{ text_delay }}s; --anim-text-stagger: {{ text_stagger }}s;"
+  {% endif %}
+>
   {%- comment -%} Background Image {%- endcomment -%}
   <div class="kumo-hero__background">
     {%- if section.settings.image != blank -%}
@@ -23,25 +35,31 @@
     {%- else -%}
       <div class="kumo-hero__placeholder"></div>
     {%- endif -%}
+
     {%- comment -%} Gradient fade overlay - fades from left (text side) to right (image visible) {%- endcomment -%}
     <div class="kumo-hero__fade" style="background: linear-gradient(to right, hsla(35, 45%, 97%, {{ fade_start }}) 0%, hsla(35, 45%, 97%, {{ fade_start }}) 25%, hsla(35, 45%, 97%, {{ fade_mid }}) 50%, hsla(35, 45%, 97%, 0) 75%);"></div>
+
+    {%- comment -%} Animated white overlay (only when animation enabled) {%- endcomment -%}
+    {%- if enable_animation -%}
+      <div class="kumo-hero__white-overlay"></div>
+    {%- endif -%}
   </div>
 
   {%- comment -%} Content {%- endcomment -%}
   <div class="kumo-hero__content">
     <div class="kumo-container">
       <div class="kumo-hero__inner">
-        <h1 class="kumo-hero__title kumo-animate-fade-up">
+        <h1 class="kumo-hero__title{% if enable_animation %} kumo-hero__anim-slide{% else %} kumo-animate-fade-up{% endif %}">
           <span class="kumo-hero__title-line1">{{ section.settings.title_line1 }}</span>
           <span class="kumo-hero__title-line2">{{ section.settings.title_line2 }}</span>
         </h1>
 
-        <p class="kumo-hero__description kumo-animate-fade-up" style="animation-delay: 0.15s;">
+        <p class="kumo-hero__description{% if enable_animation %} kumo-hero__anim-slide{% else %} kumo-animate-fade-up{% endif %}" style="{% if enable_animation %}--anim-index: 1;{% else %}animation-delay: 0.15s;{% endif %}">
           {{ section.settings.description }}
         </p>
 
         {%- if section.settings.button_text != blank -%}
-          <div class="kumo-hero__cta kumo-animate-fade-up" style="animation-delay: 0.3s;">
+          <div class="kumo-hero__cta{% if enable_animation %} kumo-hero__anim-slide{% else %} kumo-animate-fade-up{% endif %}" style="{% if enable_animation %}--anim-index: 2;{% else %}animation-delay: 0.3s;{% endif %}">
             <a href="{{ section.settings.button_link }}" class="kumo-btn-cozy">
               <span>{{ section.settings.button_text }}</span>
               {% render 'kumo-icon', icon: 'arrow-right' %}
@@ -198,6 +216,82 @@
       );
     }
   }
+
+  /* ═══════════════════════════════════════════════════════════════
+     INTRO ANIMATION
+     Sequence: Image visible → White fade in → Text slides from left
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* White overlay - initially transparent, fades to semi-opaque */
+  .kumo-hero__white-overlay {
+    position: absolute;
+    inset: 0;
+    background: hsla(35, 45%, 97%, 0.65);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Animated state */
+  .kumo-hero--animated .kumo-hero__white-overlay {
+    animation: heroFadeToWhite var(--anim-fade-duration, 0.8s) ease-out forwards;
+    animation-delay: var(--anim-image-duration, 1.5s);
+  }
+
+  @keyframes heroFadeToWhite {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Text slide-in animation */
+  .kumo-hero__anim-slide {
+    opacity: 0;
+    transform: translateX(-40px);
+    animation: heroSlideIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--anim-text-delay, 2.3s) + (var(--anim-index, 0) * var(--anim-text-stagger, 0.15s)));
+  }
+
+  @keyframes heroSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .kumo-hero--animated .kumo-hero__white-overlay,
+    .kumo-hero__anim-slide {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Mobile animation adjustments */
+  @media (max-width: 767px) {
+    .kumo-hero__anim-slide {
+      transform: translateX(-20px);
+    }
+    @keyframes heroSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  }
 </style>
 
 {% schema %}
@@ -231,6 +325,43 @@
         { "value": "right", "label": "Droite" }
       ],
       "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Animation d'intro"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_intro_animation",
+      "label": "Activer l'animation d'intro",
+      "default": false,
+      "info": "Séquence: Image visible → Fondu blanc → Texte glisse depuis la gauche"
+    },
+    {
+      "type": "range",
+      "id": "image_display_duration",
+      "min": 0.5,
+      "max": 3,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Durée d'affichage de l'image",
+      "default": 1.5,
+      "info": "Temps avant le début du fondu blanc"
+    },
+    {
+      "type": "range",
+      "id": "fade_duration",
+      "min": 0.3,
+      "max": 1.5,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Durée du fondu blanc",
+      "default": 0.8,
+      "info": "Durée de la transition vers le blanc"
+    },
+    {
+      "type": "header",
+      "content": "Contenu"
     },
     {
       "type": "text",
@@ -271,7 +402,10 @@
         "description": "Transformez votre intérieur en un refuge. Découvrez le confort ultime de la collection KUMO.",
         "button_text": "Explorer le Nuage",
         "content_alignment": "left",
-        "fade_opacity": 75
+        "fade_opacity": 75,
+        "enable_intro_animation": false,
+        "image_display_duration": 1.5,
+        "fade_duration": 0.8
       }
     }
   ]
