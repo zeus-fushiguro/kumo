@@ -63,7 +63,7 @@
     </div>
 
     {%- comment -%} Add to Cart Form {%- endcomment -%}
-    <form action="/cart/add" method="post" class="kumo-gift-card__form" id="kumo-gift-card-form">
+    <form action="{{ routes.cart_add_url }}" method="post" class="kumo-gift-card__form" id="kumo-gift-card-form">
       <input type="hidden" name="id" id="kumo-gift-card-variant" value="{{ default_variant.id }}">
       <input type="hidden" name="quantity" value="1">
 
