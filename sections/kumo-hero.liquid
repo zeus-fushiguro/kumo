@@ -14,10 +14,45 @@
   assign fade_duration = section.settings.fade_duration | default: 0.8
   assign text_delay = image_duration | plus: fade_duration
   assign text_stagger = 0.15
+
+  assign visibility_class = ''
+  if section.settings.visibility == 'desktop'
+    assign visibility_class = 'kumo-hero--desktop-only'
+  elsif section.settings.visibility == 'mobile'
+    assign visibility_class = 'kumo-hero--mobile-only'
+  endif
 -%}
 
+{%- comment -%} Visibility CSS {%- endcomment -%}
+<style>
+  .kumo-hero--desktop-only { display: flex !important; }
+  .kumo-hero--mobile-only { display: none !important; }
+  @media screen and (max-width: 749px) {
+    .kumo-hero--desktop-only {
+      display: none !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow: hidden !important;
+    }
+    .kumo-hero--mobile-only { display: flex !important; }
+  }
+  .kumo-hero-section:has(.kumo-hero--desktop-only) { display: block; }
+  .kumo-hero-section:has(.kumo-hero--mobile-only) { display: none; }
+  @media screen and (max-width: 749px) {
+    .kumo-hero-section:has(.kumo-hero--desktop-only) {
+      display: none !important;
+      height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .kumo-hero-section:has(.kumo-hero--mobile-only) { display: block !important; }
+  }
+</style>
+
 <section
-  class="kumo-hero kumo-hero--align-{{ section.settings.content_alignment }}{% if enable_animation %} kumo-hero--animated{% endif %}"
+  class="kumo-hero kumo-hero--align-{{ section.settings.content_alignment }}{% if enable_animation %} kumo-hero--animated{% endif %}{% if visibility_class != '' %} {{ visibility_class }}{% endif %}"
   style="
     {%- if enable_animation -%}--anim-image-duration: {{ image_duration }}s; --anim-fade-duration: {{ fade_duration }}s; --anim-text-delay: {{ text_delay }}s; --anim-text-stagger: {{ text_stagger }}s;{%- endif -%}
     {%- if section.settings.padding_top != 0 -%}padding-top: {{ section.settings.padding_top }}px;{%- endif -%}
@@ -303,6 +338,18 @@
   "name": "KUMO - Hero",
   "class": "kumo-hero-section",
   "settings": [
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Visibilité",
+      "options": [
+        { "value": "always", "label": "Toujours visible" },
+        { "value": "desktop", "label": "Desktop uniquement" },
+        { "value": "mobile", "label": "Mobile uniquement" }
+      ],
+      "default": "always",
+      "info": "Affiche cette section sur Desktop, Mobile, ou les deux"
+    },
     {
       "type": "image_picker",
       "id": "image",
