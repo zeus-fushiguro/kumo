@@ -18,9 +18,13 @@
 
 <section
   class="kumo-hero kumo-hero--align-{{ section.settings.content_alignment }}{% if enable_animation %} kumo-hero--animated{% endif %}"
-  {% if enable_animation %}
-    style="--anim-image-duration: {{ image_duration }}s; --anim-fade-duration: {{ fade_duration }}s; --anim-text-delay: {{ text_delay }}s; --anim-text-stagger: {{ text_stagger }}s;"
-  {% endif %}
+  style="
+    {%- if enable_animation -%}--anim-image-duration: {{ image_duration }}s; --anim-fade-duration: {{ fade_duration }}s; --anim-text-delay: {{ text_delay }}s; --anim-text-stagger: {{ text_stagger }}s;{%- endif -%}
+    {%- if section.settings.padding_top != 0 -%}padding-top: {{ section.settings.padding_top }}px;{%- endif -%}
+    {%- if section.settings.padding_bottom != 0 -%}padding-bottom: {{ section.settings.padding_bottom }}px;{%- endif -%}
+    {%- if section.settings.margin_top != 0 -%}margin-top: {{ section.settings.margin_top }}px;{%- endif -%}
+    {%- if section.settings.margin_bottom != 0 -%}margin-bottom: {{ section.settings.margin_bottom }}px;{%- endif -%}
+  "
 >
   {%- comment -%} Background Image {%- endcomment -%}
   <div class="kumo-hero__background">
@@ -328,6 +332,50 @@
     },
     {
       "type": "header",
+      "content": "Espacement"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Marge supérieure (padding top)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Marge inférieure (padding bottom)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": -100,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Marge externe supérieure (margin top)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": -100,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Marge externe inférieure (margin bottom)",
+      "default": 0
+    },
+    {
+      "type": "header",
       "content": "Animation d'intro"
     },
     {
@@ -405,7 +453,11 @@
         "fade_opacity": 75,
         "enable_intro_animation": false,
         "image_display_duration": 1.5,
-        "fade_duration": 0.8
+        "fade_duration": 0.8,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "margin_top": 0,
+        "margin_bottom": 0
       }
     }
   ]
