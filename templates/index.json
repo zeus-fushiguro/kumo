@@ -38,10 +38,9 @@
     },
     "kumo-hero": {
       "type": "kumo-hero",
-      "custom_css": [
-        "@media screen and (max-width: 750px) {div {display: none !important; }}"
-      ],
+      "custom_css": [],
       "settings": {
+        "visibility": "desktop",
         "image": "shopify://shop_images/kumo_hero_3_da4ec3c3-07c9-4c82-8346-5aba4e9ef248.png",
         "fade_opacity": 95,
         "content_alignment": "left",
@@ -65,6 +64,7 @@
         "@media screen and (min-width: 751px) {div {display: none !important; }}"
       ],
       "settings": {
+        "visibility": "mobile",
         "image": "shopify://shop_images/hermobiletrue.jpg",
         "fade_opacity": 95,
         "content_alignment": "left",
