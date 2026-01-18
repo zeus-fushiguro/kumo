@@ -49,7 +49,7 @@
         "padding_bottom": 0,
         "margin_top": -30,
         "margin_bottom": 0,
-        "enable_intro_animation": false,
+        "enable_intro_animation": true,
         "image_display_duration": 1.5,
         "fade_duration": 0.8,
         "title_line1": "Cocooning",
