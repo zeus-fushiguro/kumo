@@ -12,6 +12,9 @@
   assign gallery_style = section.settings.gallery_style | default: 'rounded'
   assign thumb_style = section.settings.thumb_style | default: 'circle'
   assign layout_gap = section.settings.layout_gap | default: 'medium'
+  assign show_thumbnails = section.settings.show_thumbnails
+  assign show_description = section.settings.show_description
+  assign description_style = section.settings.description_style | default: 'inline'
 -%}
 
 <section class="kumo-product kumo-section kumo-product--gallery-{{ gallery_position }} kumo-product--gap-{{ layout_gap }}" style="--section-padding-top: {{ padding_top }}px; --section-padding-bottom: {{ padding_bottom }}px;">
@@ -35,7 +38,7 @@
           {%- endif -%}
         </div>
 
-        {%- if product.images.size > 1 -%}
+        {%- if product.images.size > 1 and show_thumbnails -%}
           <div class="kumo-product__thumbs">
             {%- for image in product.images limit: 6 -%}
               <button
@@ -74,27 +77,75 @@
           <span class="kumo-product__price-current">{{ product.price | money }}</span>
         </div>
 
+        {%- comment -%} Product Description {%- endcomment -%}
+        {%- if show_description and product.description != blank -%}
+          <div class="kumo-product__description kumo-product__description--{{ description_style }}">
+            {%- if description_style == 'collapsible' -%}
+              <details class="kumo-product__description-details" open>
+                <summary class="kumo-product__description-summary">
+                  <span>{{ section.settings.description_title | default: 'Description' }}</span>
+                  <span class="kumo-product__description-icon">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="kumo-product__description-content rte">
+                  {{ product.description }}
+                </div>
+              </details>
+            {%- else -%}
+              <div class="kumo-product__description-content rte">
+                {{ product.description }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
         {%- comment -%} Product Form {%- endcomment -%}
         {%- form 'product', product, id: 'kumo-product-form', class: 'kumo-product__form' -%}
 
-          {%- comment -%} Color Swatches {%- endcomment -%}
+          {%- comment -%} Color/Ambiance Swatches with Variant Images {%- endcomment -%}
           {%- for option in product.options_with_values -%}
             {%- assign option_name_lower = option.name | downcase -%}
-            {%- if option_name_lower == 'couleur' or option_name_lower == 'color' or option_name_lower == 'colour' -%}
+            {%- assign option_index = forloop.index0 -%}
+            {%- if option_name_lower == 'couleur' or option_name_lower == 'color' or option_name_lower == 'colour' or option_name_lower == 'ambiance' -%}
               <div class="kumo-product__colors">
                 <p class="kumo-product__option-label">Choisissez votre ambiance :</p>
                 <div class="kumo-product__color-swatches">
                   {%- for value in option.values -%}
                     {%- assign color_handle = value | handleize -%}
+                    {%- comment -%} Find variant with this color to get its image {%- endcomment -%}
+                    {%- assign variant_image = nil -%}
+                    {%- for variant in product.variants -%}
+                      {%- if variant.options[option_index] == value and variant.featured_image -%}
+                        {%- assign variant_image = variant.featured_image -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+
                     <button
                       type="button"
-                      class="kumo-product__color-swatch {% if option.selected_value == value %}is-selected{% endif %}"
-                      data-option-index="{{ forloop.parentloop.index0 }}"
+                      class="kumo-product__color-swatch {% if option.selected_value == value %}is-selected{% endif %} {% if variant_image %}has-image{% endif %}"
+                      data-option-index="{{ option_index }}"
                       data-option-value="{{ value }}"
                       data-color-handle="{{ color_handle }}"
                       title="{{ value }}"
-                      style="--swatch-color: {{ section.settings[color_handle] | default: '#d4c4b0' }}"
+                      {%- if variant_image -%}
+                        data-variant-image="{{ variant_image | image_url: width: 800 }}"
+                      {%- endif -%}
+                      style="--swatch-color: {{ section.settings[color_handle] | default: '#c9a87c' }}"
                     >
+                      {%- if variant_image -%}
+                        <img
+                          src="{{ variant_image | image_url: width: 100 }}"
+                          alt="{{ value }}"
+                          loading="lazy"
+                          class="kumo-product__swatch-image"
+                        >
+                      {%- else -%}
+                        <span class="kumo-product__swatch-fallback"></span>
+                      {%- endif -%}
                       <span class="kumo-sr-only">{{ value }}</span>
                     </button>
                   {%- endfor -%}
@@ -413,7 +464,7 @@
   }
 
   /* ============================================
-     Color Swatches - Circle Style
+     Color Swatches - Image Style (Ambiance)
      ============================================ */
   .kumo-product__colors {
     display: flex;
@@ -435,31 +486,154 @@
   }
 
   .kumo-product__color-swatch {
-    width: 3.5rem;
-    height: 3.5rem;
+    position: relative;
+    width: 4rem;
+    height: 4rem;
     padding: 0;
-    border: none;
-    border-radius: 50%;
-    background-color: var(--swatch-color);
+    border: 3px solid transparent;
+    border-radius: 1rem;
+    background-color: var(--swatch-color, #c9a87c);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
   }
 
   .kumo-product__color-swatch:hover {
-    transform: scale(1.1);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   }
 
   .kumo-product__color-swatch.is-selected {
+    border-color: var(--kumo-primary);
     box-shadow:
+      0 0 0 2px var(--kumo-background),
       0 0 0 4px var(--kumo-primary),
-      0 0 0 8px var(--kumo-background);
+      0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  /* Swatch with image */
+  .kumo-product__swatch-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .kumo-product__color-swatch:hover .kumo-product__swatch-image {
+    transform: scale(1.1);
+  }
+
+  /* Fallback for swatches without images */
+  .kumo-product__swatch-fallback {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--swatch-color) 0%, color-mix(in srgb, var(--swatch-color) 70%, white) 100%);
   }
 
   .kumo-product__color-name {
-    font-size: 0.75rem;
-    color: var(--kumo-muted-foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--kumo-foreground);
     margin: 0;
+  }
+
+  /* ============================================
+     Product Description
+     ============================================ */
+  .kumo-product__description {
+    padding: 1rem 0;
+    border-top: 1px solid var(--kumo-border, rgba(0,0,0,0.08));
+  }
+
+  .kumo-product__description--inline .kumo-product__description-content {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--kumo-muted-foreground);
+  }
+
+  .kumo-product__description--inline .kumo-product__description-content p {
+    margin: 0 0 0.75rem;
+  }
+
+  .kumo-product__description--inline .kumo-product__description-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Collapsible style */
+  .kumo-product__description-details {
+    border: none;
+  }
+
+  .kumo-product__description-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    font-family: var(--kumo-font-family);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--kumo-foreground);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .kumo-product__description-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .kumo-product__description-summary::marker {
+    display: none;
+    content: '';
+  }
+
+  .kumo-product__description-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .kumo-product__description-details[open] .kumo-product__description-icon {
+    transform: rotate(180deg);
+  }
+
+  .kumo-product__description--collapsible .kumo-product__description-content {
+    padding: 0.5rem 0 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--kumo-muted-foreground);
+    animation: kumo-slideDown 0.3s ease;
+  }
+
+  @keyframes kumo-slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Scrollable style for long descriptions */
+  .kumo-product__description--scrollable .kumo-product__description-content {
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+
+  .kumo-product__description--scrollable .kumo-product__description-content::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .kumo-product__description--scrollable .kumo-product__description-content::-webkit-scrollbar-track {
+    background: var(--kumo-secondary);
+    border-radius: 2px;
+  }
+
+  .kumo-product__description--scrollable .kumo-product__description-content::-webkit-scrollbar-thumb {
+    background: var(--kumo-primary);
+    border-radius: 2px;
   }
 
   /* ============================================
@@ -863,7 +1037,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Color swatches
+  // Color/Ambiance swatches with image support
   const colorSwatches = document.querySelectorAll('.kumo-product__color-swatch');
   const colorNameDisplay = document.getElementById('kumo-selected-color');
 
@@ -874,6 +1048,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (colorNameDisplay) {
         colorNameDisplay.textContent = this.dataset.optionValue;
+      }
+
+      // Update main image if swatch has variant image
+      const variantImageUrl = this.dataset.variantImage;
+      if (variantImageUrl && mainImage) {
+        mainImage.style.opacity = '0';
+        setTimeout(() => {
+          mainImage.src = variantImageUrl;
+          mainImage.style.opacity = '1';
+        }, 200);
+
+        // Update active thumbnail if exists
+        const thumbs = document.querySelectorAll('.kumo-product__thumb');
+        thumbs.forEach(t => {
+          if (t.dataset.imageUrl === variantImageUrl) {
+            thumbs.forEach(th => th.classList.remove('is-active'));
+            t.classList.add('is-active');
+          }
+        });
       }
 
       updateVariant();
@@ -1060,6 +1253,42 @@ document.addEventListener('DOMContentLoaded', function() {
         { "value": "rounded", "label": "Arrondi" }
       ],
       "default": "circle"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_thumbnails",
+      "label": "Afficher les vignettes",
+      "default": true,
+      "info": "Miniatures d'images sous l'image principale"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Afficher la description",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "description_style",
+      "label": "Style de la description",
+      "options": [
+        { "value": "inline", "label": "Intégrée (toujours visible)" },
+        { "value": "collapsible", "label": "Accordéon (dépliable)" },
+        { "value": "scrollable", "label": "Défilante (max 150px)" }
+      ],
+      "default": "inline",
+      "info": "Choisissez comment afficher la description du produit"
+    },
+    {
+      "type": "text",
+      "id": "description_title",
+      "label": "Titre de l'accordéon",
+      "default": "Description",
+      "info": "Utilisé uniquement avec le style accordéon"
     },
     {
       "type": "header",
