@@ -95,7 +95,8 @@
       "read_more_title": "Weiterlesen: {{ title }}",
       "comments": {
         "one": "{{ count }} Kommentar",
-        "other": "{{ count }} Kommentare"
+        "other": "{{ count }} Kommentare",
+        "many": "{{ count }} Kommentare"
       },
       "moderated": "Bitte beachte, dass Kommentare vor der Veröffentlichung freigegeben werden müssen.",
       "comment_form_title": "Hinterlasse einen Kommentar",
@@ -203,7 +204,8 @@
       "filter_button": "Filter",
       "filters_selected": {
         "one": "{{ count }} ausgewählt",
-        "other": "{{ count }} ausgewählt"
+        "other": "{{ count }} ausgewählt",
+        "many": "{{ count }} ausgewählt"
       },
       "max_price": "Der höchste Preis ist {{ price }}",
       "product_count": {
@@ -212,7 +214,8 @@
       },
       "product_count_simple": {
         "one": "{{ count }} Produkt",
-        "other": "{{ count }} Produkte"
+        "other": "{{ count }} Produkte",
+        "many": "{{ count }} Produkte"
       },
       "reset": "Zurücksetzen",
       "sort_button": "Sortieren",
@@ -234,7 +237,8 @@
       "no_results": "Keine Ergebnisse gefunden für \"{{ terms }}\". Überprüfe die Schreibweise oder versuche es mit einer anderen Suchanfrage.",
       "results_with_count": {
         "one": "{{ count }} Ergebnis",
-        "other": "{{ count }} Ergebnisse"
+        "other": "{{ count }} Ergebnisse",
+        "many": "{{ count }} Ergebnisse"
       },
       "title": "Suchergebnisse",
       "page": "Seite",
@@ -246,15 +250,18 @@
       },
       "results_pages_with_count": {
         "one": "{{ count }} Seite",
-        "other": "{{ count }} Seiten"
+        "other": "{{ count }} Seiten",
+        "many": "Seiten {{ count }}"
       },
       "results_suggestions_with_count": {
         "one": "{{ count }} Vorschlag",
-        "other": "{{ count }} Vorschläge"
+        "other": "{{ count }} Vorschläge",
+        "many": "{{ count }} Vorschläge"
       },
       "results_products_with_count": {
         "one": "{{ count }} Produkt",
-        "other": "{{ count }} Produkte"
+        "other": "{{ count }} Produkte",
+        "many": "Produkte {{ count }}"
       },
       "suggestions": "Vorschläge",
       "pages": "Seiten"
@@ -281,7 +288,8 @@
       "menu": "Menü",
       "cart_count": {
         "one": "{{ count }} Artikel",
-        "other": "{{ count }} Artikel"
+        "other": "{{ count }} Artikel",
+        "many": "{{ count }} Artikel"
       }
     },
     "cart": {
@@ -367,11 +375,13 @@
       "variant_total": "Varianten insgesamt",
       "items_added": {
         "one": "{{ quantity }} Artikel hinzugefügt",
-        "other": "{{ quantity }} Artikel hinzugefügt"
+        "other": "{{ quantity }} Artikel hinzugefügt",
+        "many": "{{ quantity }} Artikel hinzugefügt"
       },
       "items_removed": {
         "one": "{{ quantity }} Artikel entfernt",
-        "other": "{{ quantity }} Artikel entfernt"
+        "other": "{{ quantity }} Artikel entfernt",
+        "many": "{{ quantity }} Artikel entfernt"
       },
       "product_variants": "Produktvarianten",
       "total_items": "Artikel gesamt",
@@ -579,6 +589,366 @@
       "signup_form_email_label": "Email",
       "signup_form_success": "We will send you an email right before we open!",
       "password_link": "Enter using password"
+    }
+  },
+  "shopify": {
+    "checkout": {
+      "general": {
+        "map": {
+          "cluster_title": {
+            "many": "Gruppe von {{number}} -Markierungen"
+          }
+        }
+      },
+      "customer_account": {
+        "saved_address_option_description": {
+          "many": "Sie haben {{count}} gespeicherte Adressen."
+        }
+      },
+      "stock": {
+        "unshippable_product": {
+          "header": {
+            "many": "Für %{count} Artikel ist keine Lieferung möglich."
+          }
+        },
+        "item_label": {
+          "many": "{{count}} Artikel"
+        }
+      },
+      "order_summary": {
+        "unit_price": {
+          "per_item": {
+            "many": "%{price} für %{count} Artikel"
+          }
+        },
+        "expand_component_information": {
+          "many": "%{count} Elemente anzeigen"
+        },
+        "collapse_component_information": {
+          "many": "%{count} Elemente ausblenden"
+        },
+        "discount_discovery": {
+          "merchandise_quantity_label": {
+            "many": "%{count} Elemente"
+          }
+        },
+        "discount_title_stacking": {
+          "many": "Rabatte"
+        },
+        "discount_order_stacking": {
+          "many": "Rabatte auf Ihre Bestellung"
+        },
+        "subtotal_label_with_quantity": {
+          "many": "Zwischensumme %{Anzahl} Artikel"
+        },
+        "number_items": {
+          "many": "%{count} Elemente"
+        },
+        "view_all_items": {
+          "many": "Alle Elemente anzeigen %{count}"
+        },
+        "pickup_unavailable_banner_title": {
+          "many": "Für Ihre Artikel ist kein Geschäft verfügbar."
+        }
+      },
+      "shipping": {
+        "estimated_delivery_date": {
+          "many": "%{count} Arbeitstage"
+        },
+        "other_method": {
+          "many": "%{count} Weitere verfügbare Methoden von"
+        },
+        "subscription_delivery_description": {
+          "prepaid_delivery_frequency": {
+            "many": "für %{count} Lieferungen"
+          },
+          "subscription_delivery_frequency": {
+            "day": {
+              "many": "alle %{count} Tage"
+            },
+            "week": {
+              "many": "alle %{count} Wochen"
+            },
+            "month": {
+              "many": "alle %{count} Monate"
+            },
+            "year": {
+              "many": "alle %{count} Jahre"
+            }
+          },
+          "first_n_order_free": {
+            "many": "%{count} erste Bestellungen kostenlos"
+          },
+          "free_for_first_n_order": {
+            "many": "Für die ersten %{count} Bestellungen"
+          },
+          "free_shipping_cycles_delivery_not_included": {
+            "many": "Kostenloser Versand für %{count} Lieferungen"
+          }
+        },
+        "shipping_method_first_shipment_group_title": {
+          "many": "Erste Lieferungen"
+        },
+        "shipping_method_recurring_shipments_group_title": {
+          "many": "Wiederkehrende Mailings"
+        }
+      },
+      "payment": {
+        "order_edit_banner_items_added": {
+          "many": "%{count} hinzugefügt(e)"
+        },
+        "discount_show_more_warnings": {
+          "many": "Mehr anzeigen %{count}"
+        },
+        "discount_codes_removed_summary": {
+          "many": "%{count} Rabattcodes wurden entfernt"
+        }
+      },
+      "thank_you": {
+        "login_reorder_link_text": {
+          "many": "Kaufen Sie auch diese Produkte"
+        },
+        "gift_card_email_title": {
+          "many": "Die Geschenkgutscheine wurden per E-Mail verschickt."
+        },
+        "gift_card_text_title": {
+          "many": "Die Geschenkkarten wurden per SMS verschickt."
+        },
+        "gift_card_resent_confirmation": {
+          "many": "Die Geschenkkarten wurden zurückgegeben."
+        },
+        "thank_you_unconfirmed_items_heading": {
+          "many": "Einige Angaben sind noch unbestätigt."
+        },
+        "thank_you_unconfirmed_items_description": {
+          "many": "Diese Kosten wurden Ihnen nicht in Rechnung gestellt."
+        },
+        "thank_you_item_label": {
+          "many": "%{count} Elemente"
+        }
+      },
+      "order_payment_collection": {
+        "changes_summary": {
+          "added": {
+            "many": "%{count} hinzugefügt(e)"
+          }
+        }
+      },
+      "subscriptions": {
+        "recurring_total_intervals": {
+          "day": {
+            "many": "%{count} Tage"
+          },
+          "week": {
+            "many": "%{count} Wochen"
+          },
+          "month": {
+            "many": "%{count} Monate"
+          },
+          "year": {
+            "many": "%{count} Jahre"
+          }
+        },
+        "recurring_totals_with_initial_order_shipping_discount_with_policies": {
+          "first_cycles": {
+            "many": "dann %{count} Zahlungen von jeweils %{total_price}"
+          }
+        }
+      },
+      "contextual_availability": {
+        "title": {
+          "many": "Produkte nicht verfügbar"
+        }
+      },
+      "throttle": {
+        "estimated_wait_time": {
+          "many": "Die geschätzte Wartezeit beträgt {{count}} Minuten"
+        }
+      },
+      "deliverability": {
+        "not_deliverable": {
+          "title": {
+            "many": "Für %{count} Artikel ist keine Lieferung möglich."
+          }
+        }
+      },
+      "pickup_point": {
+        "paginator": {
+          "selected_pickup_point_label": {
+            "many": "%{pickup_point_index} von %{count} Punkten"
+          },
+          "selected_page": {
+            "many": "%{first} - %{last} von %{count} Punkten"
+          }
+        }
+      },
+      "local_pickup": {
+        "paginator": {
+          "label": {
+            "many": "%{first} – %{last} auf %{count} Filialen"
+          }
+        },
+        "reveal_more_label": {
+          "many": "Weitere Standorte anzeigen"
+        }
+      },
+      "merchandise_unavailable_in_buyer_location": {
+        "remove_items_action": {
+          "many": "Nicht verfügbare Artikel entfernen"
+        }
+      },
+      "remote_merchandise_only": {
+        "detail_item_label": {
+          "many": "{{count}} Artikel"
+        }
+      }
+    },
+    "notices": {
+      "order": {
+        "cancel_reason": {
+          "many": "Andere"
+        }
+      }
+    }
+  },
+  "customer_accounts": {
+    "orders": {
+      "order_list": {
+        "items": {
+          "many": "{{count}} Artikel"
+        }
+      },
+      "order_status": {
+        "delivered_description_gift_card": {
+          "many": "Die Geschenkgutscheine wurden per E-Mail verschickt."
+        },
+        "gift_card_label": {
+          "many": "Geschenkgutscheine"
+        },
+        "delivered_description_gift_card_text": {
+          "many": "Die Geschenkkarten wurden per SMS verschickt."
+        },
+        "gift_resend_success": {
+          "many": "Zurückgegebene Geschenkkarten"
+        },
+        "tracking_number": {
+          "many": "Sendungsnummern"
+        },
+        "gift_card_resend_button": {
+          "many": "Senden Sie die Geschenkkarten erneut."
+        }
+      }
+    },
+    "order_details": {
+      "image_gallery": {
+        "load_more_items": {
+          "many": "Laden Sie {{count}} weitere Elemente"
+        }
+      }
+    },
+    "B2B": {
+      "orders": {
+        "draft_order_list": {
+          "pending_tab_accessibility_label": {
+            "pending_orders": {
+              "many": "Sie haben {{count}} offene Bestellungen"
+            }
+          }
+        }
+      },
+      "draft_order_details": {
+        "payment_status": {
+          "pending": {
+            "banner_due": {
+              "many": "Ihre Zahlung ist in {{count}} Tagen fällig."
+            }
+          },
+          "due_date": "Fällig am {{date}}",
+          "total_balance": "Gesamtsaldo"
+        }
+      }
+    },
+    "errors": {
+      "banner_title": {
+        "many": "Es gibt {{count}} Fehler"
+      }
+    },
+    "ui_components": {
+      "autocompleteOptionsAvailable": {
+        "many": "{{count}} Artikel verfügbar"
+      },
+      "month": {
+        "many": "Monat"
+      },
+      "mapClusterTitle": {
+        "many": "Gruppe von {{number}} -Markierungen"
+      }
+    },
+    "date": {
+      "humanize": {
+        "lessThanOneHourAgo": {
+          "many": "{{count}} Minuten zuvor"
+        }
+      }
+    },
+    "subscriptions": {
+      "subscription_contracts": {
+        "more_items": {
+          "many": "{{count}} weitere Produkte"
+        },
+        "product_count": {
+          "many": "{{count}} Produkte"
+        }
+      },
+      "updating_contracts": {
+        "many": "Aktualisierung der {{count}} Abonnementverträge..."
+      }
+    }
+  },
+  "gempages": {
+    "Carousel": {
+      "no_slider": "Kein Schieberegler"
+    },
+    "CarouselV3": {
+      "no_slider": "Kein Schieberegler"
+    },
+    "Newsletter": {
+      "err_msg_default": "E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+      "success_msg_default": "Vielen Dank fürs Abonnieren!"
+    },
+    "IconListV2": {
+      "icons_not_found": "Symbole nicht gefunden"
+    },
+    "IconList": {
+      "icons_not_found": "Symbole nicht gefunden"
+    },
+    "IconListHoz": {
+      "icons_not_found": "Symbole nicht gefunden"
+    },
+    "Product": {
+      "product_not_found": "Produkt nicht gefunden"
+    },
+    "ProductList": {
+      "product_not_found": "Produkt nicht gefunden!",
+      "no_products_found": "Keine Produkte gefunden!",
+      "no_related_products": "Keine verwandten Produkte!"
+    },
+    "ProductListV3": {
+      "product_not_found": "Produkt nicht gefunden!",
+      "no_products_found": "Keine Produkte gefunden!",
+      "no_related_products": "Keine verwandten Produkte!"
+    },
+    "ProductTitle": {
+      "product_not_found": "Produkt nicht gefunden"
+    },
+    "ProductVariants": {
+      "please_select": "Bitte wählen Sie eine Option aus."
+    },
+    "StockCounter": {
+      "let_buy_now": "<mark>BEEIL DICH!</mark> JETZT KAUFEN"
+    },
+    "Breadcrumb": {
+      "home": "Heim"
     }
   }
 }
