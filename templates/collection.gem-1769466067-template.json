@@ -1,0 +1,95 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "kumo-header": {
+      "type": "kumo-header",
+      "blocks": {
+        "nav-1": {
+          "type": "nav_link",
+          "settings": {
+            "text": "Collection",
+            "link": "shopify:\/\/collections\/all"
+          }
+        },
+        "nav-2": {
+          "type": "nav_link",
+          "settings": {
+            "text": "Notre Histoire",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "nav-1",
+        "nav-2"
+      ],
+      "settings": {
+        "logo": "shopify:\/\/shop_images\/store-logo-1768439294888_d2a85ca0-339c-4814-b625-efd35076dec9.png",
+        "logo_height": 48
+      }
+    },
+    "kumo-collection": {
+      "type": "kumo-collection",
+      "settings": {
+        "products_per_page": 12
+      }
+    },
+    "kumo-footer": {
+      "type": "kumo-footer",
+      "blocks": {
+        "link-1": {
+          "type": "link",
+          "settings": {
+            "text": "Collection",
+            "url": "shopify:\/\/collections\/all"
+          }
+        },
+        "link-2": {
+          "type": "link",
+          "settings": {
+            "text": "Notre Histoire",
+            "url": ""
+          }
+        },
+        "link-3": {
+          "type": "link",
+          "settings": {
+            "text": "FAQ",
+            "url": ""
+          }
+        },
+        "link-4": {
+          "type": "link",
+          "settings": {
+            "text": "Contact",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "link-1",
+        "link-2",
+        "link-3",
+        "link-4"
+      ],
+      "settings": {
+        "logo": "shopify:\/\/shop_images\/kumo_logo_2_776177b4-cac8-41dd-9789-01e926369bb6.png",
+        "show_payment": true,
+        "tagline": "Fait avec ☁️ en France."
+      }
+    }
+  },
+  "order": [
+    "kumo-header",
+    "kumo-collection",
+    "kumo-footer"
+  ]
+}
