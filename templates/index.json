@@ -23,7 +23,7 @@
           "type": "nav_link",
           "settings": {
             "text": "Notre Histoire",
-            "link": ""
+            "link": "shopify://pages/notre-histoire"
           }
         }
       },
